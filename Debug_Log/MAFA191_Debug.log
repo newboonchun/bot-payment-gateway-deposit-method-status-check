@@ -1,0 +1,24 @@
+14:38:53 | INFO     | ============================================================
+14:38:53 | INFO     | MAFA191 PAYMENT GATEWAY TEST STARTING...
+14:38:53 | INFO     | STARTING TIME: 28-11-2025 13:38:53 GMT+7
+14:38:53 | INFO     | ============================================================
+14:38:55 | INFO     | OPENING WEBSITE: https://www.mafa191.com/th-th
+14:38:57 | INFO     | PAGE LOADED SUCCESSFULLY
+14:39:14 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.mafa191.com/th-th/deposit]
+14:39:15 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
+14:39:15 | INFO     | DEPOSIT CHANNEL [ธนาคารไทยพาณิชย์] 
+14:39:15 | INFO     | DEPOSIT CHANNEL [ธนาคารไทยพาณิชย์] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
+14:39:15 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.mafa191.com/th-th/deposit]
+14:39:15 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
+14:39:15 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
+14:39:15 | INFO     | MONEY INPUT RANGE AMOUNT: [กรอกจำนวนเงินฝาก
+฿ 200
+ - 
+฿ 150,000]
+14:39:15 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
+14:39:22 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=72716877&t=2411dbd563335135e73ad7ee7da29bf6]
+14:39:32 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=72716877&t=2411dbd563335135e73ad7ee7da29bf6] LOADED SUCCESSFULLY
+14:39:32 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+14:39:38 | INFO     | TELEGRAM MESSAGE: [{'FPAY-CRYPTO_คริปโต': ['deposit success_2025-11-28 13:39:32']}]
+14:39:39 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-11-28 13:39:32]
+14:39:39 | INFO     | File [['MAFA191_คริปโต_FPAY-CRYPTO_Payment_Page.png']]

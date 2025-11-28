@@ -1,0 +1,44 @@
+14:38:53 | INFO     | ============================================================
+14:38:53 | INFO     | GOD855 PAYMENT GATEWAY TEST STARTING...
+14:38:53 | INFO     | STARTING TIME: 28-11-2025 13:38:53 GMT+7
+14:38:53 | INFO     | ============================================================
+14:38:55 | INFO     | OPENING WEBSITE: https://www.god855th1.com/en-th
+14:38:57 | INFO     | PAGE LOADED SUCCESSFULLY
+14:39:08 | INFO     | URL AFTER DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON CLICK: [https://www.god855th2.com/th-th/deposit]
+14:39:08 | INFO     | FOUND [2] DEPOSIT CHANNEL FOR DEPOSIT METHOD [เติมเงินผ่าน QR]
+14:39:08 | INFO     | DEPOSIT CHANNEL [WEPAY] 
+14:39:08 | INFO     | MONEY INPUT RANGE AMOUNT: [กรอกจำนวนเงินฝาก
+฿ 100
+ - 
+฿ 40,000]
+14:39:08 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+14:39:10 | INFO     | LOADING INTO NEW PAGE [https://paytm.wepayplus.com/?no=20251128143909553065]
+14:39:20 | INFO     | NEW PAGE [https://paytm.wepayplus.com/?no=20251128143909553065] LOADED SUCCESSFULLY
+14:39:20 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+14:39:26 | INFO     | DEPOSIT CHANNEL [QPAY] 
+14:39:26 | INFO     | MONEY INPUT RANGE AMOUNT: [กรอกจำนวนเงินฝาก
+฿ 100
+ - 
+฿ 300,000]
+14:39:26 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+14:39:28 | INFO     | LOADING INTO NEW PAGE [https://api.qpayauth.com/th/v1/?token=b240736e-95e1-4362-98ab-83f97ea207c6]
+14:39:38 | INFO     | NEW PAGE [https://api.qpayauth.com/th/v1/?token=b240736e-95e1-4362-98ab-83f97ea207c6] LOADED SUCCESSFULLY
+14:39:38 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+14:39:44 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.god855th2.com/th-th/deposit]
+14:39:44 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
+14:39:44 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
+14:39:44 | INFO     | MONEY INPUT RANGE AMOUNT: [กรอกจำนวนเงินฝาก
+฿ 200
+ - 
+฿ 150,000]
+14:39:44 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
+14:39:52 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=72716938&t=1e537bd46dbbfb951ed52eeda773a8f0]
+14:40:02 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=72716938&t=1e537bd46dbbfb951ed52eeda773a8f0] LOADED SUCCESSFULLY
+14:40:02 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+14:40:08 | INFO     | TELEGRAM MESSAGE: [{'WEPAY_เติมเงินผ่าน QR': ['deposit success_2025-11-28 13:39:20'], 'QPAY_เติมเงินผ่าน QR': ['deposit success_2025-11-28 13:39:38'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-11-28 13:40:02']}]
+14:40:09 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [WEPAY], STATUS: [deposit success], TIMESTAMP: [2025-11-28 13:39:20]
+14:40:09 | INFO     | File [['GOD855_เติมเงินผ่าน QR_WEPAY_Payment_Page.png']]
+14:40:11 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [QPAY], STATUS: [deposit success], TIMESTAMP: [2025-11-28 13:39:38]
+14:40:11 | INFO     | File [['GOD855_เติมเงินผ่าน QR_QPAY_Payment_Page.png']]
+14:40:12 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-11-28 13:40:02]
+14:40:13 | INFO     | File [['GOD855_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
