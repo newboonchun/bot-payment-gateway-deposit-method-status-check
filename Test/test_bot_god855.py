@@ -10,6 +10,7 @@ import pytz
 from datetime import datetime, timezone, timedelta
 from telegram import Bot
 import re
+from telegram.error import TimedOut
 
 def escape_md(text):
     if text is None: return ""
@@ -85,51 +86,132 @@ async def wait_for_network_stable(page: Page, min_stable_ms: int = 1500, timeout
         page.remove_listener("requestfailed", on_request)
 
 async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck):
-    await page.goto("%s"%old_url)
-    await asyncio.sleep(5)
-    await wait_for_network_stable(page, timeout=30000)
-    await page.get_by_role("button", name="%s"%deposit_method).click()
-    await page.get_by_role("button", name="%s"%deposit_channel).click()
-    await page.get_by_placeholder("0").click()
-    await page.get_by_placeholder("0").fill("%s"%min_amount)
+    try:
+        await page.goto("%s"%old_url)
+        await asyncio.sleep(5)
+        await wait_for_network_stable(page, timeout=30000)
+        log.info("REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY")
+    except:
+        raise Exception("REENTER DEPOSIT PAGE - PAGE LOADED FAILED")
+    try:
+        await page.get_by_role("button", name="%s"%deposit_method).click()
+        log.info("REENTER DEPOSIT PAGE - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
+    except:
+        raise Exception("REENTER DEPOSIT PAGE - DEPOSIT METHOD [%s] BUTTON ARE FAILED CLICKED"%deposit_method)
+    try:
+        await page.get_by_role("button", name="%s"%deposit_channel).click()
+        log.info("REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
+    except:
+        raise Exception("REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
+    try:
+        await page.get_by_placeholder("0").click()
+        await page.get_by_placeholder("0").fill("%s"%min_amount)
+        log.info("REENTER DEPOSIT PAGE - MIN AMOUNT [%s] ARE KEYED IN"%min_amount)
+    except:
+        raise Exception("PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [%s] ARE NOT KEYED IN"%min_amount)
     if recheck:
-        await page.get_by_role("button", name="เติมเงิน").nth(2).click()
-        log.info("RECHECK DEPOSIT CHANNEL")
+        try:
+            await page.get_by_role("button", name="เติมเงิน").nth(2).click()
+            log.info("REENTER DEPOSIT PAGE - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
+        except:
+            raise Exception("REENTER DEPOSIT PAGE - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
     else:
         pass  
 
 async def perform_login(page):
-    WEBSITE_URL = "https://www.god855th1.com/en-th"
+    WEBSITE_URL = "https://www.god855th1.com/th-th"
     for _ in range(3):
         try:
-            log.info(f"OPENING WEBSITE: {WEBSITE_URL}")
-            await page.goto("https://www.god855th1.com/en-th", timeout=30000, wait_until="domcontentloaded")
+            log.info(f"LOGIN PROCESS - OPENING WEBSITE: {WEBSITE_URL}")
+            await page.goto("https://www.god855th1.com/th-th", timeout=30000, wait_until="domcontentloaded")
             await wait_for_network_stable(page, timeout=30000)
-            log.info("PAGE LOADED SUCCESSFULLY")
+            log.info("LOGIN PROCESS - PAGE LOADED SUCCESSFULLY")
             break
         except:
-            log.warning("PAGE LOADED FAILED, RETRYING")
+            log.warning("LOGIN PROCESS - PAGE LOADED FAILED, RETRYING")
             await asyncio.sleep(2)
     else:
-        raise Exception("RETRY 3 TIMES....PAGE LOADED FAILED")
+        raise Exception("LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED")
         
     # Login flow GOD855
-    await page.get_by_role("button", name="Close").click()
-    await page.get_by_role("button", name="เข้าสู่ระบบ").click()
-    await page.get_by_role("textbox", name="ใส่หมายเลขโทรศัพท์").click()
-    await page.get_by_role("textbox", name="ใส่หมายเลขโทรศัพท์").fill("0745674567")
-    await page.get_by_role("textbox", name="รหัสผ่าน / PIN 6 หลัก").click()
-    await page.get_by_role("textbox", name="รหัสผ่าน / PIN 6 หลัก").fill("123456")
-    await page.get_by_role("button", name=" เข้าสู่ระบบ").click()
-    await page.get_by_role("button", name="ปิด").click()
-    await page.get_by_role("button", name="Close").click()
-                    
-    await page.get_by_role("button", name="เติมเงิน").click()
+    try:
+        await page.get_by_role("button", name="Close").click()
+        log.info("LOGIN PROCESS - CLOSE NOTIFICATION BUTTON ARE CLICKED")
+    except:
+        log.info("NO NOTIFICATION POP UP")
+    # Login button failed to locate if use get by role
+    try:
+        login_container = page.locator('div.flex.relative.items-center')
+        login_buttons = login_container.locator("button.topbar_btn_1", has_text="เข้าสู่ระบบ")
+        count = await login_buttons.count()
+        for i in range(count):
+            try:
+                login_button = login_buttons.nth(i)
+                await login_button.wait_for(state="visible", timeout=10000)
+                await login_button.click()
+                log.info("LOGIN PROCESS - LOGIN BUTTON (%s) ARE CLICKED"%(i+1))
+            except:
+                log.info("LOGIN PROCESS - LOGIN BUTTON (%s) ARE FAILED TO CLICK"%(i+1))
+    except Exception as e:
+        log.info("LOGIN PROCESS - LOGIN CONTAINER FAILED TO LOCATE %s"%e)
+        raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED CLICKED")
+    try:
+        await page.get_by_role("textbox", name="ใส่หมายเลขโทรศัพท์").click()
+        log.info("LOGIN PROCESS - USERNAME TEXTBOX ARE CLICKED")
+    except:
+        raise Exception("LOGIN PROCESS - USERNAME TEXTBOX ARE FAILED TO CLICK")
+    try:
+        await page.get_by_role("textbox", name="ใส่หมายเลขโทรศัพท์").fill("0745674567")
+        log.info("LOGIN PROCESS - USERNAME DONE KEYED")
+    except:
+        raise Exception("LOGIN PROCESS - USERNAME FAILED TO KEY IN")
+    try:
+        await page.get_by_role("textbox", name="รหัสผ่าน / PIN 6 หลัก").click()
+        log.info("LOGIN PROCESS - PASSWORD TEXTBOX ARE CLICKED")
+    except:
+        raise Exception("LOGIN PROCESS - PASSWORD TEXTBOX ARE FAILED TO CLICK")
+    try:
+        await page.get_by_role("textbox", name="รหัสผ่าน / PIN 6 หลัก").fill("123456")
+        log.info("LOGIN PROCESS - PASSWORD ARE FILLED IN")
+    except:
+        raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN")
+    # add some delay for submit button
+    try:
+        for attempt in range(1, 5):
+            #await page.get_by_role("button", name=" เข้าสู่ระบบ").click()
+            submit_button = page.locator("button.new-reg-buttons")
+            await submit_button.wait_for(state="visible", timeout=10000)
+            #is_visible = await submit_button.is_visible()
+            #log.info("submit_button_visible:%s"%is_visible)
+            await asyncio.sleep(0.5)
+        await submit_button.click()
+        log.info("LOGIN PROCESS -  เข้าสู่ระบบ BUTTON ARE CLICKED")
+    except:
+        raise Exception("LOGIN PROCESS -  เข้าสู่ระบบ BUTTON ARE FAILED TO CLICKED")
+    try:
+        await page.get_by_role("button", name="ปิด").click()
+        log.info("LOGIN PROCESS - ปิด BUTTON ARE CLICKED")
+    except:
+        raise Exception("LOGIN PROCESS - ปิด BUTTON ARE FAILED TO CLICKED")
+    try:
+        await page.get_by_role("button", name="Close").click()
+        log.info("LOGIN PROCESS - CLOSE BUTTON ARE CLICKED")
+    except:
+        log.info("NO NOTIFICATION POP UP")
+    try:
+        await page.get_by_role("button", name="เติมเงิน").click()
+        log.info("LOGIN PROCESS - เติมเงิน BUTTON ARE CLICKED")
+    except:
+        raise Exception("LOGIN PROCESS - เติมเงิน BUTTON ARE FAILED TO CLICKED")
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
         async with page.expect_navigation(wait_until="load", timeout=10000):
-            await page.get_by_role("button", name="เติมเงิน").nth(2).click()
+            try:
+                await page.get_by_role("button", name="เติมเงิน").nth(2).click()
+                log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
+            except:
+                raise Exception("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
         
         # Wait until the URL actually changes (final page)
         await page.wait_for_function(
@@ -220,8 +302,16 @@ async def qr_code_check(page):
 
 async def check_toast(page,deposit_method,deposit_channel):
     toast_exist = False
-    await page.get_by_role("button", name="%s"%deposit_method).click()
-    await page.get_by_role("button", name="%s"%deposit_channel).click()
+    try:
+        await page.get_by_role("button", name="%s"%deposit_method).click()
+        log.info("CHECK TOAST - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
+    except:
+        raise Exception("CHECK TOAST - DEPOSIT METHOD [%s] BUTTON ARE FAILED CLICKED"%deposit_method)
+    try:
+        await page.get_by_role("button", name="%s"%deposit_channel).click()
+        log.info("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
+    except:
+        raise Exception("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
     money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
     await money_input_range.wait_for(state="attached", timeout=3000)
     money_input_range_text = (await money_input_range.inner_text())
@@ -232,9 +322,17 @@ async def check_toast(page,deposit_method,deposit_channel):
         print(min_amount)
     else:
         log.warning("NO MINIMUM DEPOSIT AMOUNT INPUT")
-    await page.get_by_placeholder("0").click()
-    await page.get_by_placeholder("0").fill("%s"%min_amount)
-    await page.get_by_role("button", name="เติมเงิน").nth(2).click()
+    try:
+        await page.get_by_placeholder("0").click()
+        await page.get_by_placeholder("0").fill("%s"%min_amount)
+        log.info("CHECK TOAST - MIN AMOUNT [%s] ARE KEYED IN"%min_amount)
+    except:
+        raise Exception("CHECK TOAST - MIN AMOUNT [%s] ARE NOT KEYED IN"%min_amount)
+    try:
+        await page.get_by_role("button", name="เติมเงิน").nth(2).click()
+        log.info("CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
+    except:
+        raise Exception("CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
     try:
         for _ in range(20):
             toast = page.locator('div.toast-message.text-sm')
@@ -252,7 +350,7 @@ async def check_toast(page,deposit_method,deposit_channel):
     return toast_exist
 
 async def perform_payment_gateway_test(page):
-    exclude_list = ["Government Savings Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์"]
+    exclude_list = ["Government Savings Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
     telegram_message = {}
     deposit_method_container = page.locator(".deposit-method-container")
     await deposit_method_container.wait_for(state="attached")
@@ -265,7 +363,11 @@ async def perform_payment_gateway_test(page):
         #if deposit_method != 'เติมเงินผ่าน QR': #FOR DEBUG
         #    continue
         # deposit method click
-        await page.get_by_role("button", name="%s"%deposit_method).click()
+        try:
+            await page.get_by_role("button", name="%s"%deposit_method).click()
+            log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
+        except:
+            raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE FAILED CLICKED"%deposit_method)
         log.info("URL AFTER DEPOSIT METHOD [%s] BUTTON CLICK: [%s]"%(deposit_method,old_url))
         deposit_channel_container = page.locator(".deposit-channel-container")
         await deposit_channel_container.first.wait_for(state="attached")
@@ -284,7 +386,11 @@ async def perform_payment_gateway_test(page):
             else:
                 pass
             # click deposit button...start load to payment page
-            await page.get_by_role("button", name="%s"%deposit_channel).click()
+            try:
+                await page.get_by_role("button", name="%s"%deposit_channel).click()
+                log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
+            except:
+                raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
             # input the minimum deposit amount 
             money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
             await money_input_range.wait_for(state="attached", timeout=3000)
@@ -297,8 +403,12 @@ async def perform_payment_gateway_test(page):
                 log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
             else:
                 log.warning("NO MINIMUM DEPOSIT AMOUNT INPUT")
-            await page.get_by_placeholder("0").click()
-            await page.get_by_placeholder("0").fill("%s"%min_amount)
+            try:
+                await page.get_by_placeholder("0").click()
+                await page.get_by_placeholder("0").fill("%s"%min_amount)
+                log.info("PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [%s] ARE KEYED IN"%min_amount)
+            except:
+                raise Exception("PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [%s] ARE NOT KEYED IN"%min_amount)
             url_jump, payment_page_failed_load = await url_jump_check(page,old_url,deposit_method,deposit_channel,min_amount,telegram_message)
             if url_jump and payment_page_failed_load == False:
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
@@ -326,58 +436,84 @@ async def perform_payment_gateway_test(page):
                 continue
             else:
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"no reason found, check manually_{date_time("Asia/Bangkok")}"]
-                log.info("UNIDENTIFIED REASON")
+                log.warning("UNIDENTIFIED REASON")
 
     return telegram_message
 
 
-async def telegram_send_operation(telegram_message):
+async def telegram_send_operation(telegram_message,program_complete):
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
+    # Debug telegram token and chat id
     TOKEN = '8450485022:AAE-EBYI0_f1UDDZpI_CLdGywhMMi8pzYyo'
     chat_id = -5015541241
+    # Production telegram token and chat id
+    #TOKEN = '8415292066:AAHBpdP8yw15BhpzwoqccSovb-R26vsBq8w'
+    #chat_id = -4978443446
     bot = Bot(token=TOKEN)
-    for key, value_list in telegram_message.items():
-        # Split key parts
-        deposit_channel_method = key.split("_")
-        deposit_channel = deposit_channel_method[0]
-        deposit_method  = deposit_channel_method[1]
-        # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
-        value = value_list[0]
-        status, timestamp = value.split("_")
-        if status == 'deposit success':
-            status_emoji = "✅"
-        elif status == 'deposit failed':
-            status_emoji = "❌"
-        else:
-            status_emoji = "❓"
-        log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
-        caption = f"""*Subject: Bot Testing Deposit Gateway*  
-        URL: [god855\\.com](https://www\\.god855\\.com/en\\-th)
-        ┌─ **Deposit Testing Result** ──────────┐
-        │ {status_emoji} **{status}** 
-        │  
-        │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
-        │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-        └──────────────────────┘
-        **Time Detail**  
-        ├─ **TimeOccurred:** `{timestamp}` """ 
-        files = glob.glob("*GOD855_%s_%s*.png"%(deposit_method,deposit_channel))
-        log.info("File [%s]"%(files))
-        file_path = files[0]
+    if program_complete == True:
+        for key, value_list in telegram_message.items():
+            # Split key parts
+            deposit_channel_method = key.split("_")
+            deposit_channel = deposit_channel_method[0]
+            deposit_method  = deposit_channel_method[1]
+            # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
+            value = value_list[0]
+            status, timestamp = value.split("_")
+            if status == 'deposit success':
+                status_emoji = "✅"
+            elif status == 'deposit failed':
+                status_emoji = "❌"
+            else:
+                status_emoji = "❓"
+            log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
+            caption = f"""*Subject: Bot Testing Deposit Gateway*  
+            URL: [god855\\.com](https://www\\.god855\\.com/en\\-th)
+            ┌─ **Deposit Testing Result** ──────────┐
+            │ {status_emoji} **{status}** 
+            │  
+            │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+            │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+            └──────────────────────┘
+            **Time Detail**  
+            ├─ **TimeOccurred:** `{timestamp}` """ 
+            files = glob.glob("*GOD855_%s_%s*.png"%(deposit_method,deposit_channel))
+            log.info("File [%s]"%(files))
+            file_path = files[0]
+            for attempt in range(3):
+                try:
+                    with open(file_path, 'rb') as f:
+                          await bot.send_photo(
+                                chat_id=chat_id,
+                                photo=f,
+                                caption=caption,
+                                parse_mode='MarkdownV2',
+                                read_timeout=30,
+                                write_timeout=30,
+                                connect_timeout=30
+                            )
+                    log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                    break
+                except TimedOut:
+                    log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                    await asyncio.sleep(5)
+                except Exception as e:
+                    log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                    break
+    else:
+        fail_msg = (
+                "⚠️ *GOD 855 RETRY 3 TIMES FAILED*\n"
+                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE\n"
+                "KINDLY ASK ENGINEER TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
+            )
         try:
-            with open(file_path, 'rb') as f:
-                  await bot.send_photo(
-                        chat_id=chat_id,
-                        photo=f,
-                        caption=caption,
-                        parse_mode='MarkdownV2',
-                        read_timeout=30,
-                        write_timeout=30,
-                        connect_timeout=30
-                    )
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=fail_msg,
+                    parse_mode="Markdown"
+                )
+                log.info("FAILURE MESSAGE SENT")
         except Exception as e:
-            log.info("ERROR TELEGRAM BOT [%s]"%(e))
-            break
+                log.error(f"FAILED TO SEND FAILURE MESSAGE: {e}")
 
 async def clear_screenshot():
     picture_to_sent = glob.glob("*GOD855*.png")
@@ -386,7 +522,7 @@ async def clear_screenshot():
 
 @pytest.mark.asyncio
 async def test_main():
-    MAX_RETRY = 3
+    MAX_RETRY = 1
     global log
     th_tz = pytz.timezone('Asia/Bangkok')
     round_start = datetime.now(th_tz)
@@ -399,14 +535,17 @@ async def test_main():
                 page = await context.new_page()
                 await perform_login(page)
                 telegram_message = await perform_payment_gateway_test(page)
-                await telegram_send_operation(telegram_message)
+                await telegram_send_operation(telegram_message,program_complete=True)
                 await clear_screenshot()
                 break
             except Exception as e:
+                await context.close()
+                await browser.close()
                 log.warning("RETRY ROUND [%s] ERROR: [%s]"%(attempt,e))
                 log.info("NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...")
             
             if attempt == MAX_RETRY:
+                telegram_message = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
-                print("Reached max retries. Stopping.")
+                await telegram_send_operation(telegram_message,program_complete=False)
                 raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")

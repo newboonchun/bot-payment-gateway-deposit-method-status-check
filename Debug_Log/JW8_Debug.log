@@ -1,85 +1,27 @@
-14:38:53 | INFO     | ============================================================
-14:38:53 | INFO     | JW8 PAYMENT GATEWAY TEST STARTING...
-14:38:53 | INFO     | STARTING TIME: 28-11-2025 13:38:53 GMT+7
-14:38:53 | INFO     | ============================================================
-14:38:55 | INFO     | OPENING WEBSITE: https://www.jw8thai8.com/en-th
-14:38:57 | INFO     | PAGE LOADED SUCCESSFULLY
-14:39:05 | INFO     | CLOSE NOTIFICATION WINDOW
-14:39:08 | INFO     | URL AFTER DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
-14:39:08 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ธนาคารออนไลน์]
-14:39:08 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-14:39:08 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
-฿ 100
- - 
-฿ 20,000]
-14:39:08 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-14:39:18 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.jw8thai8.com/en-th/deposit]
-14:39:21 | INFO     | No IFRAME/POP UP APPEARED
-14:39:54 | INFO     | DEPOSIT METHOD:BAOYUANPAY, DEPOSIT CHANNEL:ธนาคารออนไลน์ GOT PROBLEM. DETAILS:[Payment gateway is currently under maintenance now]
-14:39:54 | INFO     | TOAST DETECTED
-14:39:54 | INFO     | URL AFTER DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
-14:39:54 | INFO     | FOUND [3] DEPOSIT CHANNEL FOR DEPOSIT METHOD [เติมเงินผ่าน QR]
-14:39:54 | INFO     | DEPOSIT CHANNEL [WEPAY] 
-14:39:54 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
-฿ 100
- - 
-฿ 40,000]
-14:39:54 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-14:39:56 | INFO     | LOADING INTO NEW PAGE [https://paytm.wepayplus.com/?no=20251128143955991439]
-14:40:06 | INFO     | NEW PAGE [https://paytm.wepayplus.com/?no=20251128143955991439] LOADED SUCCESSFULLY
-14:40:06 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
-14:40:12 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-14:40:12 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
-฿ 100
- - 
-฿ 20,000]
-14:40:12 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-14:40:23 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.jw8thai8.com/en-th/deposit]
-14:40:26 | INFO     | No IFRAME/POP UP APPEARED
-14:40:58 | INFO     | DEPOSIT METHOD:BAOYUANPAY, DEPOSIT CHANNEL:เติมเงินผ่าน QR GOT PROBLEM. DETAILS:[Payment gateway is currently under maintenance now]
-14:40:58 | INFO     | TOAST DETECTED
-14:40:58 | INFO     | DEPOSIT CHANNEL [QPAY] 
-14:40:58 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
-฿ 100
- - 
-฿ 300,000]
-14:40:58 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-14:41:08 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.jw8thai8.com/en-th/deposit]
-14:41:11 | INFO     | No IFRAME/POP UP APPEARED
-14:41:11 | INFO     | QR DETECTED
-14:41:17 | INFO     | URL AFTER DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
-14:41:17 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท]
-14:41:17 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-14:41:18 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
-฿ 100
- - 
-฿ 20,000]
-14:41:18 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-14:41:28 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.jw8thai8.com/en-th/deposit]
-14:41:31 | INFO     | No IFRAME/POP UP APPEARED
-14:42:03 | INFO     | DEPOSIT METHOD:BAOYUANPAY, DEPOSIT CHANNEL:ทรูมันนี่ วอลเล็ท GOT PROBLEM. DETAILS:[Payment gateway is currently under maintenance now]
-14:42:03 | INFO     | TOAST DETECTED
-14:42:03 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
-14:42:03 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
-14:42:03 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
-14:42:03 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
-฿ 200
- - 
-฿ 150,000]
-14:42:03 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
-14:42:13 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=72717181&t=0f590bfe848dd0599441f068ddf4a0e6]
-14:42:23 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=72717181&t=0f590bfe848dd0599441f068ddf4a0e6] LOADED SUCCESSFULLY
-14:42:23 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
-14:42:29 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit failed_2025-11-28 13:39:54'], 'WEPAY_เติมเงินผ่าน QR': ['deposit success_2025-11-28 13:40:06'], 'BAOYUANPAY_เติมเงินผ่าน QR': ['deposit failed_2025-11-28 13:40:58'], 'QPAY_เติมเงินผ่าน QR': ['deposit success_2025-11-28 13:41:11'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-11-28 13:42:03'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-11-28 13:42:23']}]
-14:42:30 | INFO     | METHOD: [ธนาคารออนไลน์], CHANNEL: [BAOYUANPAY], STATUS: [deposit failed], TIMESTAMP: [2025-11-28 13:39:54]
-14:42:30 | INFO     | File [['JW8_ธนาคารออนไลน์_BAOYUANPAY_Payment_Page.png']]
-14:42:33 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [WEPAY], STATUS: [deposit success], TIMESTAMP: [2025-11-28 13:40:06]
-14:42:33 | INFO     | File [['JW8_เติมเงินผ่าน QR_WEPAY_Payment_Page.png']]
-14:42:34 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [BAOYUANPAY], STATUS: [deposit failed], TIMESTAMP: [2025-11-28 13:40:58]
-14:42:34 | INFO     | File [['JW8_เติมเงินผ่าน QR_BAOYUANPAY_Payment_Page.png']]
-14:42:35 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [QPAY], STATUS: [deposit success], TIMESTAMP: [2025-11-28 13:41:11]
-14:42:35 | INFO     | File [['JW8_เติมเงินผ่าน QR_QPAY_Payment_Page.png']]
-14:42:36 | INFO     | METHOD: [ทรูมันนี่ วอลเล็ท], CHANNEL: [BAOYUANPAY], STATUS: [deposit failed], TIMESTAMP: [2025-11-28 13:42:03]
-14:42:36 | INFO     | File [['JW8_ทรูมันนี่ วอลเล็ท_BAOYUANPAY_Payment_Page.png']]
-14:42:37 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-11-28 13:42:23]
-14:42:37 | INFO     | File [['JW8_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
+11:39:16 | INFO     | ============================================================
+11:39:16 | INFO     | JW8 PAYMENT GATEWAY TEST STARTING...
+11:39:16 | INFO     | STARTING TIME: 01-12-2025 10:39:16 GMT+7
+11:39:16 | INFO     | ============================================================
+11:39:17 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
+11:39:18 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+11:39:19 | WARNING  | RETRY ROUND [1] ERROR: [LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED]
+11:39:19 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
+11:39:20 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
+11:39:20 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+11:39:22 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
+11:39:22 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+11:39:24 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
+11:39:24 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+11:39:27 | WARNING  | RETRY ROUND [2] ERROR: [LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED]
+11:39:27 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
+11:39:27 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
+11:39:28 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+11:39:30 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
+11:39:30 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+11:39:32 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
+11:39:32 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+11:39:34 | WARNING  | RETRY ROUND [3] ERROR: [LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED]
+11:39:34 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
+11:39:34 | WARNING  | REACHED MAX RETRY, STOP SCRIPT
+11:39:34 | INFO     | TELEGRAM MESSAGE: [{}]
+11:39:36 | INFO     | FAILURE MESSAGE SENT
