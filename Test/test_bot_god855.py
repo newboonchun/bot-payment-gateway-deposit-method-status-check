@@ -119,11 +119,11 @@ async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_a
         pass  
 
 async def perform_login(page):
-    WEBSITE_URL = "https://www.god855th1.com/en-th"
+    WEBSITE_URL = "https://www.god855th1.com/th-th"
     for _ in range(3):
         try:
             log.info(f"LOGIN PROCESS - OPENING WEBSITE: {WEBSITE_URL}")
-            await page.goto("https://www.god855th1.com/en-th", timeout=30000, wait_until="domcontentloaded")
+            await page.goto("https://www.god855th1.com/th-th", timeout=30000, wait_until="domcontentloaded")
             await wait_for_network_stable(page, timeout=30000)
             log.info("LOGIN PROCESS - PAGE LOADED SUCCESSFULLY")
             break
@@ -136,14 +136,25 @@ async def perform_login(page):
     # Login flow GOD855
     try:
         await page.get_by_role("button", name="Close").click()
-        log.info("LOGIN PROCESS - CLOSE BUTTON ARE CLICKED")
+        log.info("LOGIN PROCESS - CLOSE NOTIFICATION BUTTON ARE CLICKED")
     except:
-        raise Exception("LOGIN PROCESS - CLOSE BUTTON ARE FAILED TO CLICKED")
+        log.info("NO NOTIFICATION POP UP")
+    # Login button failed to locate if use get by role
     try:
-        await page.get_by_role("button", name="เข้าสู่ระบบ").click()
-        log.info("LOGIN PROCESS - เข้าสู่ระบบ BUTTON ARE CLICKED")
-    except:
-        raise Exception("LOGIN PROCESS - เข้าสู่ระบบ BUTTON ARE FAILED CLICKED")
+        login_container = page.locator('div.flex.relative.items-center')
+        login_buttons = login_container.locator("button.topbar_btn_1", has_text="เข้าสู่ระบบ")
+        count = await login_buttons.count()
+        for i in range(count):
+            try:
+                login_button = login_buttons.nth(i)
+                await login_button.wait_for(state="visible", timeout=10000)
+                await login_button.click()
+                log.info("LOGIN PROCESS - LOGIN BUTTON (%s) ARE CLICKED"%(i+1))
+            except:
+                log.info("LOGIN PROCESS - LOGIN BUTTON (%s) ARE FAILED TO CLICK"%(i+1))
+    except Exception as e:
+        log.info("LOGIN PROCESS - LOGIN CONTAINER FAILED TO LOCATE %s"%e)
+        raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED CLICKED")
     try:
         await page.get_by_role("textbox", name="ใส่หมายเลขโทรศัพท์").click()
         log.info("LOGIN PROCESS - USERNAME TEXTBOX ARE CLICKED")
@@ -164,8 +175,16 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - PASSWORD ARE FILLED IN")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN")
+    # add some delay for submit button
     try:
-        await page.get_by_role("button", name=" เข้าสู่ระบบ").click()
+        for attempt in range(1, 5):
+            #await page.get_by_role("button", name=" เข้าสู่ระบบ").click()
+            submit_button = page.locator("button.new-reg-buttons")
+            await submit_button.wait_for(state="visible", timeout=10000)
+            #is_visible = await submit_button.is_visible()
+            #log.info("submit_button_visible:%s"%is_visible)
+            await asyncio.sleep(0.5)
+        await submit_button.click()
         log.info("LOGIN PROCESS -  เข้าสู่ระบบ BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS -  เข้าสู่ระบบ BUTTON ARE FAILED TO CLICKED")
@@ -178,7 +197,7 @@ async def perform_login(page):
         await page.get_by_role("button", name="Close").click()
         log.info("LOGIN PROCESS - CLOSE BUTTON ARE CLICKED")
     except:
-        raise Exception("LOGIN PROCESS - CLOSE BUTTON ARE FAILED TO CLICKED")
+        log.info("NO NOTIFICATION POP UP")
     try:
         await page.get_by_role("button", name="เติมเงิน").click()
         log.info("LOGIN PROCESS - เติมเงิน BUTTON ARE CLICKED")
@@ -422,59 +441,79 @@ async def perform_payment_gateway_test(page):
     return telegram_message
 
 
-async def telegram_send_operation(telegram_message):
+async def telegram_send_operation(telegram_message,program_complete):
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
+    # Debug telegram token and chat id
     TOKEN = '8450485022:AAE-EBYI0_f1UDDZpI_CLdGywhMMi8pzYyo'
     chat_id = -5015541241
+    # Production telegram token and chat id
+    #TOKEN = '8415292066:AAHBpdP8yw15BhpzwoqccSovb-R26vsBq8w'
+    #chat_id = -4978443446
     bot = Bot(token=TOKEN)
-    for key, value_list in telegram_message.items():
-        # Split key parts
-        deposit_channel_method = key.split("_")
-        deposit_channel = deposit_channel_method[0]
-        deposit_method  = deposit_channel_method[1]
-        # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
-        value = value_list[0]
-        status, timestamp = value.split("_")
-        if status == 'deposit success':
-            status_emoji = "✅"
-        elif status == 'deposit failed':
-            status_emoji = "❌"
-        else:
-            status_emoji = "❓"
-        log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
-        caption = f"""*Subject: Bot Testing Deposit Gateway*  
-        URL: [god855\\.com](https://www\\.god855\\.com/en\\-th)
-        ┌─ **Deposit Testing Result** ──────────┐
-        │ {status_emoji} **{status}** 
-        │  
-        │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
-        │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-        └──────────────────────┘
-        **Time Detail**  
-        ├─ **TimeOccurred:** `{timestamp}` """ 
-        files = glob.glob("*GOD855_%s_%s*.png"%(deposit_method,deposit_channel))
-        log.info("File [%s]"%(files))
-        file_path = files[0]
-        for attempt in range(3):
-            try:
-                with open(file_path, 'rb') as f:
-                      await bot.send_photo(
-                            chat_id=chat_id,
-                            photo=f,
-                            caption=caption,
-                            parse_mode='MarkdownV2',
-                            read_timeout=30,
-                            write_timeout=30,
-                            connect_timeout=30
-                        )
-                log.info(f"SCREENSHOT SUCCESSFULLY SENT")
-                break
-            except TimedOut:
-                log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
-                await asyncio.sleep(5)
-            except Exception as e:
-                log.info("ERROR TELEGRAM BOT [%s]"%(e))
-                break
+    if program_complete == True:
+        for key, value_list in telegram_message.items():
+            # Split key parts
+            deposit_channel_method = key.split("_")
+            deposit_channel = deposit_channel_method[0]
+            deposit_method  = deposit_channel_method[1]
+            # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
+            value = value_list[0]
+            status, timestamp = value.split("_")
+            if status == 'deposit success':
+                status_emoji = "✅"
+            elif status == 'deposit failed':
+                status_emoji = "❌"
+            else:
+                status_emoji = "❓"
+            log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
+            caption = f"""*Subject: Bot Testing Deposit Gateway*  
+            URL: [god855\\.com](https://www\\.god855\\.com/en\\-th)
+            ┌─ **Deposit Testing Result** ──────────┐
+            │ {status_emoji} **{status}** 
+            │  
+            │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+            │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+            └──────────────────────┘
+            **Time Detail**  
+            ├─ **TimeOccurred:** `{timestamp}` """ 
+            files = glob.glob("*GOD855_%s_%s*.png"%(deposit_method,deposit_channel))
+            log.info("File [%s]"%(files))
+            file_path = files[0]
+            for attempt in range(3):
+                try:
+                    with open(file_path, 'rb') as f:
+                          await bot.send_photo(
+                                chat_id=chat_id,
+                                photo=f,
+                                caption=caption,
+                                parse_mode='MarkdownV2',
+                                read_timeout=30,
+                                write_timeout=30,
+                                connect_timeout=30
+                            )
+                    log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                    break
+                except TimedOut:
+                    log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                    await asyncio.sleep(5)
+                except Exception as e:
+                    log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                    break
+    else:
+        fail_msg = (
+                "⚠️ *GOD 855 RETRY 3 TIMES FAILED*\n"
+                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE\n"
+                "KINDLY ASK ENGINEER TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
+            )
+        try:
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=fail_msg,
+                    parse_mode="Markdown"
+                )
+                log.info("FAILURE MESSAGE SENT")
+        except Exception as e:
+                log.error(f"FAILED TO SEND FAILURE MESSAGE: {e}")
 
 async def clear_screenshot():
     picture_to_sent = glob.glob("*GOD855*.png")
@@ -483,7 +522,7 @@ async def clear_screenshot():
 
 @pytest.mark.asyncio
 async def test_main():
-    MAX_RETRY = 3
+    MAX_RETRY = 1
     global log
     th_tz = pytz.timezone('Asia/Bangkok')
     round_start = datetime.now(th_tz)
@@ -496,7 +535,7 @@ async def test_main():
                 page = await context.new_page()
                 await perform_login(page)
                 telegram_message = await perform_payment_gateway_test(page)
-                await telegram_send_operation(telegram_message)
+                await telegram_send_operation(telegram_message,program_complete=True)
                 await clear_screenshot()
                 break
             except Exception as e:
@@ -506,6 +545,7 @@ async def test_main():
                 log.info("NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...")
             
             if attempt == MAX_RETRY:
+                telegram_message = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
-                print("Reached max retries. Stopping.")
+                await telegram_send_operation(telegram_message,program_complete=False)
                 raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")

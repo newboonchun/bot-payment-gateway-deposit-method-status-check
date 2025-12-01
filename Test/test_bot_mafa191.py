@@ -190,7 +190,10 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
     try:
         async with page.expect_navigation(wait_until="load", timeout=10000):
             try:
-                await page.get_by_role("button", name="เติมเงิน").nth(1).click()
+                #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
+                deposit_button = page.locator('.btn_deposits')
+                await deposit_button.wait_for(state="visible", timeout=10000)
+                await deposit_button.click()
                 log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
             except:
                 raise Exception("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
@@ -423,59 +426,79 @@ async def perform_payment_gateway_test(page):
     return telegram_message
 
 
-async def telegram_send_operation(telegram_message):
+async def telegram_send_operation(telegram_message, program_complete):
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
+    # Debug telegram token and chat id
     TOKEN = '8450485022:AAE-EBYI0_f1UDDZpI_CLdGywhMMi8pzYyo'
     chat_id = -5015541241
+    # Production telegram token and chat id
+    #TOKEN = '8415292066:AAHBpdP8yw15BhpzwoqccSovb-R26vsBq8w'
+    #chat_id = -4978443446
     bot = Bot(token=TOKEN)
-    for key, value_list in telegram_message.items():
-        # Split key parts
-        deposit_channel_method = key.split("_")
-        deposit_channel = deposit_channel_method[0]
-        deposit_method  = deposit_channel_method[1]
-        # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
-        value = value_list[0]
-        status, timestamp = value.split("_")
-        if status == 'deposit success':
-            status_emoji = "✅"
-        elif status == 'deposit failed':
-            status_emoji = "❌"
-        else:
-            status_emoji = "❓"
-        log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
-        caption = f"""*Subject: Bot Testing Deposit Gateway*  
-        URL: [mafa191\\.com](https://www\\.mafa191\\.com/en\\-th)
-        ┌─ **Deposit Testing Result** ──────────┐
-        │ {status_emoji} **{status}** 
-        │  
-        │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
-        │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-        └──────────────────────┘
-        **Time Detail**  
-        ├─ **TimeOccurred:** `{timestamp}` """ 
-        files = glob.glob("*MAFA191_%s_%s*.png"%(deposit_method,deposit_channel))
-        log.info("File [%s]"%(files))
-        file_path = files[0]
-        for attempt in range(3):
-            try:
-                with open(file_path, 'rb') as f:
-                      await bot.send_photo(
-                            chat_id=chat_id,
-                            photo=f,
-                            caption=caption,
-                            parse_mode='MarkdownV2',
-                            read_timeout=30,
-                            write_timeout=30,
-                            connect_timeout=30
-                        )
-                log.info(f"SCREENSHOT SUCCESSFULLY SENT")
-                break
-            except TimedOut:
-                log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
-                await asyncio.sleep(5)
-            except Exception as e:
-                log.info("ERROR TELEGRAM BOT [%s]"%(e))
-                break
+    if program_complete == True:
+        for key, value_list in telegram_message.items():
+            # Split key parts
+            deposit_channel_method = key.split("_")
+            deposit_channel = deposit_channel_method[0]
+            deposit_method  = deposit_channel_method[1]
+            # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
+            value = value_list[0]
+            status, timestamp = value.split("_")
+            if status == 'deposit success':
+                status_emoji = "✅"
+            elif status == 'deposit failed':
+                status_emoji = "❌"
+            else:
+                status_emoji = "❓"
+            log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
+            caption = f"""*Subject: Bot Testing Deposit Gateway*  
+            URL: [mafa191\\.com](https://www\\.mafa191\\.com/en\\-th)
+            ┌─ **Deposit Testing Result** ──────────┐
+            │ {status_emoji} **{status}** 
+            │  
+            │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+            │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+            └──────────────────────┘
+            **Time Detail**  
+            ├─ **TimeOccurred:** `{timestamp}` """ 
+            files = glob.glob("*MAFA191_%s_%s*.png"%(deposit_method,deposit_channel))
+            log.info("File [%s]"%(files))
+            file_path = files[0]
+            for attempt in range(3):
+                try:
+                    with open(file_path, 'rb') as f:
+                          await bot.send_photo(
+                                chat_id=chat_id,
+                                photo=f,
+                                caption=caption,
+                                parse_mode='MarkdownV2',
+                                read_timeout=30,
+                                write_timeout=30,
+                                connect_timeout=30
+                            )
+                    log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                    break
+                except TimedOut:
+                    log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                    await asyncio.sleep(5)
+                except Exception as e:
+                    log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                    break
+    else:
+        fail_msg = (
+                "⚠️ *MAFA191 RETRY 3 TIMES FAILED*\n"
+                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE\n"
+                "KINDLY ASK ENGINEER TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
+            )
+        try:
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=fail_msg,
+                    parse_mode="Markdown"
+                )
+                log.info("FAILURE MESSAGE SENT")
+        except Exception as e:
+                log.error(f"FAILED TO SEND FAILURE MESSAGE: {e}")
 
 async def clear_screenshot():
     picture_to_sent = glob.glob("*MAFA191*.png")
@@ -497,7 +520,7 @@ async def test_main():
                 page = await context.new_page()
                 await perform_login(page)
                 telegram_message = await perform_payment_gateway_test(page)
-                await telegram_send_operation(telegram_message)
+                await telegram_send_operation(telegram_message,program_complete=True)
                 await clear_screenshot()
                 break
             except Exception as e:
@@ -507,6 +530,7 @@ async def test_main():
                 log.info("NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...")
             
             if attempt == MAX_RETRY:
+                telegram_message = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
-                print("Reached max retries. Stopping.")
-                raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")
+                await telegram_send_operation(telegram_message,program_complete=False)
+                raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")            
