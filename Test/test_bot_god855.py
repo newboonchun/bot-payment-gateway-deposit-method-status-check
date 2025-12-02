@@ -86,13 +86,23 @@ async def wait_for_network_stable(page: Page, min_stable_ms: int = 1500, timeout
         page.remove_listener("requestfailed", on_request)
 
 async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck):
-    try:
-        await page.goto("%s"%old_url)
-        await asyncio.sleep(5)
-        await wait_for_network_stable(page, timeout=30000)
-        log.info("REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY")
-    except:
-        raise Exception("REENTER DEPOSIT PAGE - PAGE LOADED FAILED")
+    for attempt in range(1, 3):
+        try:
+            log.info(f"Trying to goto URL attempt {attempt}/{3}: {old_url}")
+
+            response = await page.goto(old_url, timeout=30000, wait_until="domcontentloaded")
+
+            if response and response.ok:
+                log.info("Navigation OK")
+                break
+
+            # if response is None or not ok
+            log.warning("Navigation response not OK")
+            await asyncio.sleep(2)
+            await wait_for_network_stable(page, timeout=30000)
+            log.info("REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY")
+        except:
+            log.info("REENTER DEPOSIT PAGE - NETWORK NOT STABLE YET, CURRENT PAGE URL:%s"%page.url)
     try:
         await page.get_by_role("button", name="%s"%deposit_method).click()
         log.info("REENTER DEPOSIT PAGE - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
@@ -468,42 +478,46 @@ async def telegram_send_operation(telegram_message,program_complete):
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [god855\\.com](https://www\\.god855\\.com/en\\-th)
+            TM : LUCUSS
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
             │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
             │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-            └──────────────────────┘
+            └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*GOD855_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
-            for attempt in range(3):
-                try:
-                    with open(file_path, 'rb') as f:
-                          await bot.send_photo(
-                                chat_id=chat_id,
-                                photo=f,
-                                caption=caption,
-                                parse_mode='MarkdownV2',
-                                read_timeout=30,
-                                write_timeout=30,
-                                connect_timeout=30
-                            )
-                    log.info(f"SCREENSHOT SUCCESSFULLY SENT")
-                    break
-                except TimedOut:
-                    log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
-                    await asyncio.sleep(5)
-                except Exception as e:
-                    log.info("ERROR TELEGRAM BOT [%s]"%(e))
-                    break
+            if status == 'deposit failed':
+                for attempt in range(3):
+                    try:
+                        with open(file_path, 'rb') as f:
+                              await bot.send_photo(
+                                    chat_id=chat_id,
+                                    photo=f,
+                                    caption=caption,
+                                    parse_mode='MarkdownV2',
+                                    read_timeout=30,
+                                    write_timeout=30,
+                                    connect_timeout=30
+                                )
+                        log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                        break
+                    except TimedOut:
+                        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+                    except Exception as e:
+                        log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                        break
+            else:
+                pass
     else:
         fail_msg = (
                 "⚠️ *GOD 855 RETRY 3 TIMES FAILED*\n"
-                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE\n"
-                "KINDLY ASK ENGINEER TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
+                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE OR CLOUDFLARE BLOCK\n"
+                "KINDLY CONTACT PAYMENT TEAM TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
             )
         try:
                 await bot.send_message(
@@ -515,6 +529,63 @@ async def telegram_send_operation(telegram_message,program_complete):
         except Exception as e:
                 log.error(f"FAILED TO SEND FAILURE MESSAGE: {e}")
 
+async def telegram_send_summary(telegram_message,date_time):
+    # Debug telegram token and chat id
+    TOKEN = '8450485022:AAE-EBYI0_f1UDDZpI_CLdGywhMMi8pzYyo'
+    chat_id = -5015541241
+    # Production telegram token and chat id
+    #TOKEN = '8415292066:AAHBpdP8yw15BhpzwoqccSovb-R26vsBq8w'
+    #chat_id = -4978443446
+    bot = Bot(token=TOKEN)
+    log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
+    succeed_records = []
+    failed_records  = []
+    unknown_records = []
+    for key, value_list in telegram_message.items():
+            # Split key parts
+            deposit_channel_method = key.split("_")
+            deposit_channel = deposit_channel_method[0]
+            deposit_method  = deposit_channel_method[1]
+            method = escape_md(deposit_method)
+            channel = escape_md(deposit_channel)
+            # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
+            value = value_list[0]
+            status, timestamp = value.split("_")
+            if status == 'deposit success':
+                succeed_records.append((method, channel))           
+            elif status == 'deposit failed':
+                failed_records.append((method, channel))
+            else:
+                unknown_records.append((method, channel))
+            succeed_block = ""
+            if succeed_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in succeed_records]
+                succeed_block = f"┌─ ✅ Success **Result** ────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+        
+            failed_block = ""
+            if failed_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in failed_records]
+                failed_block = f"\n┌─ ❌ Failed **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+            
+            unknown_block = ""
+            if unknown_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in unknown_records]
+                unknown_block = f"\n┌─ ❌ Failed **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+            
+            summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
+            caption = f"""*Deposit Payment Gateway Testing Result Summary *  
+URL: [god855\\.co](https://www\\.god855\\.co/en\\-th)
+TM : LUCUSS
+TIME: {escape_md(date_time)}
+
+{summary_body}"""
+
+    try:
+        await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+        log.info("SUMMARY SENT")
+    except Exception as e:
+        log.error(f"SUMMARY FAILED TO SENT: {e}")
+
 async def clear_screenshot():
     picture_to_sent = glob.glob("*GOD855*.png")
     for f in picture_to_sent:
@@ -522,7 +593,7 @@ async def clear_screenshot():
 
 @pytest.mark.asyncio
 async def test_main():
-    MAX_RETRY = 1
+    MAX_RETRY = 3
     global log
     th_tz = pytz.timezone('Asia/Bangkok')
     round_start = datetime.now(th_tz)
@@ -536,6 +607,7 @@ async def test_main():
                 await perform_login(page)
                 telegram_message = await perform_payment_gateway_test(page)
                 await telegram_send_operation(telegram_message,program_complete=True)
+                await telegram_send_summary(telegram_message,date_time('Asia/Bangkok'))
                 await clear_screenshot()
                 break
             except Exception as e:

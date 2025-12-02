@@ -344,7 +344,7 @@ async def perform_payment_gateway_test(page):
         for j in range(deposit_channel_count):
             btn = deposit_channel_button.nth(j)
             deposit_channel = await btn.get_attribute("aria-label")
-            #if deposit_channel != 'GLOBALPAY': #FOR DEBUG
+            #if deposit_channel != 'QPAY': #FOR DEBUG
             #    continue
             log.info("DEPOSIT CHANNEL [%s] "%(deposit_channel))
             if any(manual_bank in deposit_channel for manual_bank in exclude_list):
@@ -435,42 +435,47 @@ async def telegram_send_operation(telegram_message, program_complete):
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [nex855\\.com](https://www\\.nex855\\.com/en\\-th)
+            TM : LAWRENCE
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
             │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
             │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-            └──────────────────────┘
+            └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*NEX855_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
-            for attempt in range(3):
-                try:
-                    with open(file_path, 'rb') as f:
-                          await bot.send_photo(
-                                chat_id=chat_id,
-                                photo=f,
-                                caption=caption,
-                                parse_mode='MarkdownV2',
-                                read_timeout=30,
-                                write_timeout=30,
-                                connect_timeout=30
-                            )
-                    log.info(f"SCREENSHOT SUCCESSFULLY SENT")
-                    break
-                except TimedOut:
-                    log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
-                    await asyncio.sleep(5)
-                except Exception as e:
-                    log.info("ERROR TELEGRAM BOT [%s]"%(e))
-                    break
+            # Only send screenshot which status is failed
+            if status == 'deposit failed':
+                for attempt in range(3):
+                    try:
+                        with open(file_path, 'rb') as f:
+                              await bot.send_photo(
+                                    chat_id=chat_id,
+                                    photo=f,
+                                    caption=caption,
+                                    parse_mode='MarkdownV2',
+                                    read_timeout=30,
+                                    write_timeout=30,
+                                    connect_timeout=30
+                                )
+                        log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                        break
+                    except TimedOut:
+                        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+                    except Exception as e:
+                        log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                        break
+            else:
+                pass
     else:
         fail_msg = (
                 "⚠️ *NEX855 RETRY 3 TIMES FAILED*\n"
-                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE\n"
-                "KINDLY ASK ENGINEER TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
+                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE OR CLOUDFLARE BLOCK\n"
+                "KINDLY CONTACT PAYMENT TEAM TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
             )
         try:
                 await bot.send_message(
@@ -481,6 +486,63 @@ async def telegram_send_operation(telegram_message, program_complete):
                 log.info("FAILURE MESSAGE SENT")
         except Exception as e:
                 log.error(f"FAILED TO SEND FAILURE MESSAGE: {e}")
+
+async def telegram_send_summary(telegram_message,date_time):
+    # Debug telegram token and chat id
+    TOKEN = '8450485022:AAE-EBYI0_f1UDDZpI_CLdGywhMMi8pzYyo'
+    chat_id = -5015541241
+    # Production telegram token and chat id
+    #TOKEN = '8415292066:AAHBpdP8yw15BhpzwoqccSovb-R26vsBq8w'
+    #chat_id = -4978443446
+    bot = Bot(token=TOKEN)
+    log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
+    succeed_records = []
+    failed_records  = []
+    unknown_records = []
+    for key, value_list in telegram_message.items():
+            # Split key parts
+            deposit_channel_method = key.split("_")
+            deposit_channel = deposit_channel_method[0]
+            deposit_method  = deposit_channel_method[1]
+            method = escape_md(deposit_method)
+            channel = escape_md(deposit_channel)
+            # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
+            value = value_list[0]
+            status, timestamp = value.split("_")
+            if status == 'deposit success':
+                succeed_records.append((method, channel))           
+            elif status == 'deposit failed':
+                failed_records.append((method, channel))
+            else:
+                unknown_records.append((method, channel))
+            succeed_block = ""
+            if succeed_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in succeed_records]
+                succeed_block = f"┌─ ✅ Success **Result** ────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+        
+            failed_block = ""
+            if failed_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in failed_records]
+                failed_block = f"\n┌─ ❌ Failed **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+            
+            unknown_block = ""
+            if unknown_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in unknown_records]
+                unknown_block = f"\n┌─ ❌ Failed **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+            
+            summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
+            caption = f"""*Deposit Payment Gateway Testing Result Summary *  
+URL: [nex855\\.co](https://www\\.nex855\\.co/en\\-th)
+TM : LAWRENCE
+TIME: {escape_md(date_time)}
+
+{summary_body}"""
+
+    try:
+        await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+        log.info("SUMMARY SENT")
+    except Exception as e:
+        log.error(f"SUMMARY FAILED TO SENT: {e}")
 
 async def clear_screenshot():
     picture_to_sent = glob.glob("*NEX855*.png")
@@ -503,6 +565,7 @@ async def test_main():
                 await perform_login(page)
                 telegram_message = await perform_payment_gateway_test(page)
                 await telegram_send_operation(telegram_message,program_complete=True)
+                await telegram_send_summary(telegram_message,date_time('Asia/Bangkok'))
                 await clear_screenshot()
                 break
             except Exception as e:
