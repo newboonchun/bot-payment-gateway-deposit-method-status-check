@@ -148,7 +148,7 @@ async def perform_login(page):
         await page.get_by_role("button", name="Close").click()
         log.info("LOGIN PROCESS - CLOSE NOTIFICATION BUTTON ARE CLICKED")
     except:
-        log.info("NO NOTIFICATION POP UP")
+        log.info("LOGIN PROCESS - NO NOTIFICATION POP UP")
     # Login button failed to locate if use get by role
     try:
         login_container = page.locator('div.flex.relative.items-center')
