@@ -92,16 +92,15 @@ async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_a
             log.info(f"Trying to goto URL attempt {attempt}/{3}: {old_url}")
 
             response = await page.goto(old_url, timeout=30000, wait_until="domcontentloaded")
-
-            if response and response.ok:
-                log.info("Navigation OK")
-                break
-
-            # if response is None or not ok
-            log.warning("Navigation response not OK")
             await asyncio.sleep(2)
             await wait_for_network_stable(page, timeout=30000)
-            log.info("REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY")
+
+            if response and response.ok:
+                log.info("REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY")
+                break
+            else:
+                # if response is None or not ok
+                log.warning("Navigation response not OK")
         except:
             log.info("REENTER DEPOSIT PAGE - NETWORK NOT STABLE YET, CURRENT PAGE URL:%s"%page.url)
     try:
@@ -170,6 +169,7 @@ async def perform_login(page):
     try:
         await page.get_by_role("button", name=" Next").click()
         await page.get_by_role("textbox", name="One-time password").fill("123456")
+        log.info("LOGIN PROCESS - PASSWORD DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN")
     try:
@@ -360,11 +360,12 @@ async def perform_payment_gateway_test(page):
             raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE FAILED CLICKED"%deposit_method)
         log.info("URL AFTER DEPOSIT METHOD [%s] BUTTON CLICK: [%s]"%(deposit_method,old_url))
         deposit_channel_container = page.locator(".deposit-channel-container")
-        await deposit_channel_container.first.wait_for(state="attached")
+        await deposit_channel_container.first.wait_for(state="visible")
         deposit_channel_button = deposit_channel_container.locator("button")
         deposit_channel_count = await deposit_channel_button.count()
         log.info("FOUND [%s] DEPOSIT CHANNEL FOR DEPOSIT METHOD [%s]"%(deposit_channel_count,deposit_method))
         for j in range(deposit_channel_count):
+            manual_bank = False
             btn = deposit_channel_button.nth(j)
             deposit_channel = await btn.get_attribute("aria-label")
             #if deposit_channel != 'FPAY-CRYPTO': #FOR DEBUG
@@ -400,6 +401,27 @@ async def perform_payment_gateway_test(page):
             except:
                 raise Exception("PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [%s] ARE NOT KEYED IN"%min_amount)
             url_jump, payment_page_failed_load = await url_jump_check(page,old_url,deposit_method,deposit_channel,min_amount,telegram_message)
+            # EXTRA MANUAL BANK CHECK ##
+            try:
+               manual_bank_text_count = await page.locator('div.deposit_information_content_labels').count()
+               for count in range(manual_bank_text_count):
+                   manual_bank_text = await page.locator('div.deposit_information_content_labels').nth(count).inner_text(timeout=3000)
+                   log.info("MANUAL BANK TEXT:%s"%manual_bank_text)
+                   if "Bank Name" in manual_bank_text:
+                       await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
+                       log.info("MANUAL BANK TEXT FOUND:%s"%manual_bank_text)
+                       manual_bank = True
+                       break
+               if manual_bank == True:
+                   log.info(f"DEPOSIT CHANNEL [{deposit_channel}] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...")
+                   continue
+               else:
+                   log.info("NO MANUAL BANK TEXT FOUND:%s"%e)
+                   pass
+            except Exception as e:
+               log.info("NO MANUAL BANK TEXT FOUND:%s"%e)
+               pass
+            # EXTRA MANUAL BANK CHECK ##
             if url_jump and payment_page_failed_load == False:
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
                 log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD")
@@ -454,7 +476,7 @@ async def telegram_send_operation(telegram_message, program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [URL: [siam369\\.com](https://www\\.siam369\\.com/en\\-th)
+            URL: [siam369\\.com](https://www\\.siam369\\.com/en\\-th)
             TM : JOY
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
