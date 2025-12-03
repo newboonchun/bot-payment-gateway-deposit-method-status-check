@@ -11,6 +11,7 @@ from datetime import datetime, timezone, timedelta
 from telegram import Bot
 import re
 from telegram.error import TimedOut
+from dotenv import load_dotenv
 
 def escape_md(text):
     if text is None: return ""
@@ -262,12 +263,16 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
 async def qr_code_check(page):
     ## DETECT QR CODE BASED ON HTML CONTENT !!! ##
     try:
-        await page.wait_for_selector("iframe", timeout=3000)
+        #await page.wait_for_selector("iframe", timeout=3000)
         iframe_count = await page.locator("iframe").count()
+        if iframe_count == 1:
+            await page.wait_for_selector("iframe", timeout=3000)
+        else:
+            pass
         log.info("IFRAME/POP UP APPEARED. IFRAME COUNT:%s"%iframe_count)
-    except:
+    except Exception as e:
         iframe_count = 0
-        log.info("No IFRAME/POP UP APPEARED")
+        log.info("No IFRAME/POP UP APPEARED:%s"%e)
 
     qr_selector = [
         "div[id*='qr' i]",
@@ -278,7 +283,12 @@ async def qr_code_check(page):
     qr_code = None
 
     if iframe_count != 0:
-        base = page.frame_locator("iframe").nth(0)
+        for i in range(iframe_count):
+            try:
+                base = page.frame_locator("iframe").nth(i)
+            except Exception as e:
+                log.info("QR_CODE_CHECK ERROR:%s"%e)
+                pass
     else:
         base = page
     
@@ -437,13 +447,10 @@ async def perform_payment_gateway_test(page):
 
 
 async def telegram_send_operation(telegram_message, program_complete):
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
-    # Debug telegram token and chat id
-    TOKEN = '8450485022:AAE-EBYI0_f1UDDZpI_CLdGywhMMi8pzYyo'
-    chat_id = -5015541241
-    # Production telegram token and chat id
-    #TOKEN = '8415292066:AAHBpdP8yw15BhpzwoqccSovb-R26vsBq8w'
-    #chat_id = -4978443446
+    TOKEN = os.getenv("TOKEN")
+    chat_id = os.getenv("CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -516,12 +523,10 @@ async def telegram_send_operation(telegram_message, program_complete):
                 log.error(f"FAILED TO SEND FAILURE MESSAGE: {e}")
 
 async def telegram_send_summary(telegram_message,date_time):
-    # Debug telegram token and chat id
-    TOKEN = '8450485022:AAE-EBYI0_f1UDDZpI_CLdGywhMMi8pzYyo'
-    chat_id = -5015541241
-    # Production telegram token and chat id
-    #TOKEN = '8415292066:AAHBpdP8yw15BhpzwoqccSovb-R26vsBq8w'
-    #chat_id = -4978443446
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+    log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
+    TOKEN = os.getenv("TOKEN")
+    chat_id = os.getenv("CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
@@ -566,11 +571,16 @@ TIME: {escape_md(date_time)}
 
 {summary_body}"""
 
-    try:
-        await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
-        log.info("SUMMARY SENT")
-    except Exception as e:
-        log.error(f"SUMMARY FAILED TO SENT: {e}")
+    for attempt in range(3):
+        try:
+            await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            log.info("SUMMARY SENT")
+            break
+        except TimedOut:
+            log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+            await asyncio.sleep(3)
+        except Exception as e:
+            log.error(f"SUMMARY FAILED TO SENT: {e}")
 
 async def clear_screenshot():
     picture_to_sent = glob.glob("*MAFA191*.png")
