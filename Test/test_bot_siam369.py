@@ -476,7 +476,7 @@ async def telegram_send_operation(telegram_message, program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [URL: [siam369\\.com](https://www\\.siam369\\.com/en\\-th)
+            URL: [siam369\\.com](https://www\\.siam369\\.com/en\\-th)
             TM : JOY
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
