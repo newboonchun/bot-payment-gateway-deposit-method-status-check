@@ -484,8 +484,8 @@ async def telegram_send_operation(telegram_message, program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [aw8\\.com](https://www\\.aw8\\.com/en\\-th)
-            TM : LUCUSS
+            URL: [aw8game\\.online](https://www\\.aw8game\\.online/en\\-th)
+            TEAM : A8T2
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
@@ -498,7 +498,7 @@ async def telegram_send_operation(telegram_message, program_complete):
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
-            if status == 'deposit failed':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:
@@ -523,7 +523,7 @@ async def telegram_send_operation(telegram_message, program_complete):
                 pass
     else:   
         fail_msg = (
-                "⚠️ *AW8 RETRY 3 TIMES FAILED*\n"
+                "⚠️ *A8T2 RETRY 3 TIMES FAILED*\n"
                 "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE OR CLOUDFLARE BLOCK\n"
                 "KINDLY CONTACT PAYMENT TEAM TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
             )
@@ -580,8 +580,8 @@ async def telegram_send_summary(telegram_message,date_time):
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
-URL: [aw8\\.co](https://www\\.aw8\\.co/en\\-th)
-TM : LUCUSS
+URL: [aw8\\.co](https://www\\.aw8game\\.online/en\\-th)
+TEAM : A8T2
 TIME: {escape_md(date_time)}
 
 {summary_body}"""

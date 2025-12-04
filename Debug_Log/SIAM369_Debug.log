@@ -1,88 +1,21 @@
-15:59:18 | INFO     | ============================================================
-15:59:18 | INFO     | SIAM369 PAYMENT GATEWAY TEST STARTING...
-15:59:18 | INFO     | STARTING TIME: 03-12-2025 14:59:18 GMT+7
-15:59:18 | INFO     | ============================================================
-15:59:18 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam369th.com/en-th
-15:59:20 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
-15:59:21 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-15:59:21 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
-15:59:21 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
-15:59:22 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
-15:59:23 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
-15:59:23 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
-15:59:23 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
-15:59:23 | INFO     | DEPOSIT CHANNEL [Government Savings Bank] 
-15:59:23 | INFO     | DEPOSIT CHANNEL [Government Savings Bank] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
-15:59:23 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
-15:59:23 | INFO     | URL AFTER DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
-15:59:23 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ธนาคารออนไลน์]
-15:59:23 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-15:59:23 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-15:59:23 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
-฿ 100
- - 
-฿ 20,000]
-15:59:23 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-15:59:23 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-15:59:23 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-15:59:33 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
-15:59:34 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-15:59:34 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:2
-15:59:34 | INFO     | QR DETECTED
-15:59:34 | INFO     | Trying to goto URL attempt 1/3: https://www.siam369v1.com/en-th/deposit
-15:59:36 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-15:59:37 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
-15:59:37 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-15:59:37 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-15:59:37 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ชำระเงินทันที] BUTTON ARE CLICKED
-15:59:37 | INFO     | URL AFTER DEPOSIT METHOD [ชำระเงินทันที] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
-15:59:37 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ชำระเงินทันที]
-15:59:37 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-15:59:37 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-15:59:37 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
-฿ 100
- - 
-฿ 20,000]
-15:59:37 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-15:59:37 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-15:59:37 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-15:59:47 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
-15:59:47 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-15:59:47 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
-15:59:47 | INFO     | QR DETECTED
-15:59:47 | INFO     | Trying to goto URL attempt 1/3: https://www.siam369v1.com/en-th/deposit
-15:59:50 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-15:59:50 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ชำระเงินทันที] BUTTON ARE CLICKED
-15:59:50 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-15:59:50 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-15:59:50 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
-15:59:50 | INFO     | URL AFTER DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
-15:59:50 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท]
-15:59:50 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-15:59:50 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-15:59:50 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
-฿ 100
- - 
-฿ 20,000]
-15:59:50 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-15:59:50 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-15:59:50 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-16:00:00 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
-16:00:00 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-16:00:00 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
-16:00:00 | INFO     | QR DETECTED
-16:00:00 | INFO     | Trying to goto URL attempt 1/3: https://www.siam369v1.com/en-th/deposit
-16:00:03 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-16:00:03 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
-16:00:03 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-16:00:03 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-16:00:03 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-03 14:59:34'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-03 14:59:47'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit success_2025-12-03 15:00:00']}]
-16:00:04 | INFO     | METHOD: [ธนาคารออนไลน์], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-03 14:59:34]
-16:00:04 | INFO     | File [['SIAM369_ธนาคารออนไลน์_BAOYUANPAY_Payment_Page.png']]
-16:00:04 | INFO     | METHOD: [ชำระเงินทันที], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-03 14:59:47]
-16:00:04 | INFO     | File [['SIAM369_ชำระเงินทันที_BAOYUANPAY_Payment_Page.png']]
-16:00:04 | INFO     | METHOD: [ทรูมันนี่ วอลเล็ท], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-03 15:00:00]
-16:00:04 | INFO     | File [['SIAM369_ทรูมันนี่ วอลเล็ท_BAOYUANPAY_Payment_Page.png']]
-16:00:04 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-03 14:59:34'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-03 14:59:47'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit success_2025-12-03 15:00:00']}]
-16:00:05 | INFO     | TELEGRAM_MESSAGE:{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-03 14:59:34'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-03 14:59:47'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit success_2025-12-03 15:00:00']}
-16:00:06 | INFO     | SUMMARY SENT
+13:45:17 | INFO     | ============================================================
+13:45:17 | INFO     | SIAM369 PAYMENT GATEWAY TEST STARTING...
+13:45:17 | INFO     | STARTING TIME: 04-12-2025 12:45:17 GMT+7
+13:45:17 | INFO     | ============================================================
+13:45:17 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam369th.com/en-th
+13:45:19 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+13:45:20 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+13:45:21 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+13:45:21 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+13:45:22 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+13:45:23 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
+13:45:23 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
+13:45:23 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
+13:45:23 | INFO     | DEPOSIT CHANNEL [Government Savings Bank] 
+13:45:23 | INFO     | DEPOSIT CHANNEL [Government Savings Bank] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
+13:45:23 | INFO     | TELEGRAM MESSAGE: [{}]
+13:45:24 | INFO     | TELEGRAM MESSAGE: [{}]
+13:45:25 | INFO     | TELEGRAM_MESSAGE:{}
+13:45:25 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+13:45:25 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+13:45:25 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
