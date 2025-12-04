@@ -500,7 +500,7 @@ async def telegram_send_operation(telegram_message, program_complete):
             files = glob.glob("*SING55_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
-            if status == 'deposit failed':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:

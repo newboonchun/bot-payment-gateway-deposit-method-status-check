@@ -527,7 +527,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
-            if status == 'deposit failed':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:
