@@ -498,8 +498,8 @@ async def telegram_send_operation(telegram_message, program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [nex789\\.com](https://www\\.nex789\\.com/en\\-th)
-            TM : LAWRENCE
+            URL: [nex789v1\\.com](https://www\\.nex789v1\\.com/th\\-th)
+            TEAM : N789T
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
@@ -511,7 +511,7 @@ async def telegram_send_operation(telegram_message, program_complete):
             files = glob.glob("*NEX789_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
-            if status == 'deposit failed':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:
@@ -593,8 +593,8 @@ async def telegram_send_summary(telegram_message,date_time):
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
-URL: [nex789\\.co](https://www\\.nex789\\.co/en\\-th)
-TM : LAWRENCE
+URL: [nex789v1\\.com](https://www\\.nex789v1\\.com/th\\-th)
+TM : N789T
 TIME: {escape_md(date_time)}
 
 {summary_body}"""

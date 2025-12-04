@@ -160,8 +160,8 @@ async def perform_login(page):
                 await login_button.wait_for(state="visible", timeout=10000)
                 await login_button.click()
                 log.info("LOGIN PROCESS - LOGIN BUTTON (%s) ARE CLICKED"%(i+1))
-            except:
-                log.info("LOGIN PROCESS - LOGIN BUTTON (%s) ARE FAILED TO CLICK"%(i+1))
+            except Exception as e:
+                log.info("LOGIN PROCESS - LOGIN BUTTON (%s) ARE FAILED TO CLICK, REASON:%s"%(i+1,e))
     except Exception as e:
         log.info("LOGIN PROCESS - LOGIN CONTAINER FAILED TO LOCATE %s"%e)
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED CLICKED")
@@ -505,8 +505,8 @@ async def telegram_send_operation(telegram_message,program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [god855\\.com](https://www\\.god855\\.com/en\\-th)
-            TM : LUCUSS
+            URL: [god855th1\\.com](https://www\\.god855th1\\.com/en\\-th)
+            TEAM : G855T
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
@@ -518,7 +518,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             files = glob.glob("*GOD855_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
-            if status == 'deposit failed':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:
@@ -600,8 +600,8 @@ async def telegram_send_summary(telegram_message,date_time):
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
-URL: [god855\\.co](https://www\\.god855\\.co/en\\-th)
-TM : LUCUSS
+URL: [god855th1\\.com](https://www\\.god855th1\\.com/en\\-th)
+TEAM : G855T
 TIME: {escape_md(date_time)}
 
 {summary_body}"""

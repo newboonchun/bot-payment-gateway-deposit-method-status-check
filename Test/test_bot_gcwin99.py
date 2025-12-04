@@ -32,12 +32,12 @@ def init_logger(round_start_time):
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     log_dir = os.path.join(base_dir, "Debug_Log")
     os.makedirs(log_dir, exist_ok=True)
-    log_path = os.path.join(log_dir, "SING55_Debug.log")
+    log_path = os.path.join(log_dir, "GCWIN99_Debug.log")
     if os.path.exists(log_path):
         try: os.remove(log_path)
         except: pass
 
-    logger = logging.getLogger('SING55Bot')
+    logger = logging.getLogger('GCWIN99Bot')
     logger.setLevel(logging.INFO)
     logger.handlers.clear()
 
@@ -53,7 +53,7 @@ def init_logger(round_start_time):
     logger.addHandler(console_handler)
 
     logger.info("=" * 60)
-    logger.info("SING55 PAYMENT GATEWAY TEST STARTING...")
+    logger.info("GCWIN99 PAYMENT GATEWAY TEST STARTING...")
     logger.info(f"STARTING TIME: {round_start_time.strftime('%d-%m-%Y %H:%M:%S')} GMT+7")
     logger.info("=" * 60)
     return logger
@@ -132,11 +132,11 @@ async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_a
         pass  
 
 async def perform_login(page):
-    WEBSITE_URL = "https://www.sing55.com/en-th"
+    WEBSITE_URL = "https://www.gcwin99v6.com/en-th"
     for _ in range(3):
         try:
             log.info(f"LOGIN PROCESS - OPENING WEBSITE: {WEBSITE_URL}")
-            await page.goto("https://www.sing55.com/en-th", timeout=30000, wait_until="domcontentloaded")
+            await page.goto("https://www.gcwin99v6.com/en-th", timeout=30000, wait_until="domcontentloaded")
             await wait_for_network_stable(page, timeout=30000)
             log.info("LOGIN PROCESS - PAGE LOADED SUCCESSFULLY")
             break
@@ -146,13 +146,13 @@ async def perform_login(page):
     else:
         raise Exception("LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED")
         
-    # Login flow SING55
+    # Login flow GCWIN99
     # Login button failed to locate if use get by role
     try:
-        await page.get_by_role("button", name="ติดตามเลย").click()
-        log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON SUCCESS TO CLICK")
+        await page.get_by_role("button", name="ใช่").click()
+        log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED")
     except:
-        log.info("LOGIN PROCESS - NO SLIDEDOWN APPEARED")
+        log.info("LOGIN PROCESS - NO SLIDEDOWN")
     try:
         first_advertisement_dont_show_checkbox = page.locator(".o-checkbox").first
         await first_advertisement_dont_show_checkbox.wait_for(state="visible", timeout=10000)
@@ -166,17 +166,22 @@ async def perform_login(page):
     except:
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
     try:
-        await page.get_by_role("textbox", name="09xxxxxxx").click()
-        await page.get_by_role("textbox", name="09xxxxxxx").fill("0745674567")
+        await page.get_by_role("textbox", name="Username").click()
+        await page.get_by_role("textbox", name="Username").fill("bottesting")
         log.info("LOGIN PROCESS - USERNAME DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - USERNAME FAILED TO KEY IN")
     try:
-        await page.get_by_role("button", name=" Next").click()
-        await page.get_by_role("textbox", name="One-time password").fill("123456")
+        await page.get_by_role("textbox", name="Password").click()
+        await page.get_by_role("textbox", name="Password").fill("123456")
         log.info("LOGIN PROCESS - PASSWORD DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN")
+    try:
+        await page.get_by_role("button", name=" Login").click()
+        log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
+    except:
+        raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
     try:
         advertisement_close_button = page.locator(".icon-close.text-lg")
         await advertisement_close_button.click()
@@ -226,14 +231,14 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
                 await asyncio.sleep(10)
                 await page.wait_for_load_state("networkidle", timeout=60000) #added to ensure the payment page is loaded before screenshot is taken
                 log.info("NEW PAGE [%s] LOADED SUCCESSFULLY"%(new_url))
-                await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                 break 
             except TimeoutError:
                 log.info("TIMEOUT: PAGE DID NOT REACH NETWORKIDLE WITHIN 60s")
                 retry_count += 1
                 if retry_count == max_retries:
                     log.info("❌ Failed: Page did not load after 3 retries.")
-                    await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                    await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                     url_jump = True
                     payment_page_failed_load = True
                 else:
@@ -244,7 +249,7 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
                         log.info("FAILED GO BACK TO OLD PAGE [%s] AND RETRY..."%(old_url))
 
     if new_payment_page == False:   
-        await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+        await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
         url_jump = False
         payment_page_failed_load = False
 
@@ -289,10 +294,20 @@ async def qr_code_check(page):
     for selector in qr_selector:
         try:
             qr_code = base.locator(selector)
-            await qr_code.wait_for(state="attached", timeout=10000)
+            await qr_code.wait_for(state="attached", timeout=5000)
             break  # Found it, exit loop
-        except:
+        except Exception as e:
             qr_code = None 
+            log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
+    
+    for selector in qr_selector:
+        try:
+            qr_code = page.locator(selector)
+            await qr_code.wait_for(state="attached", timeout=5000)
+            break  # Found it, exit loop
+        except Exception as e:
+            qr_code = None 
+            log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
 
     if qr_code != None:
         log.info("QR DETECTED")
@@ -341,7 +356,7 @@ async def check_toast(page,deposit_method,deposit_channel):
             text = (await toast.inner_text()).strip()
             if await toast.count() > 0:
                 toast_exist = True
-                await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                 log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_channel,deposit_method,text))
                 break
             await asyncio.sleep(0.1)
@@ -487,8 +502,8 @@ async def telegram_send_operation(telegram_message, program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [sing55\\.com](https://www\\.sing55\\.com/en\\-th)
-            TEAM : S5T
+            URL: [gcwin99\\.com](https://www\\.gcwin99v6\\.com/en\\-th)
+            TEAM : GT
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
@@ -497,10 +512,10 @@ async def telegram_send_operation(telegram_message, program_complete):
             └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*SING55_%s_%s*.png"%(deposit_method,deposit_channel))
+            files = glob.glob("*GCWIN99_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
-            if status == 'deposit failed':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:
@@ -525,7 +540,7 @@ async def telegram_send_operation(telegram_message, program_complete):
                 pass
     else:   
         fail_msg = (
-                "⚠️ *SING55 RETRY 3 TIMES FAILED*\n"
+                "⚠️ *GCWIN99 RETRY 3 TIMES FAILED*\n"
                 "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE OR CLOUDFLARE BLOCK\n"
                 "KINDLY CONTACT PAYMENT TEAM TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
             )
@@ -582,8 +597,8 @@ async def telegram_send_summary(telegram_message,date_time):
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
-URL: [sing55\\.com](https://www\\.sing55\\.com/en\\-th)
-TEAM : S5T
+URL: [gcwin99\\.com](https://www\\.gcwin99v6\\.com/en\\-th)
+TEAM : GT
 TIME: {escape_md(date_time)}
 
 {summary_body}"""
@@ -601,7 +616,7 @@ TIME: {escape_md(date_time)}
 
 
 async def clear_screenshot():
-    picture_to_sent = glob.glob("*SING55*.png")
+    picture_to_sent = glob.glob("*GCWIN99*.png")
     for f in picture_to_sent:
         os.remove(f) 
 

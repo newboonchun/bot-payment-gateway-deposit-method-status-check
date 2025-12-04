@@ -509,7 +509,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [siam212\\.com](https://www\\.siam212th11\\.com/en\\-th)
-            TM : AUNKO
+            TEAM : S2T
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
@@ -522,7 +522,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
-            if status == 'deposit failed':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:
@@ -605,7 +605,7 @@ async def telegram_send_summary(telegram_message,date_time):
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
 URL: [siam212\\.com](https://www\\.siam212th11\\.com/en\\-th)
-TM : AUNKO
+TEAM : S2T
 TIME: {escape_md(date_time)}
 
 {summary_body}"""
