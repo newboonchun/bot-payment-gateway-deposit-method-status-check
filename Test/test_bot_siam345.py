@@ -292,35 +292,42 @@ async def qr_code_check(page):
         for i in range(iframe_count):
             try:
                 base = page.frame_locator("iframe").nth(i)
+                for selector in qr_selector:
+                    try:
+                        qr_code = base.locator(selector)
+                        #log.info("QR_CODE:%s"%qr_code)
+                        #await qr_code.wait_for(state="attached", timeout=5000)
+                        qr_code_count = await qr_code.count()
+                        log.info("QR_CODE:%s QR_CODE_COUNT:%s"%(qr_code,qr_code_count))
+                        if qr_code_count != 0:
+                            break
+                    except Exception as e:
+                        qr_code = None 
+                        log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
             except Exception as e:
                 log.info("QR_CODE_CHECK ERROR:%s"%e)
                 pass
-    else:
+    
+    # second stage check
+    if qr_code_count == 0:
         base = page
-    
-    for selector in qr_selector:
-        try:
-            qr_code = base.locator(selector)
-            await qr_code.wait_for(state="attached", timeout=5000)
-            break  # Found it, exit loop
-        except Exception as e:
-            qr_code = None 
-            log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
-    
-    for selector in qr_selector:
-        try:
-            qr_code = page.locator(selector)
-            await qr_code.wait_for(state="attached", timeout=5000)
-            break  # Found it, exit loop
-        except Exception as e:
-            qr_code = None 
-            log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
+        for selector in qr_selector:
+            try:
+                qr_code = base.locator(selector)
+                qr_code_count = await qr_code.count()
+                log.info("QR_CODE:%s , QR_CODE_COUNT:%s"%(qr_code,qr_code_count))
+                if qr_code_count != 0:
+                    break
+            except Exception as e:
+                qr_code = None 
+                log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
 
-
-    if qr_code != None:
+    if qr_code_count != 0:
         log.info("QR DETECTED")
+    else:
+        log.info("NO QR DETECTED")
     
-    return qr_code
+    return qr_code_count
 
 async def check_toast(page,deposit_method,deposit_channel):
     toast_exist = False
@@ -471,8 +478,8 @@ async def perform_payment_gateway_test(page):
                 continue
             else:
                 pass
-            qr_code = await qr_code_check(page)
-            if qr_code != None:
+            qr_code_count = await qr_code_check(page)
+            if qr_code_count != 0:
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
                 await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
                 continue
