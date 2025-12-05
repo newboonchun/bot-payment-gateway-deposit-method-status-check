@@ -332,7 +332,7 @@ async def perform_payment_gateway_test(page):
                         else:
                             # toast check (no real case yet, need to verify)
                             # screenshot first in case there are no toast (unidentified reason)
-                            await page.screenshot(path="MSTSLOT_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                            await page.screenshot(path="I828_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                             await reenter_deposit_page(page)
                             try:
                                 toast_exist = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
@@ -391,7 +391,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*i828_%s_%s*.png"%(deposit_method,deposit_channel))
+            files = glob.glob("*I828_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
