@@ -508,7 +508,7 @@ async def clear_screenshot():
 
 @pytest.mark.asyncio
 async def test_main():
-    MAX_RETRY = 1
+    MAX_RETRY = 3
     global log
     th_tz = pytz.timezone('Asia/Bangkok')
     round_start = datetime.now(th_tz)
