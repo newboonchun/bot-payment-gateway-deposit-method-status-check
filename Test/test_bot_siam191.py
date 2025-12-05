@@ -30,12 +30,12 @@ def init_logger(round_start_time):
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     log_dir = os.path.join(base_dir, "Debug_Log")
     os.makedirs(log_dir, exist_ok=True)
-    log_path = os.path.join(log_dir, "I828_Debug.log")
+    log_path = os.path.join(log_dir, "SIAM191_Debug.log")
     if os.path.exists(log_path):
         try: os.remove(log_path)
         except: pass
 
-    logger = logging.getLogger('I828Bot')
+    logger = logging.getLogger('SIAM191Bot')
     logger.setLevel(logging.INFO)
     logger.handlers.clear()
 
@@ -51,7 +51,7 @@ def init_logger(round_start_time):
     logger.addHandler(console_handler)
 
     logger.info("=" * 60)
-    logger.info("I828 PAYMENT GATEWAY TEST STARTING...")
+    logger.info("SIAM191 PAYMENT GATEWAY TEST STARTING...")
     logger.info(f"STARTING TIME: {round_start_time.strftime('%d-%m-%Y %H:%M:%S')} GMT+7")
     logger.info("=" * 60)
     return logger
@@ -86,33 +86,33 @@ async def wait_for_network_stable(page: Page, min_stable_ms: int = 1500, timeout
 
 async def reenter_deposit_page(page):
     # close scrolldown menu
-    # class DOM: <div class="deposit-modal p-5 fmodal-content bg-modal relative p-4 sm:p-5 rounded-[5px] w-full shadow-lg" style="max-width:450px;" data-v-97a2cc87="">
-    #            <!--[--><div class="pt-[20px] relative">
-    #                       <button type="button" class="modal_close_btn" aria-label="Close">
-    close_button_container = page.locator("div.deposit-modal.fmodal-content.bg-modal.relative")
+    # class DOM: <div class="relative flex justify-center deposit_money_div"><!----><!---->
+    #                 <button type="button" class="modal_close_btn">
+    #                    <i class="icon-close">
+    close_button_container = page.locator("div.relative.flex.justify-center.deposit_money_div")
     close_button = close_button_container.locator("button.modal_close_btn")
     close_button_count = await close_button.count()
     log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON COUNT:%s"%close_button_count)
     for i in range(close_button_count):
         try:
-            await close_button.nth(i).click(timeout=5000)
+            await close_button.nth(i).click(timeout=3000)
             log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON:%s CLOSE BUTTON COUNT:%s"%(close_button,close_button_count))
         except Exception as e:
             log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON:%s ERROR:%s"%(close_button,e))
     # reclick the deposit button to show scolldown menu
     try:
-        await page.locator("#deposit_btn_12").click()
+        await page.get_by_role("button", name="Deposit").click()
         log.info("LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - DEPOSIT BUTTON ARE FAILED TO CLICK")
     await asyncio.sleep(5)
 
 async def perform_login(page):
-    WEBSITE_URL = "https://www.i828th2.com/en-th"
+    WEBSITE_URL = "https://www.siam191.net/en-th"
     for _ in range(3):
         try:
             log.info(f"LOGIN PROCESS - OPENING WEBSITE: {WEBSITE_URL}")
-            await page.goto("https://www.i828th2.com/en-th", timeout=30000, wait_until="domcontentloaded")
+            await page.goto("https://www.siam191.net/en-th", timeout=30000, wait_until="domcontentloaded")
             await wait_for_network_stable(page, timeout=30000)
             log.info("LOGIN PROCESS - PAGE LOADED SUCCESSFULLY")
             break
@@ -122,37 +122,43 @@ async def perform_login(page):
     else:
         raise Exception("LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED")
         
-    # Login flow i828
+    # Login flow siam191
     try:
         await page.get_by_role("button", name="ใช่").click()
         log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED")
     except:
         log.info("LOGIN PROCESS - NO SLIDEDOWN")
     try:
-        await page.get_by_role("button", name="เข้าสู่ระบบ").click()
+        await page.get_by_role("button", name=" Login").click()
         log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
     try:
         await page.get_by_role("textbox", name="-123-4567").click()
-        await page.get_by_role("textbox", name="-123-4567").fill("074-567-4567")
-        await page.get_by_role("textbox", name="กรอกรหัสผ่าน").click()
+        await page.get_by_role("textbox", name="-123-4567").fill("084-567-4567")
+        await page.get_by_role("button", name="Confirm").click()
         log.info("LOGIN PROCESS - USERNAME DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - USERNAME FAILED TO KEY IN")
     try:
-        await page.get_by_role("textbox", name="กรอกรหัสผ่าน").fill("123456")
-        await page.get_by_role("button", name="ยืนยัน").click()
+        await page.get_by_role("textbox").nth(1).click()
+        await page.get_by_role("textbox").nth(1).fill("1")
+        await page.get_by_role("textbox").nth(2).fill("2")
+        await page.get_by_role("textbox").nth(3).fill("3")
+        await page.get_by_role("textbox").nth(4).fill("4")
+        await page.get_by_role("textbox").nth(5).fill("5")
+        await page.locator("input[type=\"password\"]").nth(5).fill("6")
+        await page.get_by_role("button", name="Confirm").click()
         log.info("LOGIN PROCESS - PASSWORD DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN AND LOGIN SUCCESS")
     try:
-        await page.get_by_role("button", name="").nth(1).click()
+        await page.get_by_role("button", name="Skip For Later").click()
         log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED")
     except:
         log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE NOT CLICKED")
     try:
-        await page.locator("#deposit_btn_12").click()
+        await page.get_by_role("button", name="Deposit").click()
         log.info("LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - DEPOSIT BUTTON ARE FAILED TO CLICK")
@@ -255,7 +261,7 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
             text = (await toast.inner_text()).strip()
             if await toast.count() > 0:
                 toast_exist = True
-                await page.screenshot(path="I828_%s_%s_Payment_Page.png"%(deposit_method_text,deposit_channel),timeout=30000)
+                await page.screenshot(path="SIAM191_%s_%s_Payment_Page.png"%(deposit_method_text,deposit_channel),timeout=30000)
                 log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_channel,deposit_method_text,text))
                 break
             await asyncio.sleep(0.1)
@@ -269,7 +275,7 @@ async def perform_payment_gateway_test(page):
     telegram_message = {}
 
     # locate scrollbar
-    # class DOM: flex-grow grid grid-cols-1 gap-4 md:gap-4 overflow-y-auto light-scrollbar px-8 pb-[10px]
+    # class DOM SIAM191: <div class="flex-grow grid grid-cols-1 gap-4 overflow-y-auto light-scrollbar px-8 pb-[10px]"
     try:
         await asyncio.sleep(10)
         deposit_method_container = page.locator('div.flex-grow.overflow-y-auto.light-scrollbar')
@@ -298,14 +304,11 @@ async def perform_payment_gateway_test(page):
                 btn = await deposit_method_button.nth(i).click()
                 log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
                 # deposit channel info
-                # class DOM: <div class="deposit-bank-info-2 text-xs md:text-sm font-semibold">ONEPAY</div>
+                # for SIAM191, deposit channel = deposit method
                 # input minimum deposit amount
                 # <input type="number" class="o-input !py-3 !text-sm md:!text-base o-number o-number-spinner deposit-amount-input" step="1" inputmode="decimal" placeholder="THB 100.00 - 30,000.00">
                 try:
-                    deposit_channel = await page.locator('div.deposit-bank-info-2').inner_text()
-                    #if deposit_channel != 'QPAY': #FOR DEBUG
-                    #    continue
-                    log.info("FOUND [%s] DEPOSIT CHANNEL FOR DEPOSIT METHOD [%s]"%(deposit_channel,deposit_method))
+                    deposit_channel = deposit_method
                     input_deposit_amount_box = page.locator('input.deposit-amount-input')
                     placeholder = await input_deposit_amount_box.get_attribute("placeholder")
                     match = re.search(r'THB\s+(\d+)', placeholder)
@@ -325,7 +328,7 @@ async def perform_payment_gateway_test(page):
                         except Exception as e:
                             log.info("QR CODE CHECK ERROR: [%s]"%e)
                         if qr_code_count != 0:
-                            await page.screenshot(path="I828_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                            await page.screenshot(path="SIAM191_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                             telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
                             await reenter_deposit_page(page)
                             continue
@@ -333,7 +336,6 @@ async def perform_payment_gateway_test(page):
                             # toast check (no real case yet, need to verify)
                             # screenshot first in case there are no toast (unidentified reason)
                             await page.screenshot(path="MSTSLOT_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
-                            await reenter_deposit_page(page)
                             try:
                                 toast_exist = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
                             except Exception as e:
@@ -381,8 +383,8 @@ async def telegram_send_operation(telegram_message,program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [i828th2\\.com](https://www\\.i828th2\\.com/en\\-th)
-            TEAM : I8T
+            URL: [siam191\\.net](https://www\\.siam191\\.net/en\\-th)
+            TEAM : S1T
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
@@ -391,7 +393,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*i828_%s_%s*.png"%(deposit_method,deposit_channel))
+            files = glob.glob("*SIAM191_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
@@ -420,7 +422,7 @@ async def telegram_send_operation(telegram_message,program_complete):
                 pass
     else:   
         fail_msg = (
-                "⚠️ *I828 RETRY 3 TIMES FAILED*\n"
+                "⚠️ *SIAM191 RETRY 3 TIMES FAILED*\n"
                 "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE OR CLOUDFLARE BLOCK\n"
                 "KINDLY ASK ENGINEER TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
             )
@@ -477,8 +479,8 @@ async def telegram_send_summary(telegram_message,date_time):
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
-URL: [i828th2\\.com](https://www\\.i828th2\\.com/en\\-th)
-TEAM : I8T
+URL: [siam191\\.net](https://www\\.siam191\\.net/en\\-th)
+TEAM : S1T
 TIME: {escape_md(date_time)}
 
 {summary_body}"""
@@ -495,7 +497,7 @@ TIME: {escape_md(date_time)}
             log.error(f"SUMMARY FAILED TO SENT: {e}")
 
 async def clear_screenshot():
-    picture_to_sent = glob.glob("*I828*.png")
+    picture_to_sent = glob.glob("*SIAM191*.png")
     for f in picture_to_sent:
         os.remove(f) 
 

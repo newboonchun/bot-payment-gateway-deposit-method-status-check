@@ -86,8 +86,11 @@ async def wait_for_network_stable(page: Page, min_stable_ms: int = 1500, timeout
 
 async def reenter_deposit_page(page):
     # close scrolldown menu
-    # class DOM: <button type="button" class="modal_close_btn" aria-label="Close"><
-    close_button = page.locator("button.modal_close_btn")
+    # class DOM: <div class="deposit-modal p-5 fmodal-content bg-modal relative p-4 sm:p-5 rounded-[5px] w-full shadow-lg" style="max-width:450px;" data-v-97a2cc87="">
+    #            <!--[--><div class="pt-[20px] relative">
+    #                       <button type="button" class="modal_close_btn" aria-label="Close">
+    close_button_container = page.locator("div.deposit-modal.fmodal-content.bg-modal.relative")
+    close_button = close_button_container.locator("button.modal_close_btn")
     close_button_count = await close_button.count()
     log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON COUNT:%s"%close_button_count)
     for i in range(close_button_count):
@@ -269,7 +272,7 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
     return toast_exist
 
 async def perform_payment_gateway_test(page):
-    exclude_list = ["Government Savings Bank", "Government Saving Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
+    exclude_list = ["Bank", "Government Savings Bank", "Government Saving Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
     telegram_message = {}
 
     # locate scrollbar
@@ -322,7 +325,7 @@ async def perform_payment_gateway_test(page):
                     try:
                         submit_button = page.locator("button.deposit_ok_btn")
                         await submit_button.click()
-                        await asyncio.sleep(20)
+                        await asyncio.sleep(30)
                         # QR code check
                         try:
                             qr_code_count = await qr_code_check(page)
@@ -335,6 +338,9 @@ async def perform_payment_gateway_test(page):
                             continue
                         else:
                             # toast check (no real case yet, need to verify)
+                            # screenshot first in case there are no toast (unidentified reason)
+                            await page.screenshot(path="MSTSLOT_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                            await reenter_deposit_page(page)
                             try:
                                 toast_exist = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
                             except Exception as e:
@@ -346,7 +352,6 @@ async def perform_payment_gateway_test(page):
                                 continue
                             else:
                                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"no reason found, check manually_{date_time("Asia/Bangkok")}"]
-                                await page.screenshot(path="MSTSLOT_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                                 log.warning("UNIDENTIFIED REASON")
                                 await reenter_deposit_page(page)   
                     except:
@@ -383,7 +388,7 @@ async def telegram_send_operation(telegram_message,program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [mstslot\\.com](https://www\\.imstslot\\.com/th\\-th)
+            URL: [mstslot\\.com](https://www\\.mstslot\\.com/th\\-th)
             TEAM : MST
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
