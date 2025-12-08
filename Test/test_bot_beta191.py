@@ -175,12 +175,17 @@ async def qr_code_check(page):
         "div#dowloadQr"
     ]
 
-    qr_code = None
+    qr_code_count = 0
+    inner_iframe_qr = False
     
     if iframe_count != 0:
         for i in range(iframe_count):
+            if inner_iframe_qr == True:
+                break
             try:
                 base = page.frame_locator("iframe").nth(i)
+                inner_frame_count = await base.locator("iframe").count()
+                log.info("QR_CODE CHECK: INNER_FRAME_COUNT:%s"%(inner_frame_count))
                 for selector in qr_selector:
                     try:
                         qr_code = base.locator(selector)
@@ -189,8 +194,27 @@ async def qr_code_check(page):
                         if qr_code_count != 0:
                             break
                     except Exception as e:
-                        qr_code = None 
+                        qr_code_count = 0
                         log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
+                # proceed to inner iframe qr code check
+                if qr_code_count == 0:
+                    for j in range(inner_frame_count):
+                        log.info("PROCEED TO INNER IFRAME CHECK....")
+                        try:
+                            inner_base = base.frame_locator("iframe").nth(j)
+                            for selector in qr_selector:
+                                try:
+                                    qr_code = inner_base.locator(selector)
+                                    qr_code_count = await qr_code.count()
+                                    log.info("QR_CODE:%s INNER_FRAME_QR_CODE_COUNT:%s"%(qr_code,qr_code_count))
+                                    if qr_code_count != 0:
+                                        inner_iframe_qr = True
+                                        break
+                                except Exception as e:
+                                    qr_code_count = 0 
+                                    log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
+                        except Exception as e:
+                            log.info("INNER QR IFRAME SELECTOR ERROR:%s"%e)
             except Exception as e:
                 log.info("QR_CODE_CHECK ERROR:%s"%e)
                 pass
@@ -206,7 +230,7 @@ async def qr_code_check(page):
                 if qr_code_count != 0:
                     break
             except Exception as e:
-                qr_code = None 
+                qr_code_count = 0 
                 log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
     
     if qr_code_count != 0:
@@ -512,7 +536,7 @@ async def clear_screenshot():
 
 @pytest.mark.asyncio
 async def test_main():
-    MAX_RETRY = 1
+    MAX_RETRY = 3
     global log
     th_tz = pytz.timezone('Asia/Bangkok')
     round_start = datetime.now(th_tz)
