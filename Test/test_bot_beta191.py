@@ -85,27 +85,16 @@ async def wait_for_network_stable(page: Page, min_stable_ms: int = 1500, timeout
         page.remove_listener("requestfailed", on_request)
 
 async def reenter_deposit_page(page):
-    # close scrolldown menu
-    # class DOM: <div class="deposit-modal p-5 fmodal-content bg-modal relative p-4 sm:p-5 rounded-[5px] w-full shadow-lg" style="max-width:450px;" data-v-97a2cc87="">
-    #            <!--[--><div class="pt-[20px] relative">
-    #                       <button type="button" class="modal_close_btn" aria-label="Close">
-    close_button_container = page.locator("div.deposit-modal.fmodal-content.bg-modal.relative")
-    close_button = close_button_container.locator("button.modal_close_btn")
-    close_button_count = await close_button.count()
-    log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON COUNT:%s"%close_button_count)
-    for i in range(close_button_count):
-        try:
-            await close_button.nth(i).click(timeout=5000)
-            log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON:%s CLOSE BUTTON COUNT:%s"%(close_button,close_button_count))
-        except Exception as e:
-            log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON:%s ERROR:%s"%(close_button,e))
-    # reclick the deposit button to show scolldown menu
+    # Class DOM for back arrow locator
+    # <div class="relative flex items-center justify-between deposit_money_div">
+    #     <button type="button" class="dep_back_btn">
+    #         <i class="icon-angle-back">
+    
     try:
-        await page.locator("#deposit_btn_12").click()
-        log.info("LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED")
-    except:
-        raise Exception("LOGIN PROCESS - DEPOSIT BUTTON ARE FAILED TO CLICK")
-    await asyncio.sleep(5)
+        await page.locator('button.dep_back_btn').click()
+    except Exception as e:
+        raise Exception("REENTER DEPOSIT PAGE - BACK BUTTON FAILED TO CLICK")
+    await asyncio.sleep(3)
 
 async def perform_login(page):
     WEBSITE_URL = "https://www.beta191.co/en-th/"
@@ -287,17 +276,26 @@ async def perform_payment_gateway_test(page):
         if deposit_method_total_count == 0:
             raise Exception ("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD COUNT = 0, SCROLLBAR DIDN'T LOCATE PROBABLY")
         for i in range(deposit_method_total_count):
-            # class DOM for deposit method test
+            # class DOM for deposit method text
             # <div class="deposit-channel p-[0.75rem] rounded-[5px] relative overflow-hidden">
             #    <div class="flex justify-between w-full">
             #        <div class="flex items-center">
             #           <div class="w-28 h-14 flex justify-center rounded-[5px] me-6 relative">
             #                <img src="https://d2a18plfx719u2.cloudfront.net/frontend/bank_image2/promptpay.png?v=1760607913821">
+
+            # class DOM for deposit channel text
+            # <div class="deposit-channel p-[0.75rem] rounded-[5px] relative overflow-hidden">
+            #     <div class="flex justify-between w-full">
+            #         <div class="flex items-center">
+            #              <div class="w-28 h-14 flex justify-center rounded-[5px] me-6 relative">
+            #                 <img src="https://d2a18plfx719u2.cloudfront.net/frontend/bank_image2/promptpay.png?v=1760607913821">
+            #                   </div><div><span class="text-sm capitalize font-medium deposit-text-title">CYPAY</span>
             btn = deposit_method_button.nth(i)
             deposit_method_image = btn.locator("img")
             deposit_method_image_link = await deposit_method_image.get_attribute("src")
             deposit_method = deposit_method_image_link.split("/")[-1].split(".")[0]
-            #deposit_method = await btn.locator('span').inner_text()
+            deposit_channel = await btn.locator('span.text-sm.capitalize.font-medium.deposit-text-title').inner_text()
+    
             log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s]"%deposit_method)
             #if deposit_method != 'USDT-TRC20': #FOR DEBUG
             #   continue
@@ -311,19 +309,18 @@ async def perform_payment_gateway_test(page):
             try:
                 btn = await deposit_method_button.nth(i).click()
                 log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
-                # deposit channel info
-                # class DOM: <div class="deposit-bank-info-2 text-xs md:text-sm font-semibold">ONEPAY</div>
                 # input minimum deposit amount
-                # <input type="number" class="o-input !py-3 !text-sm md:!text-base o-number o-number-spinner deposit-amount-input" step="1" inputmode="decimal" placeholder="THB 100.00 - 30,000.00">
+                # <input type="number" class="o-input !py-3 !text-sm md:!text-base o-number o-number-spinner deposit-amount-input-staging deposit-number-custom max-w-[80%] not-ios" step="1" inputmode="numeric" placeholder="0"
+                # <div class="flex justify-end mt-2 font-light text-[8px] text-[#888693]">100.00 - 200,000.00 THB</div>
+                
                 try:
-                    deposit_channel = await page.locator('div.deposit-bank-info-2').inner_text()
                     #if deposit_channel != 'QPAY': #FOR DEBUG
                     #    continue
                     log.info("FOUND [%s] DEPOSIT CHANNEL FOR DEPOSIT METHOD [%s]"%(deposit_channel,deposit_method))
-                    input_deposit_amount_box = page.locator('input.deposit-amount-input')
-                    placeholder = await input_deposit_amount_box.get_attribute("placeholder")
-                    match = re.search(r'THB\s+(\d+)', placeholder)
-                    min_amount = match.group(1) if match else None
+                    input_deposit_amount_box = page.locator('input.o-input.deposit-amount-input-staging')
+                    input_deposit_amount_range = await page.locator('div.flex.justify-end.font-light').inner_text()
+                    match = re.search(r"[\d,.]+", input_deposit_amount_range)
+                    min_amount = match.group() if match else None
                     log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
                     await input_deposit_amount_box.click()
                     await input_deposit_amount_box.fill("%s"%min_amount)
@@ -405,7 +402,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*B1T_%s_%s*.png"%(deposit_method,deposit_channel))
+            files = glob.glob("*BETA191*.png")
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
@@ -515,7 +512,7 @@ async def clear_screenshot():
 
 @pytest.mark.asyncio
 async def test_main():
-    MAX_RETRY = 3
+    MAX_RETRY = 1
     global log
     th_tz = pytz.timezone('Asia/Bangkok')
     round_start = datetime.now(th_tz)
