@@ -1,0 +1,24 @@
+13:58:42 | INFO     | ============================================================
+13:58:42 | INFO     | GCWIN99 PAYMENT GATEWAY TEST STARTING...
+13:58:42 | INFO     | STARTING TIME: 09-12-2025 12:58:42 GMT+7
+13:58:42 | INFO     | ============================================================
+13:58:42 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.gcwin99v6.com/en-th
+13:58:56 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+13:59:15 | INFO     | LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED
+13:59:16 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+13:59:16 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+13:59:16 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+13:59:16 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+13:59:18 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
+13:59:19 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+13:59:20 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
+13:59:20 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.gcwin99v6.com/en-th/deposit]
+13:59:20 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
+13:59:20 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน.] 
+13:59:20 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน.] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
+13:59:20 | INFO     | TELEGRAM MESSAGE: [{}]
+13:59:22 | INFO     | TELEGRAM MESSAGE: [{}]
+13:59:24 | INFO     | TELEGRAM_MESSAGE:{}
+13:59:24 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+13:59:24 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+13:59:24 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
