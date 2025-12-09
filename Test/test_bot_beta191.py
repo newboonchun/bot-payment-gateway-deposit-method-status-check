@@ -274,7 +274,7 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
             if await toast.count() > 0:
                 toast_exist = True
                 await page.screenshot(path="BETA191_%s_%s_Payment_Page.png"%(deposit_method_text,deposit_channel),timeout=30000)
-                log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_channel,deposit_method_text,text))
+                log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_method_text,deposit_channel,text))
                 break
             await asyncio.sleep(0.1)
     except:
@@ -324,6 +324,12 @@ async def perform_payment_gateway_test(page):
             #if deposit_method != 'USDT-TRC20': #FOR DEBUG
             #   continue
             # manual bank check
+
+            # for situation deposit method = fpay_crypto (need to fan out to all sites)
+            if "_" in deposit_method:
+                deposit_method = deposit_method.replace("_", "-")
+                log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD AFTER _ REPLACED WITH - [%s]"%deposit_method)
+
             if any(manual_bank in deposit_method for manual_bank in exclude_list):
                 log.info(f"DEPOSIT METHOD [{deposit_method}] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...")
                 continue
@@ -426,7 +432,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*BETA191*.png")
+            files = glob.glob("*BETA191_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed

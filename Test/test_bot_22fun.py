@@ -356,7 +356,7 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
             if await toast.count() > 0:
                 toast_exist = True
                 await page.screenshot(path="22FUN_%s_%s_Payment_Page.png"%(deposit_method_text,deposit_channel),timeout=30000)
-                log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_channel,deposit_method_text,text))
+                log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_method_text,deposit_channel,text))
                 break
             await asyncio.sleep(0.1)
     except:
@@ -551,7 +551,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*22FUN*.png")
+            files = glob.glob("*22FUN_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
@@ -661,7 +661,7 @@ async def clear_screenshot():
 
 @pytest.mark.asyncio
 async def test_main():
-    MAX_RETRY = 1
+    MAX_RETRY = 3
     global log
     th_tz = pytz.timezone('Asia/Bangkok')
     round_start = datetime.now(th_tz)
