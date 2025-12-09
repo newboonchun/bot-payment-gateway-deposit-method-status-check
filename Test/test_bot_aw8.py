@@ -121,7 +121,8 @@ async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_a
         raise Exception("PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [%s] ARE NOT KEYED IN"%min_amount)
     if recheck:
         try:
-            await page.get_by_role("button", name="Deposit").nth(1).click()
+            deposit_submit_button = page.locator('button.btn_deposits.uppercase:has-text("Deposit")')
+            await deposit_submit_button.click()
             log.info("REENTER DEPOSIT PAGE - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
         except:
             raise Exception("REENTER DEPOSIT PAGE - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
@@ -155,8 +156,10 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
+    #class DOM: <button type="button" aria-label="account" class="reg-tab">
     try:
-        await page.get_by_role("button", name=" Account").click()
+        account_button = page.locator('button.reg-tab[aria-label="account"]')
+        await account_button.click()
         log.info("LOGIN PROCESS -  Account BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS -  Account BUTTON ARE FAILED TO CLICKED")
@@ -180,13 +183,20 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - PASSWORD DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO KEY IN")
+    #class DOM: <button type="submit" class="btn primary w-full new-reg-buttons">Login</button>
     try:
-        await page.get_by_role("button", name="Login").nth(2).click()
+        login_button = page.locator('button.btn.primary.new-reg-buttons:has-text("Login")')
+        await login_button.click()
         log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
+    #class DOM: <div data-v-4fff4a3f="" class="deposit_topbar">
+    #                <button data-v-4fff4a3f="" type="button" class="topbar_btn_2 mx-2 md:mx-[10px] flex items-center justify-center deposit_display_big" aria-label="Deposit" id="deposit_btn_12">Deposit</button> -->this is
+    #                <button data-v-4fff4a3f="" type="button" class="mr-3 deposit_display_small rounded-md topbar_deposit_icon_btn" aria-label="Deposit" id="deposit_btn_13"> --> this is not
     try:
-        await page.get_by_role("button", name="Deposit").click()
+        deposit_topbar_container = page.locator('div.deposit_topbar')
+        deposit_topbar_button = deposit_topbar_container.locator('button.topbar_btn_2:has-text("Deposit")')
+        await deposit_topbar_button.click()
         log.info("LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - DEPOSIT BUTTON ARE FAILED TO CLICK")
@@ -195,8 +205,10 @@ async def perform_login(page):
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
         async with page.expect_navigation(wait_until="load", timeout=10000):
+            #class DOM: <button data-v-7a9f759f="" type="button" aria-label="Deposit" class="btn_deposits uppercase font-semibold rounded-md">Deposit</button>
             try:
-                await page.get_by_role("button", name="Deposit").nth(1).click()
+                deposit_submit_button = page.locator('button.btn_deposits.uppercase:has-text("Deposit")')
+                await deposit_submit_button.click()
                 log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
             except:
                 raise Exception("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
@@ -327,7 +339,8 @@ async def check_toast(page,deposit_method,deposit_channel):
     except:
         raise Exception("CHECK TOAST - MIN AMOUNT [%s] ARE NOT KEYED IN"%min_amount)
     try:
-        await page.get_by_role("button", name="Deposit").nth(1).click()
+        deposit_submit_button = page.locator('button.btn_deposits.uppercase:has-text("Deposit")')
+        await deposit_submit_button.click()
         log.info("CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
     except:
         raise Exception("CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
