@@ -180,6 +180,8 @@ async def qr_code_check(page):
     
     if iframe_count != 0:
         for i in range(iframe_count):
+            if qr_code_count != 0:
+                break
             if inner_iframe_qr == True:
                 break
             try:
