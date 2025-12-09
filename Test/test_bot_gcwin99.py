@@ -281,10 +281,12 @@ async def qr_code_check(page):
         "div#dowloadQr"
     ]
 
-    qr_code = None
+    qr_code_count = 0
 
     if iframe_count != 0:
         for i in range(iframe_count):
+            if qr_code_count != 0:
+                break
             try:
                 base = page.frame_locator("iframe").nth(i)
                 for selector in qr_selector:
