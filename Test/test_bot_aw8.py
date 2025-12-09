@@ -11,6 +11,7 @@ from datetime import datetime, timezone, timedelta
 from telegram import Bot
 import re
 from telegram.error import TimedOut
+from dotenv import load_dotenv
 
 def escape_md(text):
     if text is None: return ""
@@ -86,13 +87,22 @@ async def wait_for_network_stable(page: Page, min_stable_ms: int = 1500, timeout
         page.remove_listener("requestfailed", on_request)
 
 async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck):
-    try:
-        await page.goto("%s"%old_url)
-        await asyncio.sleep(5)
-        await wait_for_network_stable(page, timeout=30000)
-        log.info("REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY")
-    except:
-        raise Exception("REENTER DEPOSIT PAGE - PAGE LOADED FAILED")
+    for attempt in range(1, 3):
+        try:
+            log.info(f"Trying to goto URL attempt {attempt}/{3}: {old_url}")
+
+            response = await page.goto(old_url, timeout=30000, wait_until="domcontentloaded")
+            await asyncio.sleep(2)
+            await wait_for_network_stable(page, timeout=30000)
+
+            if response and response.ok:
+                log.info("REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY")
+                break
+            else:
+                # if response is None or not ok
+                log.warning("Navigation response not OK")
+        except:
+            log.info("REENTER DEPOSIT PAGE - NETWORK NOT STABLE YET, CURRENT PAGE URL:%s"%page.url)
     try:
         await page.get_by_role("button", name="%s"%deposit_method).click()
         log.info("REENTER DEPOSIT PAGE - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
@@ -258,12 +268,16 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
 async def qr_code_check(page):
     ## DETECT QR CODE BASED ON HTML CONTENT !!! ##
     try:
-        await page.wait_for_selector("iframe", timeout=3000)
+        #await page.wait_for_selector("iframe", timeout=3000)
         iframe_count = await page.locator("iframe").count()
+        if iframe_count == 1:
+            await page.wait_for_selector("iframe", timeout=3000)
+        else:
+            pass
         log.info("IFRAME/POP UP APPEARED. IFRAME COUNT:%s"%iframe_count)
-    except:
+    except Exception as e:
         iframe_count = 0
-        log.info("No IFRAME/POP UP APPEARED")
+        log.info("No IFRAME/POP UP APPEARED:%s"%e)
 
     qr_selector = [
         "div[id*='qr' i]",
@@ -274,7 +288,12 @@ async def qr_code_check(page):
     qr_code = None
 
     if iframe_count != 0:
-        base = page.frame_locator("iframe").nth(0)
+        for i in range(iframe_count):
+            try:
+                base = page.frame_locator("iframe").nth(i)
+            except Exception as e:
+                log.info("QR_CODE_CHECK ERROR:%s"%e)
+                pass
     else:
         base = page
     
@@ -342,7 +361,7 @@ async def check_toast(page,deposit_method,deposit_channel):
     return toast_exist
 
 async def perform_payment_gateway_test(page):
-    exclude_list = ["Government Savings Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
+    exclude_list = ["Government Savings Bank", "Government Saving Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
     telegram_message = {}
     deposit_method_container = page.locator(".deposit-method-container")
     await deposit_method_container.wait_for(state="attached")
@@ -367,6 +386,7 @@ async def perform_payment_gateway_test(page):
         deposit_channel_count = await deposit_channel_button.count()
         log.info("FOUND [%s] DEPOSIT CHANNEL FOR DEPOSIT METHOD [%s]"%(deposit_channel_count,deposit_method))
         for j in range(deposit_channel_count):
+            manual_bank = False
             btn = deposit_channel_button.nth(j)
             deposit_channel = await btn.get_attribute("aria-label")
             #if deposit_channel != 'GLOBALPAY': #FOR DEBUG
@@ -402,6 +422,27 @@ async def perform_payment_gateway_test(page):
             except:
                 raise Exception("PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [%s] ARE NOT KEYED IN"%min_amount)
             url_jump, payment_page_failed_load = await url_jump_check(page,old_url,deposit_method,deposit_channel,min_amount,telegram_message)
+            # EXTRA MANUAL BANK CHECK ##
+            try:
+               manual_bank_text_count = await page.locator('div.deposit_information_content_labels').count()
+               for count in range(manual_bank_text_count):
+                   manual_bank_text = await page.locator('div.deposit_information_content_labels').nth(count).inner_text(timeout=3000)
+                   log.info("MANUAL BANK TEXT:%s"%manual_bank_text)
+                   if "Bank Name" in manual_bank_text:
+                       await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
+                       log.info("MANUAL BANK TEXT FOUND:%s"%manual_bank_text)
+                       manual_bank = True
+                       break
+               if manual_bank == True:
+                   log.info(f"DEPOSIT CHANNEL [{deposit_channel}] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...")
+                   continue
+               else:
+                   log.info("NO MANUAL BANK TEXT FOUND:%s"%e)
+                   pass
+            except Exception as e:
+               log.info("NO MANUAL BANK TEXT FOUND:%s"%e)
+               pass
+            ## EXTRA MANUAL BANK CHECK ##
             if url_jump and payment_page_failed_load == False:
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
                 log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD")
@@ -434,13 +475,10 @@ async def perform_payment_gateway_test(page):
 
 
 async def telegram_send_operation(telegram_message, program_complete):
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
-    # Debug telegram token and chat id
-    TOKEN = '8450485022:AAE-EBYI0_f1UDDZpI_CLdGywhMMi8pzYyo'
-    chat_id = -5015541241
-    # Production telegram token and chat id
-    #TOKEN = '8415292066:AAHBpdP8yw15BhpzwoqccSovb-R26vsBq8w'
-    #chat_id = -4978443446
+    TOKEN = os.getenv("TOKEN")
+    chat_id = os.getenv("CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -459,43 +497,48 @@ async def telegram_send_operation(telegram_message, program_complete):
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [aw8\\.com](https://www\\.aw8\\.com/en\\-th)
+            URL: [aw8game\\.online](https://www\\.aw8game\\.online/en\\-th)
+            TEAM : A8T2
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
             │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
             │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-            └──────────────────────┘
+            └───────────────────────────┘
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*AW8_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
-            for attempt in range(3):
-                try:
-                    with open(file_path, 'rb') as f:
-                          await bot.send_photo(
-                                chat_id=chat_id,
-                                photo=f,
-                                caption=caption,
-                                parse_mode='MarkdownV2',
-                                read_timeout=30,
-                                write_timeout=30,
-                                connect_timeout=30
-                            )
-                    log.info(f"SCREENSHOT SUCCESSFULLY SENT")
-                    break
-                except TimedOut:
-                    log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
-                    await asyncio.sleep(5)
-                except Exception as e:
-                    log.info("ERROR TELEGRAM BOT [%s]"%(e))
-                    break
-    else:
+            # Only send screenshot which status is failed
+            if status != 'deposit success':
+                for attempt in range(3):
+                    try:
+                        with open(file_path, 'rb') as f:
+                              await bot.send_photo(
+                                    chat_id=chat_id,
+                                    photo=f,
+                                    caption=caption,
+                                    parse_mode='MarkdownV2',
+                                    read_timeout=30,
+                                    write_timeout=30,
+                                    connect_timeout=30
+                                )
+                        log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                        break
+                    except TimedOut:
+                        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+                    except Exception as e:
+                        log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                        break
+            else:
+                pass
+    else:   
         fail_msg = (
-                "⚠️ *AW8 RETRY 3 TIMES FAILED*\n"
-                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE\n"
-                "KINDLY ASK ENGINEER TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
+                "⚠️ *A8T2 RETRY 3 TIMES FAILED*\n"
+                "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE OR CLOUDFLARE BLOCK\n"
+                "KINDLY CONTACT PAYMENT TEAM TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
             )
         try:
                 await bot.send_message(
@@ -506,6 +549,66 @@ async def telegram_send_operation(telegram_message, program_complete):
                 log.info("FAILURE MESSAGE SENT")
         except Exception as e:
                 log.error(f"FAILED TO SEND FAILURE MESSAGE: {e}")
+
+async def telegram_send_summary(telegram_message,date_time):
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+    log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
+    TOKEN = os.getenv("TOKEN")
+    chat_id = os.getenv("CHAT_ID")
+    bot = Bot(token=TOKEN)
+    log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
+    succeed_records = []
+    failed_records  = []
+    unknown_records = []
+    for key, value_list in telegram_message.items():
+            # Split key parts
+            deposit_channel_method = key.split("_")
+            deposit_channel = deposit_channel_method[0]
+            deposit_method  = deposit_channel_method[1]
+            method = escape_md(deposit_method)
+            channel = escape_md(deposit_channel)
+            # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
+            value = value_list[0]
+            status, timestamp = value.split("_")
+            if status == 'deposit success':
+                succeed_records.append((method, channel))           
+            elif status == 'deposit failed':
+                failed_records.append((method, channel))
+            else:
+                unknown_records.append((method, channel))
+            succeed_block = ""
+            if succeed_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in succeed_records]
+                succeed_block = f"┌─ ✅ Success **Result** ────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+        
+            failed_block = ""
+            if failed_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in failed_records]
+                failed_block = f"\n┌─ ❌ Failed **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+            
+            unknown_block = ""
+            if unknown_records:
+                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in unknown_records]
+                unknown_block = f"\n┌─ ❌ Failed **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+            
+            summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
+            caption = f"""*Deposit Payment Gateway Testing Result Summary *  
+URL: [aw8\\.co](https://www\\.aw8game\\.online/en\\-th)
+TEAM : A8T2
+TIME: {escape_md(date_time)}
+
+{summary_body}"""
+
+    for attempt in range(3):
+        try:
+            await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            log.info("SUMMARY SENT")
+            break
+        except TimedOut:
+            log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+            await asyncio.sleep(3)
+        except Exception as e:
+            log.error(f"SUMMARY FAILED TO SENT: {e}")
 
 async def clear_screenshot():
     picture_to_sent = glob.glob("*AW8*.png")
@@ -528,6 +631,7 @@ async def test_main():
                 await perform_login(page)
                 telegram_message = await perform_payment_gateway_test(page)
                 await telegram_send_operation(telegram_message,program_complete=True)
+                await telegram_send_summary(telegram_message,date_time('Asia/Bangkok'))
                 await clear_screenshot()
                 break
             except Exception as e:

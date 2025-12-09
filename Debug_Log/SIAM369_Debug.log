@@ -1,0 +1,21 @@
+13:45:17 | INFO     | ============================================================
+13:45:17 | INFO     | SIAM369 PAYMENT GATEWAY TEST STARTING...
+13:45:17 | INFO     | STARTING TIME: 04-12-2025 12:45:17 GMT+7
+13:45:17 | INFO     | ============================================================
+13:45:17 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam369th.com/en-th
+13:45:19 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+13:45:20 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+13:45:21 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+13:45:21 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+13:45:22 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+13:45:23 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
+13:45:23 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
+13:45:23 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
+13:45:23 | INFO     | DEPOSIT CHANNEL [Government Savings Bank] 
+13:45:23 | INFO     | DEPOSIT CHANNEL [Government Savings Bank] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
+13:45:23 | INFO     | TELEGRAM MESSAGE: [{}]
+13:45:24 | INFO     | TELEGRAM MESSAGE: [{}]
+13:45:25 | INFO     | TELEGRAM_MESSAGE:{}
+13:45:25 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+13:45:25 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+13:45:25 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
