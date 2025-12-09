@@ -156,8 +156,10 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
+    #<button type="button" aria-label="account" class="reg-tab active">
     try:
-        await page.get_by_role("button", name=" Account").click()
+        account_button = page.locator('button.reg-tab[aria-label="account"]')
+        await account_button.click()
         log.info("LOGIN PROCESS -  Account BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS -  Account BUTTON ARE FAILED TO CLICKED")
@@ -181,8 +183,10 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - PASSWORD DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO KEY IN")
+    #<button type="submit" class="btn primary w-full new-reg-buttons">Login</button>
     try:
-        await page.get_by_role("button", name="Login").nth(2).click()
+        login_button = page.locator('button.btn.primary.new-reg-buttons:has-text("Login")')
+        await login_button.click()
         log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")

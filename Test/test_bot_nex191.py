@@ -164,8 +164,10 @@ async def perform_login(page):
     except Exception as e:
         log.info("LOGIN PROCESS FAILED BECAUSE OF %s"%e)
         raise Exception("LOGIN PROCESS - USERNAME FAILED TO KEY IN")
+    # <button type="submit" class="new-reg-buttons btn !font-bold !flex gap-3 justify-center items-center !py-3.5 rounded-md w-full text-sm uppercase" aria-label="ต่อไป">
     try:
-        await page.get_by_role("button", name=" ต่อไป").click()
+        submit_button = page.locator('button.new-reg-buttons[aria-label="ต่อไป"]')
+        await submit_button.click()
         await page.get_by_role("textbox", name="One-time password").fill("123456")
         log.info("LOGIN PROCESS - PASSWORD ARE FILLED IN")
     except Exception as e:
