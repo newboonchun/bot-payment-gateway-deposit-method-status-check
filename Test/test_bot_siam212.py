@@ -175,7 +175,9 @@ async def perform_login(page):
     try:
         await page.get_by_role("textbox", name="09xxxxxxx").click()
         await page.get_by_role("textbox", name="09xxxxxxx").fill("0745674567")
-        await page.get_by_role("button", name=" Next").click()
+        #<button type="submit" class="new-reg-buttons btn !font-bold !flex gap-3 justify-center items-center !py-3.5 rounded-md w-full text-sm uppercase" aria-label="Next">
+        login_button = page.locator('button.new-reg-buttons')
+        await login_button.click()
         log.info("LOGIN PROCESS - USERNAME DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - USERNAME FAILED TO KEY IN")
