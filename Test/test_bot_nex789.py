@@ -171,7 +171,9 @@ async def perform_login(page):
     except:
         raise Exception("LOGIN PROCESS - USERNAME FAILED TO KEY IN")
     try:
-        await page.get_by_role("button", name=" ต่อไป").click()
+        #<button type="submit" class="new-reg-buttons btn !font-bold !flex gap-3 justify-center items-center !py-3.5 rounded-md w-full text-sm uppercase" aria-label="Next">
+        login_button = page.locator('button.new-reg-buttons')
+        await login_button.click()
         await page.get_by_role("textbox", name="One-time password").fill("123456")
         log.info("LOGIN PROCESS - PASSWORD ARE FILLED IN")
     except:
@@ -204,11 +206,11 @@ async def perform_login(page):
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=10000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
                 deposit_button = page.locator('.btn_deposits')
-                await deposit_button.wait_for(state="visible", timeout=10000)
+                await deposit_button.wait_for(state="attached", timeout=10000)
                 await deposit_button.click()
                 log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
             except:
