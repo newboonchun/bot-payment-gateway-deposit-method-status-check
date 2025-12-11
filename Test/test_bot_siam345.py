@@ -146,11 +146,18 @@ async def perform_login(page):
         raise Exception("LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED")
         
     # Login flow siam345
+    #<div id="normal-slidedown">
+	#<div class="slidedown-body" id="slidedown-body">
+    #       <div class="slidedown-footer" id="slidedown-footer">
+    #               <button class="align-right primary slidedown-button" id="onesignal-slidedown-allow-button">ใช่</button>
+    #               <button class="align-right secondary slidedown-button" id="onesignal-slidedown-cancel-button">.</button><div class="clearfix"></div></div></div>
+    await asyncio.sleep(30)
     try:
-        await page.get_by_role("button", name="Later").click()
+        slidedown = page.locator("div.slidedown-footer")
+        await slidedown.locator('button.align-right.primary.slidedown-button').click()
         log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED")
-    except:
-        log.info("LOGIN PROCESS - NO SLIDEDOWN")
+    except Exception as e:
+        log.info("LOGIN PROCESS - NO SLIDEDOWN:%s"%e)
     try:
         await page.locator("iframe[title=\"Contact us\"]").content_frame.locator(".Chat_icon__wrap_3840H.Chat_icon__wrap_shadow_14Bbe.view_btn_chat_pglag").click()
     except:

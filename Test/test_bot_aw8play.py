@@ -230,6 +230,7 @@ async def check_toast(page,new_page,deposit_method_text,deposit_channel):
 async def perform_payment_gateway_test(page,context):
     exclude_list = ["Express Deposit","Crypto"] #TBC
     telegram_message = {}
+    failed_reason = {}
 
     # deposit method menu 
     # class DOM
@@ -354,6 +355,7 @@ async def perform_payment_gateway_test(page,context):
                                 log.info("TOAST CHECK ERROR: [%s]"%e)
                             if toast_exist:
                                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                failed_reason[f"{deposit_channel}_{deposit_method}"] = [toast_failed_text]
                                 log.info("TOAST DETECTED")
                                 await new_page.close()
                                 continue
@@ -362,16 +364,19 @@ async def perform_payment_gateway_test(page,context):
                                 url_jump, payment_page_failed_load = await url_jump_check(page,new_page,context,old_url,deposit_submit_button,deposit_method,deposit_channel)
                                 if url_jump and payment_page_failed_load == False:
                                     telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                                    failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
                                     log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD")
                                     await new_page.close()
                                     continue
                                 elif url_jump and payment_page_failed_load == True:
                                     telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                    failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"payment page failed load"]
                                     log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE FAILED LOAD")
                                     await new_page.close()
                                     continue
                                 else:
                                     telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                    failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"unknown reason"]
                                     log.warning("SCRIPT STATUS: URL JUMP FAILED, PAYMENT PAGE FAILED LOAD")
                                     await new_page.close()
                         except Exception as e:
@@ -383,11 +388,12 @@ async def perform_payment_gateway_test(page,context):
             await asyncio.sleep(5)
     except Exception as e:
         log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT OPTIONS ERROR:%s"%e)
-    return telegram_message, toast_failed_text
+    return telegram_message, failed_reason
 
 async def telegram_send_operation(telegram_message,failed_reason,program_complete):
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
+    log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
     bot = Bot(token=TOKEN)
@@ -406,8 +412,19 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
                 status_emoji = "❌"
             else:
                 status_emoji = "❓"
+
+            for key, value in failed_reason.items():
+                # Split key parts
+                failed_deposit_channel_method = key.split("_")
+                failed_deposit_channel = failed_deposit_channel_method[0]
+                failed_deposit_method  = failed_deposit_channel_method[1]
+
+                if failed_deposit_channel == deposit_channel and failed_deposit_method == deposit_method:
+                    failed_reason_text = value[0]
+                    break
+
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
-            fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason)}`\n" if failed_reason else ""
+            fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [aw8thbplay\\.com](https://www\\.aw8thbplay\\.com/en\\-th)
             TEAM : A8T
@@ -545,8 +562,8 @@ async def test_main():
                 context = await browser.new_context()
                 page = await context.new_page()
                 await perform_login(page)
-                telegram_message, toast_failed_text = await perform_payment_gateway_test(page,context)
-                await telegram_send_operation(telegram_message,toast_failed_text,program_complete=True)
+                telegram_message, failed_reason = await perform_payment_gateway_test(page,context)
+                await telegram_send_operation(telegram_message,failed_reason,program_complete=True)
                 await telegram_send_summary(telegram_message,date_time('Asia/Bangkok'))
                 await clear_screenshot()
                 break
@@ -559,5 +576,5 @@ async def test_main():
             if attempt == MAX_RETRY:
                 telegram_message = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
-                await telegram_send_operation(telegram_message,toast_failed_text,program_complete=False)
+                await telegram_send_operation(telegram_message,failed_reason,program_complete=False)
                 raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")
