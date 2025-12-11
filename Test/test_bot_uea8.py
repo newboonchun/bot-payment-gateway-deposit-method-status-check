@@ -198,6 +198,7 @@ async def check_toast(page,new_page,deposit_method_text,deposit_channel):
                 break
             await asyncio.sleep(0.1)
     except Exception as e:
+            text = None
             toast_exist = False
             log.info("No Toast message:%s"%e)
     return toast_exist, text
@@ -536,5 +537,5 @@ async def test_main():
             if attempt == MAX_RETRY:
                 telegram_message = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
-                await telegram_send_operation(telegram_message,program_complete=False)
+                await telegram_send_operation(telegram_message,toast_failed_text,program_complete=False)
                 raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")
