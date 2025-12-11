@@ -200,69 +200,6 @@ async def url_jump_check(page,new_page,context,old_url,deposit_submit_button,dep
         payment_page_failed_load = False
     
     return url_jump, payment_page_failed_load
-    
-async def qr_code_check(page):
-    ## DETECT QR CODE BASED ON HTML CONTENT !!! ##
-    try:
-        #await page.wait_for_selector("iframe", timeout=3000)
-        iframe_count = await page.locator("iframe").count()
-        if iframe_count == 1:
-            await page.wait_for_selector("iframe", timeout=3000)
-        else:
-            pass
-        log.info("IFRAME/POP UP APPEARED. IFRAME COUNT:%s"%iframe_count)
-    except Exception as e:
-        iframe_count = 0
-        log.info("No IFRAME/POP UP APPEARED:%s"%e)
-    
-    qr_selector = [
-        "div.qr-image",
-        "div.qr-image.position-relative",
-        "div.payFrame", #for fpay-crypto
-        "div[id*='qr' i]",
-        "div#qrcode-container",
-        "div#dowloadQr"
-    ]
-
-    qr_code = None
-    
-    if iframe_count != 0:
-        for i in range(iframe_count):
-            try:
-                base = page.frame_locator("iframe").nth(i)
-                for selector in qr_selector:
-                    try:
-                        qr_code = base.locator(selector)
-                        qr_code_count = await qr_code.count()
-                        log.info("QR_CODE:%s QR_CODE_COUNT:%s"%(qr_code,qr_code_count))
-                        if qr_code_count != 0:
-                            break
-                    except Exception as e:
-                        qr_code = None 
-                        log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
-            except Exception as e:
-                log.info("QR_CODE_CHECK ERROR:%s"%e)
-                pass
-
-    # second stage check
-    if qr_code_count == 0:
-        base = page
-        for selector in qr_selector:
-            try:
-                qr_code = base.locator(selector)
-                qr_code_count = await qr_code.count()
-                log.info("QR_CODE:%s , QR_CODE_COUNT:%s"%(qr_code,qr_code_count))
-                if qr_code_count != 0:
-                    break
-            except Exception as e:
-                qr_code = None 
-                log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
-    
-    if qr_code_count != 0:
-        log.info("QR DETECTED")
-    else:
-        log.info("NO QR DETECTED")
-    return qr_code_count
 
 async def check_toast(page,new_page,deposit_method_text,deposit_channel):
     toast_exist = False
@@ -274,14 +211,14 @@ async def check_toast(page,new_page,deposit_method_text,deposit_channel):
             text = (await toast.inner_text()).strip()
             if await toast.count() > 0:
                 toast_exist = True
-                await page.screenshot(path="IVIP9A_%s_%s_Payment_Page.png"%(deposit_method_text,deposit_channel),timeout=30000)
+                await new_page.screenshot(path="IVIP9A_%s_%s_Payment_Page.png"%(deposit_method_text,deposit_channel),timeout=30000)
                 log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_method_text,deposit_channel,text))
                 break
             await asyncio.sleep(0.1)
     except Exception as e:
             toast_exist = False
             log.info("No Toast message:%s"%e)
-    return toast_exist
+    return toast_exist, text
 
 async def perform_payment_gateway_test(page,context):
     exclude_list = ["Express Deposit","Crypto"] #TBC
@@ -372,7 +309,7 @@ async def perform_payment_gateway_test(page,context):
                         # <div class="standard-form-field depositAmount component-7   ">
                         #    <input id="depositamount" type="numeric" autocomplete="off" class="standard-input" placeholder="Amount MIN: 100.00 / MAX: 30,000.00" min="0" pattern="[0-9]*" inputmode="decimal" value="">
                         try:
-                            await asyncio.sleep(5)
+                            await asyncio.sleep(5) #give some delay for the page to load the deposit amount min max range
                             if no_channel == True:
                                 deposit_amount_input_container = page.locator('div.standard-form-field.depositAmount.component-6')
                             else:
@@ -402,7 +339,7 @@ async def perform_payment_gateway_test(page,context):
                             new_page = await new_page_info.value
                             await new_page.wait_for_load_state()
                             try:
-                                toast_exist = await check_toast(page,new_page,deposit_method,deposit_channel)
+                                toast_exist, toast_failed_text = await check_toast(page,new_page,deposit_method,deposit_channel)
                             except Exception as e:
                                 log.info("TOAST CHECK ERROR: [%s]"%e)
                             if toast_exist:
@@ -436,9 +373,9 @@ async def perform_payment_gateway_test(page,context):
             await asyncio.sleep(5)
     except Exception as e:
         log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT OPTIONS ERROR:%s"%e)
-    return telegram_message
+    return telegram_message, toast_failed_text
 
-async def telegram_send_operation(telegram_message,program_complete):
+async def telegram_send_operation(telegram_message,failed_reason,program_complete):
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
@@ -460,6 +397,7 @@ async def telegram_send_operation(telegram_message,program_complete):
             else:
                 status_emoji = "❓"
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
+            fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason)}`\n" if failed_reason else ""
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [ivip9a\\.com](https://www\\.ivip9a\\.com/en\\-th/home)
             TEAM : 9T
@@ -469,6 +407,10 @@ async def telegram_send_operation(telegram_message,program_complete):
             │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
             │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
             └───────────────────────────┘
+
+            **Failed reason**  
+            {fail_line}
+
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*IVIP9A_%s_%s*.png"%(deposit_method,deposit_channel))
@@ -593,8 +535,8 @@ async def test_main():
                 context = await browser.new_context()
                 page = await context.new_page()
                 await perform_login(page)
-                telegram_message = await perform_payment_gateway_test(page,context)
-                await telegram_send_operation(telegram_message,program_complete=True)
+                telegram_message, toast_failed_text = await perform_payment_gateway_test(page,context)
+                await telegram_send_operation(telegram_message,toast_failed_text,program_complete=True)
                 await telegram_send_summary(telegram_message,date_time('Asia/Bangkok'))
                 await clear_screenshot()
                 break

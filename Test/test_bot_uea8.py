@@ -30,12 +30,12 @@ def init_logger(round_start_time):
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     log_dir = os.path.join(base_dir, "Debug_Log")
     os.makedirs(log_dir, exist_ok=True)
-    log_path = os.path.join(log_dir, "AW8PLAY_Debug.log")
+    log_path = os.path.join(log_dir, "UEA8_Debug.log")
     if os.path.exists(log_path):
         try: os.remove(log_path)
         except: pass
 
-    logger = logging.getLogger('AW8PLAYBot')
+    logger = logging.getLogger('UEA8Bot')
     logger.setLevel(logging.INFO)
     logger.handlers.clear()
 
@@ -51,7 +51,7 @@ def init_logger(round_start_time):
     logger.addHandler(console_handler)
 
     logger.info("=" * 60)
-    logger.info("AW8PLAY PAYMENT GATEWAY TEST STARTING...")
+    logger.info("UEA8 PAYMENT GATEWAY TEST STARTING...")
     logger.info(f"STARTING TIME: {round_start_time.strftime('%d-%m-%Y %H:%M:%S')} GMT+7")
     logger.info("=" * 60)
     return logger
@@ -100,11 +100,11 @@ async def reenter_deposit_page(new_page,context,deposit_submit_button,recheck):
         pass  
 
 async def perform_login(page):
-    WEBSITE_URL = "https://www.aw8thbplay.com/en-th/"
+    WEBSITE_URL = "https://www.uea8th7.com/en-th/"
     for _ in range(3):
         try:
             log.info(f"LOGIN PROCESS - OPENING WEBSITE: {WEBSITE_URL}")
-            await page.goto("https://www.aw8thbplay.com/en-th/", timeout=30000, wait_until="domcontentloaded")
+            await page.goto("https://www.uea8th7.com/en-th/", timeout=30000, wait_until="domcontentloaded")
             await wait_for_network_stable(page, timeout=30000)
             log.info("LOGIN PROCESS - PAGE LOADED SUCCESSFULLY")
             break
@@ -114,52 +114,28 @@ async def perform_login(page):
     else:
         raise Exception("LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED")
         
-    # Login flow aw8play
+    # Login flow uea8
     await asyncio.sleep(5)
-    try:
-        advertisement_close = page.locator('div.image-announcement-close')
-        await advertisement_close.click()
-        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSED")
-    except:
-        log.info("LOGIN PROCESS - NO ADVERTISEMENT")
     #<form class="form-control">
-    #      <button class="_button_1om7q_1 undefined _loginButton_oo0rk_15 btnLogin atoms-button">Login</button>
-    #      <button class="_button_1om7q_1 undefined btnJoin atoms-button">Join Now</button>
+    #      <div class="_usernamePasswordLoginContainer_oo0rk_1 username PasswordLoginContainer">
+    #            <div class="_loginInput_oo0rk_5 standard-form-field">
+    #                 <input class="undefined standard-input" type="text" placeholder="Username" data-name="username" value="bottesting"></div>
+    #            <div class="_passwordInput_oo0rk_10 standard-form-field">
+    #                 <input class="undefined standard-input" type="password" placeholder="Password" data-name="password" value="Bot1232">
+    #            <button class="_button_1om7q_1 undefined _loginButton_oo0rk_15 btnLogin atoms-button">Login</button>
     #</form>
     try:
         topbar_container = page.locator('form.form-control')
-        login_button = topbar_container.locator('button:has-text("Login")')
+        username_password_login_container = topbar_container.locator('div._usernamePasswordLoginContainer_oo0rk_1.username')
+        await username_password_login_container.locator('input.undefined.standard-input[data-name="username"]').click()
+        await username_password_login_container.locator('input.undefined.standard-input[data-name="username"]').fill("bottesting")
+        await username_password_login_container.locator('input.undefined.standard-input[data-name="password"]').click()
+        await username_password_login_container.locator('input.undefined.standard-input[data-name="password"]').fill("Bot1232")
+        login_button = username_password_login_container.locator('button:has-text("Login")')
         await login_button.click()
-        log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
-    except:
-        raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
-    #<div class="login-form-container">
-    #     <div class="_dropdownContainer_x3wte_24 dropdownContainer">
-    #          <div class="">
-    #              <input class="undefined dropdown-field standard-input" type="text" placeholder="Username / Phone no." data-name="username" value="bottesting"></div>
-    #     <div class="_passDropdownContainer_x3wte_29 dropdownContainer">
-    #          <div class="">
-    #              <input class="undefined dropdown-field standard-input" type="password" placeholder="Password" data-name="password" value="Bot1232">
-    #     <div class="standard-button-container _loginButtonContainer_x3wte_50 login-btn-container reg-btn-container-prevnext">
-    #          <button id="" class="_loginButton_x3wte_50 btnLogin custom-btn-login" data-button-category="submit" type="submit">Login</button></div>
-
-    try:
-        login_form_container = page.locator('div.login-form-container')
-        await login_form_container.locator('input.undefined.dropdown-field.standard-input[data-name="username"]').click()
-        await login_form_container.locator('input.undefined.dropdown-field.standard-input[data-name="username"]').fill("bottesting")
-        log.info("LOGIN PROCESS - USERNAME DONE KEYED")
-    except:
-        raise Exception("LOGIN PROCESS - USERNAME FAILED TO KEY IN")
-    try:
-        await login_form_container.locator('input.undefined.dropdown-field.standard-input[data-name="password"]').click()
-        await login_form_container.locator('input.undefined.dropdown-field.standard-input[data-name="password"]').fill("Bot1232")
-        #<button type="submit" aria-label="Login" class="btn primary !block mx-auto uppercase !py-[8px] rounded-md w-full">Login</button>
-        login_button = login_form_container.locator('button:has-text("Login")')
-        await login_button.click()
-        await asyncio.sleep(10)
-        log.info("LOGIN PROCESS - PASSWORD DONE KEYED AND CLICKED LOGIN BUTTON")
-    except:
-        raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN AND LOGIN TO DEPOSIT PAGE FAILED")
+        log.info("LOGIN PROCESS - LOGIN PROCESS SUCCESSFUL")
+    except Exception as e:
+        raise Exception("LOGIN PROCESS - LOGIN PROCESS FAILED:%s"%e)
 
 async def url_jump_check(page,new_page,context,old_url,deposit_submit_button,deposit_method,deposit_channel):
     new_url = new_page.url
@@ -179,14 +155,14 @@ async def url_jump_check(page,new_page,context,old_url,deposit_submit_button,dep
             try:
                 await new_page.wait_for_load_state("networkidle", timeout=60000) #added to ensure the payment page is loaded before screenshot is taken
                 log.info("URL JUMP CHECK - NEW PAGE [%s] LOADED SUCCESSFULLY"%(new_url))
-                await new_page.screenshot(path="AW8PLAY_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                await new_page.screenshot(path="UEA8_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                 break 
             except TimeoutError:
                 log.info("URL JUMP CHECK - TIMEOUT: PAGE DID NOT REACH NETWORKIDLE WITHIN 60s")
                 retry_count += 1
                 if retry_count == max_retries:
                     log.info("URL JUMP CHECK - ❌ Failed: Page did not load after 3 retries.")
-                    await new_page.screenshot(path="AW8PLAY_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                    await new_page.screenshot(path="UEA8_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                     url_jump = True
                     payment_page_failed_load = True
                 else:
@@ -197,7 +173,7 @@ async def url_jump_check(page,new_page,context,old_url,deposit_submit_button,dep
                         log.info("URL JUMP CHECK - FAILED GO BACK TO OLD PAGE [%s] AND RETRY..."%(old_url))
 
     if new_payment_page == False:   
-        await page.screenshot(path="AW8PLAY_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+        await page.screenshot(path="UEA8_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
         url_jump = False
         payment_page_failed_load = False
 
@@ -217,7 +193,7 @@ async def check_toast(page,new_page,deposit_method_text,deposit_channel):
             text = (await toast.inner_text()).strip()
             if await toast.count() > 0:
                 toast_exist = True
-                await new_page.screenshot(path="AW8PLAY_%s_%s_Payment_Page.png"%(deposit_method_text,deposit_channel),timeout=30000)
+                await new_page.screenshot(path="UEA8_%s_%s_Payment_Page.png"%(deposit_method_text,deposit_channel),timeout=30000)
                 log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_method_text,deposit_channel,text))
                 break
             await asyncio.sleep(0.1)
@@ -405,11 +381,13 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
                 status_emoji = "❌"
             else:
                 status_emoji = "❓"
+            
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
+            
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason)}`\n" if failed_reason else ""
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [aw8thbplay\\.com](https://www\\.aw8thbplay\\.com/en\\-th)
-            TEAM : A8T
+            URL: [uea8th7\\.com](https://www\\.uea8th7\\.com/en\\-th)
+            TEAM : UT
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
             │  
@@ -422,7 +400,7 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
 
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*AW8PLAY_%s_%s*.png"%(deposit_method,deposit_channel))
+            files = glob.glob("*UEA8_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
@@ -451,7 +429,7 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
                 pass
     else:   
         fail_msg = (
-                "⚠️ *9T RETRY 3 TIMES FAILED*\n"
+                "⚠️ *UT RETRY 3 TIMES FAILED*\n"
                 "OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE OR INTERFACE CHANGES IN LOGIN PAGE OR CLOUDFLARE BLOCK\n"
                 "KINDLY ASK ENGINEER TO CHECK IF ISSUE PERSISTS CONTINUOUSLY IN TWO HOURS"
             )
@@ -508,8 +486,8 @@ async def telegram_send_summary(telegram_message,date_time):
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
-URL: [aw8thbplay\\.com](https://www\\.aw8thbplay\\.com/en\\-th)
-TEAM : AW8
+URL: [uea8th7\\.com](https://www\\.uea8th7\\.com/en\\-th)
+TEAM : UT
 TIME: {escape_md(date_time)}
 
 {summary_body}"""
@@ -526,7 +504,7 @@ TIME: {escape_md(date_time)}
             log.error(f"SUMMARY FAILED TO SENT: {e}")
 
 async def clear_screenshot():
-    picture_to_sent = glob.glob("*AW8PLAY*.png")
+    picture_to_sent = glob.glob("*UEA8*.png")
     for f in picture_to_sent:
         os.remove(f) 
 
