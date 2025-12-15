@@ -367,7 +367,7 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
 async def perform_payment_gateway_test(page):
     exclude_list = ["Bank", "Government Savings Bank", "Government Saving Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
     telegram_message = {}
-
+    failed_reason = {}
     # deposit method menu 
     # class DOM: <div class="deposit-content my-0 md:my-4 px-4 py-4">
     #                <div id="deposit_content_nav"></div><!---->
@@ -467,16 +467,19 @@ async def perform_payment_gateway_test(page):
                         url_jump, payment_page_failed_load= await url_jump_check(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,deposit_channel,min_amount,telegram_message)
                         if url_jump and payment_page_failed_load == False:
                             telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                            failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
                             log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD")
                             await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
                             continue
                         elif url_jump and payment_page_failed_load == True:
                             telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                            failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"payment page failed load"]
                             log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE FAILED LOAD")
                             await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
                             continue
                         else:
                             telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                            failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"payment page failed load"]
                             log.warning("SCRIPT STATUS: URL JUMP FAILED, PAYMENT PAGE FAILED LOAD")
                             await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0) 
                         # QR code check
@@ -516,11 +519,12 @@ async def perform_payment_gateway_test(page):
             await asyncio.sleep(5)
     except Exception as e:
         log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD SCROLLER/CONATINER CANNOT LOCATE:%s"%e)
-    return telegram_message
+    return telegram_message,failed_reason
 
-async def telegram_send_operation(telegram_message,program_complete):
+async def telegram_send_operation(telegram_message,failed_reason,program_complete):
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
+    log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
     bot = Bot(token=TOKEN)
@@ -539,7 +543,19 @@ async def telegram_send_operation(telegram_message,program_complete):
                 status_emoji = "❌"
             else:
                 status_emoji = "❓"
+            
+            for key, value in failed_reason.items():
+                # Split key parts
+                failed_deposit_channel_method = key.split("_")
+                failed_deposit_channel = failed_deposit_channel_method[0]
+                failed_deposit_method  = failed_deposit_channel_method[1]
+
+                if failed_deposit_channel == deposit_channel and failed_deposit_method == deposit_method:
+                    failed_reason_text = value[0]
+                    break
+
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
+            fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [22funthb1\\.com](https://www\\.22funthb1\\.com/en\\-th)
             TEAM : 2FT
@@ -549,6 +565,10 @@ async def telegram_send_operation(telegram_message,program_complete):
             │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
             │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
             └───────────────────────────┘
+            
+            **Failed reason**  
+            {fail_line}
+
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*22FUN_%s_%s*.png"%(deposit_method,deposit_channel))
@@ -633,7 +653,7 @@ async def telegram_send_summary(telegram_message,date_time):
             unknown_block = ""
             if unknown_records:
                 items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in unknown_records]
-                unknown_block = f"\n┌─ ❌ Unknown **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+                unknown_block = f"\n┌─ ❓ Unknown **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
@@ -673,8 +693,8 @@ async def test_main():
                 context = await browser.new_context()
                 page = await context.new_page()
                 await perform_login(page)
-                telegram_message = await perform_payment_gateway_test(page)
-                await telegram_send_operation(telegram_message,program_complete=True)
+                telegram_message, failed_reason = await perform_payment_gateway_test(page)
+                await telegram_send_operation(telegram_message,failed_reason,program_complete=True)
                 await telegram_send_summary(telegram_message,date_time('Asia/Bangkok'))
                 await clear_screenshot()
                 break
@@ -687,5 +707,5 @@ async def test_main():
             if attempt == MAX_RETRY:
                 telegram_message = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
-                await telegram_send_operation(telegram_message,program_complete=False)
+                await telegram_send_operation(telegram_message,failed_reason,program_complete=False)
                 raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")
