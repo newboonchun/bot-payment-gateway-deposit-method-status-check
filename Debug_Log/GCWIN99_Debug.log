@@ -1,24 +1,43 @@
-13:58:42 | INFO     | ============================================================
-13:58:42 | INFO     | GCWIN99 PAYMENT GATEWAY TEST STARTING...
-13:58:42 | INFO     | STARTING TIME: 09-12-2025 12:58:42 GMT+7
-13:58:42 | INFO     | ============================================================
-13:58:42 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.gcwin99v6.com/en-th
-13:58:56 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
-13:59:15 | INFO     | LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED
-13:59:16 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-13:59:16 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
-13:59:16 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
-13:59:16 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-13:59:18 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
-13:59:19 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
-13:59:20 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
-13:59:20 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.gcwin99v6.com/en-th/deposit]
-13:59:20 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
-13:59:20 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน.] 
-13:59:20 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน.] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
-13:59:20 | INFO     | TELEGRAM MESSAGE: [{}]
-13:59:22 | INFO     | TELEGRAM MESSAGE: [{}]
-13:59:24 | INFO     | TELEGRAM_MESSAGE:{}
-13:59:24 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
-13:59:24 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
-13:59:24 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+18:44:57 | INFO     | ============================================================
+18:44:57 | INFO     | GCWIN99 PAYMENT GATEWAY TEST STARTING...
+18:44:57 | INFO     | STARTING TIME: 15-12-2025 17:44:57 GMT+7
+18:44:57 | INFO     | ============================================================
+18:44:58 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.gcwin99v6.com/en-th
+18:45:01 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+18:45:10 | INFO     | LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED
+18:45:11 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+18:45:41 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button.topbar_btn_1").nth(1)
+    - locator resolved to <button type="button" data-v-66556689="" class="topbar_btn_1">Login</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    55 × waiting for element to be visible, enabled and stable
+       - element is not visible
+     - retrying click action
+       - waiting 500ms
+
+18:45:41 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+18:45:41 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+18:45:41 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+18:45:43 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
+18:45:44 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+18:45:45 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
+18:45:45 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.gcwin99v6.com/en-th/deposit]
+18:45:45 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
+18:45:45 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน.] 
+18:45:45 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน.] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
+18:45:45 | INFO     | TELEGRAM MESSAGE: [{}]
+18:45:45 | INFO     | FAILED REASON: [{}]
+18:45:46 | INFO     | TELEGRAM MESSAGE: [{}]
+18:45:47 | INFO     | TELEGRAM_MESSAGE:{}
+18:45:47 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+18:45:47 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value
+18:45:47 | ERROR    | SUMMARY FAILED TO SENT: cannot access local variable 'caption' where it is not associated with a value

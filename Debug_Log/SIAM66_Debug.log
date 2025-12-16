@@ -1,31 +1,82 @@
-17:12:55 | INFO     | ============================================================
-17:12:55 | INFO     | SIAM66 PAYMENT GATEWAY TEST STARTING...
-17:12:55 | INFO     | STARTING TIME: 10-12-2025 16:12:55 GMT+7
-17:12:55 | INFO     | ============================================================
-17:12:55 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:12:57 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:12:59 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:12:59 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:13:01 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:13:01 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:13:03 | WARNING  | RETRY ROUND [1] ERROR: [LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED]
-17:13:03 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
-17:13:03 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:13:04 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:13:06 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:13:06 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:13:08 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:13:08 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:13:10 | WARNING  | RETRY ROUND [2] ERROR: [LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED]
-17:13:10 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
-17:13:11 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:13:12 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:13:14 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:13:14 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:13:16 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-17:13:16 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
-17:13:18 | WARNING  | RETRY ROUND [3] ERROR: [LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED]
-17:13:18 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
-17:13:18 | WARNING  | REACHED MAX RETRY, STOP SCRIPT
-17:13:18 | INFO     | TELEGRAM MESSAGE: [{}]
-17:13:21 | INFO     | FAILURE MESSAGE SENT
+18:58:33 | INFO     | ============================================================
+18:58:33 | INFO     | SIAM66 PAYMENT GATEWAY TEST STARTING...
+18:58:33 | INFO     | STARTING TIME: 15-12-2025 17:58:33 GMT+7
+18:58:33 | INFO     | ============================================================
+18:58:34 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
+18:58:36 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+18:58:41 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+18:59:11 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button.topbar_btn_1").nth(1)
+    - locator resolved to <button type="button" aria-label="Login" data-v-603dc185="" class="topbar_btn_1">Login</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    56 × waiting for element to be visible, enabled and stable
+       - element is not visible
+     - retrying click action
+       - waiting 500ms
+
+18:59:11 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+18:59:12 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+18:59:12 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+18:59:13 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
+18:59:14 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+18:59:15 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
+18:59:15 | INFO     | URL AFTER DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON CLICK: [https://www.siam66th2.com/en-th/deposit]
+18:59:15 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [เติมเงินผ่าน QR]
+18:59:15 | INFO     | DEPOSIT CHANNEL [MSSTHAIPAY] 
+18:59:15 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [MSSTHAIPAY] BUTTON ARE CLICKED
+18:59:15 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+฿ 100
+ - 
+฿ 100,000]
+18:59:15 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+18:59:15 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+18:59:15 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+18:59:25 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam66th2.com/en-th/deposit]
+18:59:25 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+18:59:25 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
+18:59:25 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam66th2.com/en-th/deposit'> selector="div[id*='qr' i]"> QR_CODE_COUNT:1
+18:59:25 | INFO     | QR DETECTED
+18:59:25 | INFO     | Trying to goto URL attempt 1/3: https://www.siam66th2.com/en-th/deposit
+18:59:28 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+18:59:29 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
+18:59:29 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [MSSTHAIPAY] BUTTON ARE CLICKED
+18:59:29 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
+18:59:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
+18:59:29 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.siam66th2.com/en-th/deposit]
+18:59:29 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
+18:59:29 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
+18:59:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
+18:59:29 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+฿ 200
+ - 
+฿ 100,000]
+18:59:29 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
+18:59:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [200] ARE KEYED IN
+18:59:29 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+18:59:36 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=75246121&t=7831492cf23bd5ac09f1a258aedee2ec]
+19:00:27 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=75246121&t=7831492cf23bd5ac09f1a258aedee2ec] LOADED SUCCESSFULLY
+19:00:27 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+19:00:27 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+19:00:27 | INFO     | Trying to goto URL attempt 1/3: https://www.siam66th2.com/en-th/deposit
+19:00:30 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+19:00:30 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
+19:00:30 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
+19:00:30 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [200] ARE KEYED IN
+19:00:30 | INFO     | TELEGRAM MESSAGE: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:59:25'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 18:00:27']}]
+19:00:30 | INFO     | FAILED REASON: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['-'], 'FPAY-CRYPTO_คริปโต': ['-']}]
+19:00:30 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [MSSTHAIPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:59:25]
+19:00:30 | INFO     | File [['SIAM66_เติมเงินผ่าน QR_MSSTHAIPAY_Payment_Page.png']]
+19:00:30 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-12-15 18:00:27]
+19:00:30 | INFO     | File [['SIAM66_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
+19:00:30 | INFO     | TELEGRAM MESSAGE: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:59:25'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 18:00:27']}]
+19:00:31 | INFO     | TELEGRAM_MESSAGE:{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:59:25'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 18:00:27']}
+19:00:32 | INFO     | SUMMARY SENT
