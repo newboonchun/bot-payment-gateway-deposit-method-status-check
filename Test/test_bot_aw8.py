@@ -148,6 +148,7 @@ async def perform_login(page):
     #   <div class="slidedown-footer" id="slidedown-footer">
     #           <button class="align-right primary slidedown-button" id="onesignal-slidedown-allow-button">Yes, I am</button>
     #           <button class="align-right secondary slidedown-button" id="onesignal-slidedown-cancel-button">No, I am not</button><div class="clearfix"></div></div></div>
+    await asyncio.sleep(5)
     try:
         slidedown = page.locator("div.slidedown-footer")
         await slidedown.locator('button.align-right.primary.slidedown-button').click()
@@ -681,6 +682,7 @@ async def test_main():
             
             if attempt == MAX_RETRY:
                 telegram_message = {}
+                failed_reason = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
                 await telegram_send_operation(telegram_message,failed_reason,program_complete=False)
                 raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")

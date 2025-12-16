@@ -683,6 +683,7 @@ async def test_main():
             
             if attempt == MAX_RETRY:
                 telegram_message = {}
+                failed_reason = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
                 await telegram_send_operation(telegram_message,failed_reason,program_complete=False)
                 raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")
