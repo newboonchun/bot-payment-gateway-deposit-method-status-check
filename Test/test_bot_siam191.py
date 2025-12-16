@@ -128,15 +128,19 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED")
     except:
         log.info("LOGIN PROCESS - NO SLIDEDOWN")
+    #<button type="button" class="header_login_btn" data-v-8eb52895="">
     try:
-        await page.get_by_role("button", name=" Login").click()
+        login_button = page.locator('button.header_login_btn')
+        await login_button.click()
         log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
     except:
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
     try:
         await page.get_by_role("textbox", name="-123-4567").click()
         await page.get_by_role("textbox", name="-123-4567").fill("084-567-4567")
-        await page.get_by_role("button", name="Confirm").click()
+        #<button type="submit" class="auth_confirm_btn md:rounded-full text-sm md:text-base font-medium px-5 py-3 w-full md:w-[70%]">Confirm</button>
+        submit_button = page.locator('button.auth_confirm_btn')
+        await submit_button.click()
         log.info("LOGIN PROCESS - USERNAME DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - USERNAME FAILED TO KEY IN")
@@ -148,7 +152,9 @@ async def perform_login(page):
         await page.get_by_role("textbox").nth(4).fill("4")
         await page.get_by_role("textbox").nth(5).fill("5")
         await page.locator("input[type=\"password\"]").nth(5).fill("6")
-        await page.get_by_role("button", name="Confirm").click()
+        #<button type="submit" class="auth_confirm_btn md:rounded-full text-sm md:text-base font-medium px-5 py-3 w-full md:w-[70%]">Confirm</button>
+        submit_button = page.locator('button.auth_confirm_btn')
+        await submit_button.click()
         log.info("LOGIN PROCESS - PASSWORD DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN AND LOGIN SUCCESS")
@@ -192,6 +198,8 @@ async def qr_code_check(page):
     
     if iframe_count != 0:
         for i in range(iframe_count):
+            if qr_code_count != 0:
+                break
             if inner_iframe_qr == True:
                 break
             try:
@@ -292,11 +300,12 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
     except:
             toast_exist = False
             log.info("No Toast message, no proceed to payment page, no qr code, please check what reason manually.")
-    return toast_exist
+    return toast_exist, text
 
 async def perform_payment_gateway_test(page):
     exclude_list = ["Bank", "Government Savings Bank", "Government Saving Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
     telegram_message = {}
+    failed_reason = {}
 
     # locate scrollbar
     # class DOM SIAM191: <div class="flex-grow grid grid-cols-1 gap-4 overflow-y-auto light-scrollbar px-8 pb-[10px]"
@@ -354,6 +363,7 @@ async def perform_payment_gateway_test(page):
                         if qr_code_count != 0:
                             await page.screenshot(path="SIAM191_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                             telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                            failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
                             await reenter_deposit_page(page)
                             continue
                         else:
@@ -361,16 +371,18 @@ async def perform_payment_gateway_test(page):
                             # screenshot first in case there are no toast (unidentified reason)
                             await page.screenshot(path="MSTSLOT_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                             try:
-                                toast_exist = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
+                                toast_exist,toast_failed_text = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
                             except Exception as e:
                                 log.info("TOAST CHECK ERROR: [%s]"%e)
                             if toast_exist:
                                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                failed_reason[f"{deposit_channel}_{deposit_method}"] = [toast_failed_text]
                                 log.info("TOAST DETECTED")
                                 await reenter_deposit_page(page)
                                 continue
                             else:
                                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"no reason found, check manually_{date_time("Asia/Bangkok")}"]
+                                failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"unknown reason"]
                                 log.warning("UNIDENTIFIED REASON")
                                 await reenter_deposit_page(page)   
                     except:
@@ -382,11 +394,12 @@ async def perform_payment_gateway_test(page):
             await asyncio.sleep(5)
     except Exception as e:
         log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD SCROLLER/CONATINER CANNOT LOCATE:%s"%e)
-    return telegram_message
+    return telegram_message, failed_reason
 
-async def telegram_send_operation(telegram_message,program_complete):
+async def telegram_send_operation(telegram_message,failed_reason,program_complete):
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
+    log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
     bot = Bot(token=TOKEN)
@@ -405,7 +418,19 @@ async def telegram_send_operation(telegram_message,program_complete):
                 status_emoji = "❌"
             else:
                 status_emoji = "❓"
+            
+            for key, value in failed_reason.items():
+                # Split key parts
+                failed_deposit_channel_method = key.split("_")
+                failed_deposit_channel = failed_deposit_channel_method[0]
+                failed_deposit_method  = failed_deposit_channel_method[1]
+
+                if failed_deposit_channel == deposit_channel and failed_deposit_method == deposit_method:
+                    failed_reason_text = value[0]
+                    break
+
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
+            fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [siam191\\.net](https://www\\.siam191\\.net/en\\-th)
             TEAM : S1T
@@ -415,6 +440,10 @@ async def telegram_send_operation(telegram_message,program_complete):
             │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
             │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
             └───────────────────────────┘
+
+            **Failed reason**  
+            {fail_line}
+
             **Time Detail**  
             ├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*SIAM191_%s_%s*.png"%(deposit_method,deposit_channel))
@@ -499,7 +528,7 @@ async def telegram_send_summary(telegram_message,date_time):
             unknown_block = ""
             if unknown_records:
                 items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in unknown_records]
-                unknown_block = f"\n┌─ ❌ Unknown **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
+                unknown_block = f"\n┌─ ❓ Unknown **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
             caption = f"""*Deposit Payment Gateway Testing Result Summary *  
@@ -539,8 +568,8 @@ async def test_main():
                 context = await browser.new_context()
                 page = await context.new_page()
                 await perform_login(page)
-                telegram_message = await perform_payment_gateway_test(page)
-                await telegram_send_operation(telegram_message,program_complete=True)
+                telegram_message, failed_reason = await perform_payment_gateway_test(page)
+                await telegram_send_operation(telegram_message,failed_reason,program_complete=True)
                 await telegram_send_summary(telegram_message,date_time('Asia/Bangkok'))
                 await clear_screenshot()
                 break
@@ -552,6 +581,7 @@ async def test_main():
             
             if attempt == MAX_RETRY:
                 telegram_message = {}
+                failed_reason = {}
                 log.warning("REACHED MAX RETRY, STOP SCRIPT")
-                await telegram_send_operation(telegram_message,program_complete=False)
+                await telegram_send_operation(telegram_message,failed_reason,program_complete=False)
                 raise Exception("RETRY 3 TIMES....OVERALL FLOW CAN'T COMPLETE DUE TO NETWORK ISSUE")
