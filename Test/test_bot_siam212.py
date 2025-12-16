@@ -381,7 +381,7 @@ async def check_toast(page,deposit_method,deposit_channel):
     return toast_exist,text
 
 async def perform_payment_gateway_test(page):
-    exclude_list = ["Government Savings Bank", "Government Saving Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
+    exclude_list = ["Government Savings Bank", "Government Saving Bank", "ธ.", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
     telegram_message = {}
     failed_reason = {}
     await page.locator(".deposit-button-method").nth(0).wait_for(state="attached")

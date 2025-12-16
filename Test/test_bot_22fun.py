@@ -365,7 +365,7 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
     return toast_exist
 
 async def perform_payment_gateway_test(page):
-    exclude_list = ["Bank", "Government Savings Bank", "Government Saving Bank", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
+    exclude_list = ["Bank", "Government Savings Bank", "Government Saving Bank", "ธ.", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
     telegram_message = {}
     failed_reason = {}
     # deposit method menu 
