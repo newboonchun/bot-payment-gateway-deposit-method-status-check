@@ -1,104 +1,51 @@
-18:52:32 | INFO     | ============================================================
-18:52:32 | INFO     | SIAM345 PAYMENT GATEWAY TEST STARTING...
-18:52:32 | INFO     | STARTING TIME: 15-12-2025 17:52:32 GMT+7
-18:52:32 | INFO     | ============================================================
-18:52:34 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam345.com/en-th
-18:52:37 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
-18:53:08 | INFO     | LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED
-18:53:11 | INFO     | LOGIN PROCESS - LOGIN BUTTON (1) ARE CLICKED
-18:53:21 | INFO     | LOGIN PROCESS - LOGIN BUTTON (2) ARE FAILED TO CLICK
-18:53:22 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
-18:53:22 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
-18:53:25 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
-18:53:26 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
-18:53:28 | INFO     | Deposit method button count:3
-18:53:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
-18:53:29 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.siam345.net/en-th/deposit]
-18:53:29 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
-18:53:29 | INFO     | DEPOSIT CHANNEL [AUDON KHONGCHINDA] 
-18:53:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [AUDON KHONGCHINDA] BUTTON ARE CLICKED
-18:53:29 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
-฿ 50
- - 
-฿ 1,000,000]
-18:53:29 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [50]
-18:53:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [50] ARE KEYED IN
-18:53:30 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:53:39 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam345.net/en-th/deposit]
-18:53:40 | INFO     | MANUAL BANK TEXT:Bank Name:
-18:53:40 | INFO     | Trying to goto URL attempt 1/3: https://www.siam345.net/en-th/deposit
-18:53:44 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:53:47 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
-18:53:47 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [AUDON KHONGCHINDA] BUTTON ARE CLICKED
-18:53:48 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [50] ARE KEYED IN
-18:53:48 | INFO     | MANUAL BANK TEXT FOUND:Bank Name:
-18:53:48 | INFO     | DEPOSIT CHANNEL [AUDON KHONGCHINDA] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
-18:53:48 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
-18:53:48 | INFO     | URL AFTER DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON CLICK: [https://www.siam345.net/en-th/deposit]
-18:53:48 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ธนาคารออนไลน์]
-18:53:48 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-18:53:48 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:53:48 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+18:23:54 | INFO     | ============================================================
+18:23:54 | INFO     | SIAM345 PAYMENT GATEWAY TEST STARTING...
+18:23:54 | INFO     | STARTING TIME: 16-12-2025 17:23:54 GMT+7
+18:23:54 | INFO     | ============================================================
+18:23:55 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam345.com/en-th
+18:23:56 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+18:24:26 | INFO     | LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED
+18:24:27 | INFO     | LOGIN PROCESS - LOGIN BUTTON (1) ARE CLICKED
+18:24:37 | INFO     | LOGIN PROCESS - LOGIN BUTTON (2) ARE FAILED TO CLICK
+18:24:38 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+18:24:38 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+18:24:40 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
+18:24:41 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+18:24:41 | INFO     | Deposit method button count:3
+18:24:41 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
+18:24:41 | INFO     | URL AFTER DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON CLICK: [https://www.siam345.net/en-th/deposit]
+18:24:41 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ธนาคารออนไลน์]
+18:24:41 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
+18:24:42 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+18:24:42 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
 ฿ 100
  - 
 ฿ 20,000]
-18:53:48 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:53:49 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:53:49 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:53:59 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam345.net/en-th/deposit]
-18:54:00 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:54:00 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:3
-18:54:00 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="iframe >> nth=0 >> internal:control=enter-frame >> div[id*='qr' i]"> QR_CODE_COUNT:0
-18:54:00 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:0
-18:54:01 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#dowloadQr'> QR_CODE_COUNT:0
-18:54:01 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="iframe >> nth=1 >> internal:control=enter-frame >> div[id*='qr' i]"> QR_CODE_COUNT:0
-18:54:01 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=1 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:0
-18:54:01 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=1 >> internal:control=enter-frame >> div#dowloadQr'> QR_CODE_COUNT:0
-18:54:01 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="iframe >> nth=2 >> internal:control=enter-frame >> div[id*='qr' i]"> QR_CODE_COUNT:3
-18:54:01 | INFO     | QR DETECTED
-18:54:01 | INFO     | Trying to goto URL attempt 1/3: https://www.siam345.net/en-th/deposit
-18:54:06 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:54:07 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
-18:54:08 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:54:08 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-18:54:09 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
-18:54:09 | INFO     | URL AFTER DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON CLICK: [https://www.siam345.net/en-th/deposit]
-18:54:09 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท]
-18:54:09 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-18:54:09 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:54:09 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
-฿ 100
- - 
-฿ 20,000]
-18:54:09 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:54:10 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:54:11 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:54:20 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam345.net/en-th/deposit]
-18:54:21 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:54:21 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:2
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="iframe >> nth=0 >> internal:control=enter-frame >> div[id*='qr' i]"> QR_CODE_COUNT:0
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:0
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#dowloadQr'> QR_CODE_COUNT:0
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="iframe >> nth=1 >> internal:control=enter-frame >> div[id*='qr' i]"> QR_CODE_COUNT:0
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=1 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:0
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=1 >> internal:control=enter-frame >> div#dowloadQr'> QR_CODE_COUNT:0
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="div[id*='qr' i]"> , QR_CODE_COUNT:0
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='div#qrcode-container'> , QR_CODE_COUNT:0
-18:54:21 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='div#dowloadQr'> , QR_CODE_COUNT:0
-18:54:21 | INFO     | NO QR DETECTED
-18:54:21 | INFO     | CHECK TOAST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
-18:54:21 | INFO     | CHECK TOAST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:54:21 | INFO     | CHECK TOAST - MIN AMOUNT [100] ARE KEYED IN
-18:54:21 | INFO     | CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:54:23 | INFO     | DEPOSIT METHOD:BAOYUANPAY, DEPOSIT CHANNEL:ทรูมันนี่ วอลเล็ท GOT PROBLEM. DETAILS:[Payment gateway is currently under maintenance now]
-18:54:23 | INFO     | TOAST DETECTED
-18:54:23 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:54:01'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:54:23']}]
-18:54:23 | INFO     | FAILED REASON: [{'BAOYUANPAY_ธนาคารออนไลน์': ['-'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['Payment gateway is currently under maintenance now']}]
-18:54:24 | INFO     | METHOD: [ธนาคารออนไลน์], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:54:01]
-18:54:24 | INFO     | File [['SIAM345_ธนาคารออนไลน์_BAOYUANPAY_Payment_Page.png']]
-18:54:24 | INFO     | METHOD: [ทรูมันนี่ วอลเล็ท], CHANNEL: [BAOYUANPAY], STATUS: [deposit failed], TIMESTAMP: [2025-12-15 17:54:23]
-18:54:24 | INFO     | File [['SIAM345_ทรูมันนี่ วอลเล็ท_BAOYUANPAY_Payment_Page.png']]
-18:54:26 | INFO     | SCREENSHOT SUCCESSFULLY SENT
-18:54:26 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:54:01'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:54:23']}]
-18:54:27 | INFO     | TELEGRAM_MESSAGE:{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:54:01'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:54:23']}
-18:54:28 | INFO     | SUMMARY SENT
+18:24:42 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+18:24:42 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+18:24:42 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+18:24:52 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam345.net/en-th/deposit]
+18:24:52 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+18:24:52 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:3
+18:24:52 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="iframe >> nth=0 >> internal:control=enter-frame >> div[id*='qr' i]"> QR_CODE_COUNT:0
+18:24:52 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:0
+18:24:52 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#dowloadQr'> QR_CODE_COUNT:0
+18:24:52 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="iframe >> nth=1 >> internal:control=enter-frame >> div[id*='qr' i]"> QR_CODE_COUNT:0
+18:24:52 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=1 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:0
+18:24:52 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector='iframe >> nth=1 >> internal:control=enter-frame >> div#dowloadQr'> QR_CODE_COUNT:0
+18:24:52 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam345.net/en-th/deposit'> selector="iframe >> nth=2 >> internal:control=enter-frame >> div[id*='qr' i]"> QR_CODE_COUNT:3
+18:24:52 | INFO     | QR DETECTED
+18:24:52 | INFO     | Trying to goto URL attempt 1/3: https://www.siam345.net/en-th/deposit
+18:24:55 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+18:24:55 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
+18:24:55 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+18:24:55 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
+18:24:55 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-16 17:24:52']}]
+18:24:55 | INFO     | FAILED REASON: [{'BAOYUANPAY_ธนาคารออนไลน์': ['-']}]
+18:24:55 | INFO     | METHOD: [ธนาคารออนไลน์], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-16 17:24:52]
+18:24:55 | INFO     | File [['SIAM345_ธนาคารออนไลน์_BAOYUANPAY_Payment_Page.png']]
+18:24:55 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-16 17:24:52']}]
+18:24:55 | INFO     | TELEGRAM_MESSAGE:{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-16 17:24:52']}
+18:24:56 | INFO     | SUMMARY SENT
+18:24:56 | INFO     | EXCEL DATA: {}
+18:24:56 | INFO     | All payment method are success this session: 'date_time'
