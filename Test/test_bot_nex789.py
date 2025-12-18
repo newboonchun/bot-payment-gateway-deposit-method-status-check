@@ -278,7 +278,11 @@ async def qr_code_check(page):
         log.info("No IFRAME/POP UP APPEARED:%s"%e)
 
     qr_selector = [
+        "div.qr-image",
+        "div.qr-image.position-relative",
+        "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
+        "div[class*='qrcode']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
