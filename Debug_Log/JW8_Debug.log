@@ -1,14 +1,14 @@
-18:47:55 | INFO     | ============================================================
-18:47:55 | INFO     | JW8 PAYMENT GATEWAY TEST STARTING...
-18:47:55 | INFO     | STARTING TIME: 15-12-2025 17:47:55 GMT+7
-18:47:55 | INFO     | ============================================================
-18:47:56 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
-18:47:58 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
-18:48:04 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-18:48:34 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
+12:06:10 | INFO     | ============================================================
+12:06:10 | INFO     | JW8 PAYMENT GATEWAY TEST STARTING...
+12:06:10 | INFO     | STARTING TIME: 17-12-2025 11:06:10 GMT+7
+12:06:10 | INFO     | ============================================================
+12:06:11 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.jw8thai8.com/en-th
+12:06:13 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+12:06:19 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+12:06:49 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
 Call log:
   - waiting for locator("button.topbar_btn_1:has-text(\"Login\")").nth(1)
-    - locator resolved to <button type="button" aria-label="Login" data-v-4dfc0a4e="" class="topbar_btn_1">Login</button>
+    - locator resolved to <button type="button" aria-label="Login" data-v-3bab73dc="" class="topbar_btn_1">Login</button>
   - attempting click action
     2 × waiting for element to be visible, enabled and stable
       - element is not visible
@@ -18,98 +18,143 @@ Call log:
       - element is not visible
     - retrying click action
       - waiting 100ms
-    52 × waiting for element to be visible, enabled and stable
+    53 × waiting for element to be visible, enabled and stable
        - element is not visible
      - retrying click action
        - waiting 500ms
 
-18:48:34 | INFO     | LOGIN PROCESS -  Account BUTTON ARE CLICKED
-18:48:35 | INFO     | LOGIN PROCESS - USERNAME TEXTBOX ARE CLICKED
-18:48:35 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
-18:48:36 | INFO     | LOGIN PROCESS - PASSWORD TEXTBOX ARE CLICKED
-18:48:36 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
-18:48:36 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-18:48:45 | INFO     | LOGIN PROCESS - ADVERTISEMENT WRAPPER ARE CLOSED
-18:48:46 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
-18:48:56 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
-18:48:56 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
-18:48:57 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
-18:48:57 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน] 
-18:48:57 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
-18:48:57 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากแนบสลิป] BUTTON ARE CLICKED
-18:48:57 | INFO     | URL AFTER DEPOSIT METHOD [ฝากแนบสลิป] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
-18:48:58 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากแนบสลิป]
-18:48:58 | INFO     | DEPOSIT CHANNEL [ธนาคารกสิกรไทย] 
-18:48:58 | INFO     | DEPOSIT CHANNEL [ธนาคารกสิกรไทย] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
-18:48:58 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
-18:48:58 | INFO     | URL AFTER DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
-18:48:58 | INFO     | FOUND [2] DEPOSIT CHANNEL FOR DEPOSIT METHOD [เติมเงินผ่าน QR]
-18:48:58 | INFO     | DEPOSIT CHANNEL [WEPAY] 
-18:48:59 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [WEPAY] BUTTON ARE CLICKED
-18:49:00 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
+12:06:49 | INFO     | LOGIN PROCESS -  Account BUTTON ARE CLICKED
+12:06:49 | INFO     | LOGIN PROCESS - USERNAME TEXTBOX ARE CLICKED
+12:06:49 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+12:06:49 | INFO     | LOGIN PROCESS - PASSWORD TEXTBOX ARE CLICKED
+12:06:50 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+12:06:50 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+12:06:52 | INFO     | LOGIN PROCESS - ADVERTISEMENT WRAPPER ARE CLOSED
+12:06:52 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+12:06:55 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
+12:06:55 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
+12:06:55 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
+12:06:55 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน] 
+12:06:55 | INFO     | DEPOSIT CHANNEL [ธนาคารออมสิน] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
+12:06:55 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
+12:06:55 | INFO     | URL AFTER DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
+12:06:55 | INFO     | FOUND [3] DEPOSIT CHANNEL FOR DEPOSIT METHOD [เติมเงินผ่าน QR]
+12:06:55 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
+12:06:55 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+12:06:55 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
+฿ 100
+ - 
+฿ 20,000]
+12:06:55 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+12:06:55 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+12:06:56 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:05 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.jw8thai8.com/en-th/deposit]
+12:07:06 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:07:06 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
+12:07:16 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div[id*='qr' i]")
+
+12:07:26 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div#qrcode-container")
+
+12:07:36 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div#dowloadQr")
+
+12:07:36 | INFO     | NO QR DETECTED
+12:07:36 | INFO     | CHECK TOAST - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
+12:07:36 | INFO     | CHECK TOAST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+12:07:36 | INFO     | CHECK TOAST - MIN AMOUNT [100] ARE KEYED IN
+12:07:36 | INFO     | CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:37 | INFO     | DEPOSIT METHOD:BAOYUANPAY, DEPOSIT CHANNEL:เติมเงินผ่าน QR GOT PROBLEM. DETAILS:[Payment gateway is currently under maintenance now]
+12:07:37 | INFO     | TOAST DETECTED
+12:07:37 | INFO     | DEPOSIT CHANNEL [WEPAY] 
+12:07:37 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [WEPAY] BUTTON ARE CLICKED
+12:07:37 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
 ฿ 100
  - 
 ฿ 40,000]
-18:49:00 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:49:01 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:49:01 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:49:03 | INFO     | LOADING INTO NEW PAGE [https://paytm.wepayplus.com/?no=20251215184901740835]
-18:49:13 | INFO     | NEW PAGE [https://paytm.wepayplus.com/?no=20251215184901740835] LOADED SUCCESSFULLY
-18:49:14 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:49:14 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
-18:49:14 | INFO     | Trying to goto URL attempt 1/3: https://www.jw8thai8.com/en-th/deposit
-18:49:21 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:49:26 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
-18:49:26 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [WEPAY] BUTTON ARE CLICKED
-18:49:26 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-18:49:26 | INFO     | DEPOSIT CHANNEL [QPAY] 
-18:49:26 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [QPAY] BUTTON ARE CLICKED
-18:49:26 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
-฿ 100
+12:07:37 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+12:07:37 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+12:07:38 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:39 | INFO     | LOADING INTO NEW PAGE [https://paytm.wepayplus.com/?no=20251217120738855853]
+12:07:49 | INFO     | NEW PAGE [https://paytm.wepayplus.com/?no=20251217120738855853] LOADED SUCCESSFULLY
+12:07:50 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:07:50 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+12:07:50 | INFO     | Trying to goto URL attempt 1/3: https://www.jw8thai8.com/en-th/deposit
+12:07:52 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:07:53 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
+12:07:53 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [WEPAY] BUTTON ARE CLICKED
+12:07:53 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
+12:07:53 | INFO     | DEPOSIT CHANNEL [GlobalPay] 
+12:07:53 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [GlobalPay] BUTTON ARE CLICKED
+12:07:53 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
+฿ 101
  - 
-฿ 300,000]
-18:49:26 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:49:26 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:49:26 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:49:36 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.jw8thai8.com/en-th/deposit]
-18:49:37 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:49:38 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
-18:49:38 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.jw8thai8.com/en-th/deposit'> selector="div[id*='qr' i]"> QR_CODE_COUNT:1
-18:49:38 | INFO     | QR DETECTED
-18:49:38 | INFO     | Trying to goto URL attempt 1/3: https://www.jw8thai8.com/en-th/deposit
-18:49:43 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:49:44 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
-18:49:44 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [QPAY] BUTTON ARE CLICKED
-18:49:44 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-18:49:45 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
-18:49:45 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
-18:49:45 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
-18:49:45 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
-18:49:45 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
-18:49:45 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
+฿ 49,999]
+12:07:53 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [101]
+12:07:53 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [101] ARE KEYED IN
+12:07:53 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:08:03 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.jw8thai8.com/en-th/deposit]
+12:08:03 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:08:03 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
+12:08:13 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div[id*='qr' i]")
+
+12:08:23 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div#qrcode-container")
+
+12:08:33 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div#dowloadQr")
+
+12:08:33 | INFO     | NO QR DETECTED
+12:08:33 | INFO     | CHECK TOAST - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
+12:08:33 | INFO     | CHECK TOAST - DEPOSIT CHANNEL [GlobalPay] BUTTON ARE CLICKED
+12:08:34 | INFO     | CHECK TOAST - MIN AMOUNT [101] ARE KEYED IN
+12:08:34 | INFO     | CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:08:36 | INFO     | DEPOSIT METHOD:GlobalPay, DEPOSIT CHANNEL:เติมเงินผ่าน QR GOT PROBLEM. DETAILS:[Channel Code is invalid.: pay channel is not enabled for merchant]
+12:08:36 | INFO     | TOAST DETECTED
+12:08:36 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
+12:08:36 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.jw8thai8.com/en-th/deposit]
+12:08:36 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
+12:08:36 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
+12:08:36 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
+12:08:36 | INFO     | MONEY INPUT RANGE AMOUNT: [Deposit Amount
 ฿ 200
  - 
 ฿ 150,000]
-18:49:45 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
-18:49:46 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [200] ARE KEYED IN
-18:49:46 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:49:52 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=75244750&t=abae115744706c3b2bc6c342b01fc36c]
-18:50:02 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=75244750&t=abae115744706c3b2bc6c342b01fc36c] LOADED SUCCESSFULLY
-18:50:02 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:50:02 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
-18:50:02 | INFO     | Trying to goto URL attempt 1/3: https://www.jw8thai8.com/en-th/deposit
-18:50:05 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:50:05 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
-18:50:05 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
-18:50:05 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [200] ARE KEYED IN
-18:50:05 | INFO     | TELEGRAM MESSAGE: [{'WEPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:49:14'], 'QPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:49:38'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:50:02']}]
-18:50:05 | INFO     | FAILED REASON: [{'WEPAY_เติมเงินผ่าน QR': ['-'], 'QPAY_เติมเงินผ่าน QR': ['-'], 'FPAY-CRYPTO_คริปโต': ['-']}]
-18:50:06 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [WEPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:49:14]
-18:50:06 | INFO     | File [['JW8_เติมเงินผ่าน QR_WEPAY_Payment_Page.png']]
-18:50:06 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [QPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:49:38]
-18:50:06 | INFO     | File [['JW8_เติมเงินผ่าน QR_QPAY_Payment_Page.png']]
-18:50:06 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:50:02]
-18:50:06 | INFO     | File [['JW8_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
-18:50:06 | INFO     | TELEGRAM MESSAGE: [{'WEPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:49:14'], 'QPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:49:38'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:50:02']}]
-18:50:06 | INFO     | TELEGRAM_MESSAGE:{'WEPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:49:14'], 'QPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:49:38'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:50:02']}
-18:50:07 | INFO     | SUMMARY SENT
+12:08:36 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
+12:08:37 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [200] ARE KEYED IN
+12:08:37 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:08:44 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=75485322&t=17bf51e509cb96e4cf308bd9d7b61609]
+12:08:54 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=75485322&t=17bf51e509cb96e4cf308bd9d7b61609] LOADED SUCCESSFULLY
+12:08:54 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:08:54 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+12:08:54 | INFO     | Trying to goto URL attempt 1/3: https://www.jw8thai8.com/en-th/deposit
+12:08:57 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:08:57 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
+12:08:57 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
+12:08:57 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [200] ARE KEYED IN
+12:08:57 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_เติมเงินผ่าน QR': ['deposit failed_2025-12-17 11:07:37'], 'WEPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-17 11:07:50'], 'GlobalPay_เติมเงินผ่าน QR': ['deposit failed_2025-12-17 11:08:36'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:08:54']}]
+12:08:57 | INFO     | FAILED REASON: [{'BAOYUANPAY_เติมเงินผ่าน QR': ['Payment gateway is currently under maintenance now'], 'WEPAY_เติมเงินผ่าน QR': ['-'], 'GlobalPay_เติมเงินผ่าน QR': ['Channel Code is invalid.: pay channel is not enabled for merchant'], 'FPAY-CRYPTO_คริปโต': ['-']}]
+12:08:58 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [BAOYUANPAY], STATUS: [deposit failed], TIMESTAMP: [2025-12-17 11:07:37]
+12:08:58 | INFO     | File [['JW8_เติมเงินผ่าน QR_BAOYUANPAY_Payment_Page.png']]
+12:09:00 | INFO     | SCREENSHOT SUCCESSFULLY SENT
+12:09:00 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [WEPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:07:50]
+12:09:00 | INFO     | File [['JW8_เติมเงินผ่าน QR_WEPAY_Payment_Page.png']]
+12:09:00 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [GlobalPay], STATUS: [deposit failed], TIMESTAMP: [2025-12-17 11:08:36]
+12:09:00 | INFO     | File [['JW8_เติมเงินผ่าน QR_GlobalPay_Payment_Page.png']]
+12:09:00 | INFO     | SCREENSHOT SUCCESSFULLY SENT
+12:09:00 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:08:54]
+12:09:00 | INFO     | File [['JW8_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
+12:09:00 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_เติมเงินผ่าน QR': ['deposit failed_2025-12-17 11:07:37'], 'WEPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-17 11:07:50'], 'GlobalPay_เติมเงินผ่าน QR': ['deposit failed_2025-12-17 11:08:36'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:08:54']}]
+12:09:01 | INFO     | TELEGRAM_MESSAGE:{'BAOYUANPAY_เติมเงินผ่าน QR': ['deposit failed_2025-12-17 11:07:37'], 'WEPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-17 11:07:50'], 'GlobalPay_เติมเงินผ่าน QR': ['deposit failed_2025-12-17 11:08:36'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:08:54']}
+12:09:02 | INFO     | SUMMARY SENT
+12:09:02 | INFO     | EXCEL DATA: {'date_time': '2025-12-17 11:09:02', 'เติมเงินผ่าน QR_BAOYUANPAY': 1, 'เติมเงินผ่าน QR_GlobalPay': 1}
+12:09:02 | INFO     | Before Reconstruct Dict: {'date_time': ['2025-12-17 11:03:40'], 'เติมเงินผ่าน QR_BAOYUANPAY': [1], 'เติมเงินผ่าน QR_GlobalPay': [1]}
+12:09:02 | INFO     | After Reconstruct Dict: {'date_time': ['2025-12-17 11:03:40', '2025-12-17 11:09:02'], 'เติมเงินผ่าน QR_BAOYUANPAY': [1, 1], 'เติมเงินผ่าน QR_GlobalPay': [1, 1]}

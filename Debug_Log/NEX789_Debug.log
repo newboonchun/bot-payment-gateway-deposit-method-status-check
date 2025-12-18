@@ -1,14 +1,14 @@
-18:54:20 | INFO     | ============================================================
-18:54:20 | INFO     | NEX789 PAYMENT GATEWAY TEST STARTING...
-18:54:20 | INFO     | STARTING TIME: 15-12-2025 17:54:20 GMT+7
-18:54:20 | INFO     | ============================================================
-18:54:22 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.nex789v1.com/th-th
-18:54:31 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
-18:54:36 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-18:55:06 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
+11:59:03 | INFO     | ============================================================
+11:59:03 | INFO     | NEX789 PAYMENT GATEWAY TEST STARTING...
+11:59:03 | INFO     | STARTING TIME: 18-12-2025 10:59:03 GMT+7
+11:59:03 | INFO     | ============================================================
+11:59:09 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.nex789v1.com/th-th
+11:59:12 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+11:59:17 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+11:59:47 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
 Call log:
   - waiting for locator("button.topbar_btn_1").nth(1)
-    - locator resolved to <button type="button" data-v-603dc185="" class="topbar_btn_1" aria-label="เข้าสู่ระบบ">เข้าสู่ระบบ</button>
+    - locator resolved to <button type="button" data-v-a48b465b="" class="topbar_btn_1" aria-label="เข้าสู่ระบบ">เข้าสู่ระบบ</button>
   - attempting click action
     2 × waiting for element to be visible, enabled and stable
       - element is not visible
@@ -18,45 +18,47 @@ Call log:
       - element is not visible
     - retrying click action
       - waiting 100ms
-    54 × waiting for element to be visible, enabled and stable
+    57 × waiting for element to be visible, enabled and stable
        - element is not visible
      - retrying click action
        - waiting 500ms
 
-18:55:06 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
-18:55:07 | INFO     | LOGIN PROCESS - PASSWORD ARE FILLED IN
-18:55:09 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
-18:55:09 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON (1) ARE CLICKED
-18:55:10 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
-18:55:10 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.nex789c.com/th-th/deposit]
-18:55:10 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
-18:55:10 | INFO     | DEPOSIT CHANNEL [Government Saving Bank] 
-18:55:10 | INFO     | DEPOSIT CHANNEL [Government Saving Bank] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
-18:55:11 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
-18:55:11 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.nex789c.com/th-th/deposit]
-18:55:11 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
-18:55:11 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
-18:55:11 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
-18:55:11 | INFO     | MONEY INPUT RANGE AMOUNT: [กรอกจำนวนเงินฝาก
-฿ 200
- - 
-฿ 150,000]
-18:55:11 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
-18:55:11 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [200] ARE KEYED IN
-18:55:11 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:55:17 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=75245564&t=471fd0d76a197b39b1b807a0c74ed16f]
-18:55:31 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=75245564&t=471fd0d76a197b39b1b807a0c74ed16f] LOADED SUCCESSFULLY
-18:55:31 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:55:31 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
-18:55:31 | INFO     | Trying to goto URL attempt 1/3: https://www.nex789c.com/th-th/deposit
-18:55:40 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:55:50 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
-18:55:51 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
-18:55:51 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [200] ARE KEYED IN
-18:55:51 | INFO     | TELEGRAM MESSAGE: [{'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:55:31']}]
-18:55:51 | INFO     | FAILED REASON: [{'FPAY-CRYPTO_คริปโต': ['-']}]
-18:55:55 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:55:31]
-18:55:55 | INFO     | File [['NEX789_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
-18:55:55 | INFO     | TELEGRAM MESSAGE: [{'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:55:31']}]
-18:55:56 | INFO     | TELEGRAM_MESSAGE:{'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:55:31']}
-18:55:57 | INFO     | SUMMARY SENT
+11:59:47 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+12:00:18 | WARNING  | RETRY ROUND [1] ERROR: [LOGIN PROCESS - PASSWORD FAILED TO FILL IN]
+12:00:18 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
+12:00:18 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.nex789v1.com/th-th
+12:00:21 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+12:00:27 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+12:00:57 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button.topbar_btn_1").nth(1)
+    - locator resolved to <button type="button" data-v-a48b465b="" class="topbar_btn_1" aria-label="เข้าสู่ระบบ">เข้าสู่ระบบ</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    57 × waiting for element to be visible, enabled and stable
+       - element is not visible
+     - retrying click action
+       - waiting 500ms
+
+12:00:57 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+12:01:20 | WARNING  | RETRY ROUND [2] ERROR: [LOGIN PROCESS - PASSWORD FAILED TO FILL IN]
+12:01:20 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
+12:01:20 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.nex789v1.com/th-th
+12:01:22 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+12:01:24 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.nex789v1.com/th-th
+12:01:24 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+12:01:26 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.nex789v1.com/th-th
+12:01:26 | WARNING  | LOGIN PROCESS - PAGE LOADED FAILED, RETRYING
+12:01:28 | WARNING  | RETRY ROUND [3] ERROR: [LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED]
+12:01:28 | INFO     | NETWORK ISSUE, STOP HALFWAY, RETRY FROM BEGINNING...
+12:01:28 | WARNING  | REACHED MAX RETRY, STOP SCRIPT
+12:01:28 | INFO     | TELEGRAM MESSAGE: [{}]
+12:01:28 | INFO     | FAILED REASON: [{}]
+12:01:29 | INFO     | FAILURE MESSAGE SENT

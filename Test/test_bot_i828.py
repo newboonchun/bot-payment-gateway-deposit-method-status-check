@@ -10,6 +10,7 @@ from telegram import Bot
 import re
 from telegram.error import TimedOut
 from dotenv import load_dotenv
+import pandas as pd
 
 def escape_md(text):
     if text is None: return ""
@@ -177,6 +178,7 @@ async def qr_code_check(page):
         "div.qr-image.position-relative",
         "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
+        "div[class*='qrcode']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
@@ -286,6 +288,7 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
                 break
             await asyncio.sleep(0.1)
     except:
+            text = None
             toast_exist = False
             log.info("No Toast message, no proceed to payment page, no qr code, please check what reason manually.")
     return toast_exist,text
@@ -365,7 +368,7 @@ async def perform_payment_gateway_test(page):
                                 toast_exist,toast_failed_text = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
                             except Exception as e:
                                 log.info("TOAST CHECK ERROR: [%s]"%e)
-                            if toast_exist:
+                            if toast_exist == True:
                                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
                                 failed_reason[f"{deposit_channel}_{deposit_method}"] = [toast_failed_text]
                                 log.info("TOAST DETECTED")
@@ -376,8 +379,8 @@ async def perform_payment_gateway_test(page):
                                 failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"unknown reason"]
                                 log.warning("UNIDENTIFIED REASON")
                                 await reenter_deposit_page(page)   
-                    except:
-                        raise Exception ("SUBMIT BUTTON FAILED TO CLICK")  
+                    except Exception as e:
+                        raise Exception ("SUBMIT BUTTON FAILED TO CLICK:%s"%e) from e
                 except Exception as e:
                     log.info("DEPOSIT CHANNEL/MINIMUM INPUT AMPONT NOT FOUND:%s"%(e))
             except Exception as e:
@@ -545,6 +548,134 @@ async def clear_screenshot():
     for f in picture_to_sent:
         os.remove(f) 
 
+async def data_process_excel(telegram_message):
+    excel_data = {}
+    excel_len = 0
+    for key, value_list in telegram_message.items():
+        # Split key parts
+        deposit_channel_method = key.split("_")
+        deposit_channel = deposit_channel_method[0]
+        deposit_method  = deposit_channel_method[1]
+        # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
+        value = value_list[0]
+        status, timestamp = value.split("_")
+
+
+        if status == 'deposit failed':
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = 1
+        else:
+            pass
+    
+    # Populate the failed payment gateway info for this session into excel_data
+    log.info("EXCEL DATA: %s"%excel_data)
+
+    try:
+        excel_len = len(excel_data['date_time'])
+    except Exception as e:
+        log.info("All payment method are success this session: %s"%e)
+
+    if excel_len != 0:
+        dt = date_time("Asia/Bangkok")
+        date = dt.split(" ")[0]
+
+        file = "data_bot_%s.xlsx"%date
+
+        if os.path.exists(file):
+            sheets = pd.ExcelFile(file).sheet_names
+            if "I8T" in sheets:
+                for attempt in range(3):
+                    try:
+                        df = pd.read_excel(file,sheet_name="I8T")
+                    except Exception as e:
+                        log.warning(f"DATA PROCESS EXCEL READING ERROR: {e}，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+
+                reconstruct_dict = {col: [] for col in df.columns}
+
+                # Populate lists column-wise
+                for _, row in df.iterrows():
+                    for col in df.columns:
+                        reconstruct_dict[col].append(row[col])
+
+                # Before : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1]}
+                log.info("Before Reconstruct Dict: %s"%reconstruct_dict)
+
+                try:
+                    reconstruct_dict['date_time'].append(excel_data['date_time'])
+                    target_len = len(reconstruct_dict['date_time'])
+                except Exception as e:
+                    print(e)
+                    reconstruct_dict['date_time']=[excel_data['date_time']]
+
+                target_len = len(reconstruct_dict['date_time'])
+                #print("target_len:%s"%target_len)
+
+                for info in excel_data:
+                    if info == 'date_time':
+                        continue
+                    else:
+                        try:
+                            # If got same deposit method
+                            # After : {'date_time': ['2025-12-17 19:52:23', '2025-12-17 20:52:23'], 'Promptpay 1_ONEPAY': [1, 1], 'PromptPay_QPAY': [1, 1]}
+                            reconstruct_dict[info].append(excel_data[info])
+                        except Exception as e:
+                            print("Error:%s"%e)
+                            # If new deposit method
+                            # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1], 'new_method': [0,1]}
+                            reconstruct_dict[info] = [0]*(target_len - 1) + [excel_data[info]]
+
+                # standardize the length 
+                # Pad shorter lists with zeros
+                for key, value in reconstruct_dict.items():
+                    if len(value) < target_len:
+                        # Add zeros until length matches
+                        # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1,0], 'PromptPay_QPAY': [1,0], 'new_method': [0,1]}
+                        reconstruct_dict[key] = value + [0]*(target_len - len(value))
+
+                log.info("After Reconstruct Dict: %s"%reconstruct_dict)
+                df = pd.DataFrame(reconstruct_dict)
+                for attempt in range(3):
+                    try:
+                        with pd.ExcelWriter(
+                            file,
+                            engine="openpyxl",
+                            mode="a",
+                            if_sheet_exists="replace"
+                        ) as writer:
+                            df.to_excel(writer, sheet_name='I8T', index=False)
+                    except Exception as e:
+                        log.warning(f"DATA PROCESS EXCEL ERROR: {e}，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+            else:
+                log.info("Sheets I8T not found in file :%s"%file)
+                df = pd.DataFrame([excel_data])
+                for attempt in range(3):
+                    try:
+                        with pd.ExcelWriter(
+                            file,
+                            engine="openpyxl",
+                            mode="a",
+                            if_sheet_exists="replace"
+                        ) as writer:
+                            df.to_excel(writer, sheet_name='I8T', index=False)
+                    except Exception as e:
+                        log.warning(f"DATA PROCESS EXCEL ERROR: {e}，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+        else:
+            log.info("File %s not found"%file)
+            # Every start of each day - first set of data
+            df = pd.DataFrame([excel_data])
+            for attempt in range(3):
+                try:
+                    with pd.ExcelWriter(file, engine="openpyxl") as writer:
+                        df.to_excel(writer, sheet_name='I8T', index=False)
+                except Exception as e:
+                    log.warning(f"DATA PROCESS EXCEL ERROR: {e}，RETRY {attempt + 1}/3...")
+                    await asyncio.sleep(5)
+    else:
+        pass
+
 @pytest.mark.asyncio
 async def test_main():
     MAX_RETRY = 3
@@ -562,6 +693,7 @@ async def test_main():
                 telegram_message, failed_reason = await perform_payment_gateway_test(page)
                 await telegram_send_operation(telegram_message, failed_reason, program_complete=True)
                 await telegram_send_summary(telegram_message,date_time('Asia/Bangkok'))
+                await data_process_excel(telegram_message)
                 await clear_screenshot()
                 break
             except Exception as e:
