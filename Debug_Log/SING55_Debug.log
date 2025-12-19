@@ -1,15 +1,15 @@
-18:55:02 | INFO     | ============================================================
-18:55:02 | INFO     | SING55 PAYMENT GATEWAY TEST STARTING...
-18:55:02 | INFO     | STARTING TIME: 15-12-2025 17:55:02 GMT+7
-18:55:02 | INFO     | ============================================================
-18:55:04 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.sing55.com/en-th
-18:55:06 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
-18:55:13 | INFO     | LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED
-18:55:14 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-18:55:45 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
+12:06:10 | INFO     | ============================================================
+12:06:10 | INFO     | SING55 PAYMENT GATEWAY TEST STARTING...
+12:06:10 | INFO     | STARTING TIME: 17-12-2025 11:06:10 GMT+7
+12:06:10 | INFO     | ============================================================
+12:06:11 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.sing55.com/en-th
+12:06:13 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+12:06:21 | INFO     | LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED
+12:06:22 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+12:06:52 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
 Call log:
   - waiting for locator("button.topbar_btn_1").nth(1)
-    - locator resolved to <button type="button" aria-label="Login" data-v-603dc185="" class="topbar_btn_1">Login</button>
+    - locator resolved to <button type="button" aria-label="Login" data-v-a48b465b="" class="topbar_btn_1">Login</button>
   - attempting click action
     2 × waiting for element to be visible, enabled and stable
       - element is not visible
@@ -19,130 +19,98 @@ Call log:
       - element is not visible
     - retrying click action
       - waiting 100ms
-    48 × waiting for element to be visible, enabled and stable
+    52 × waiting for element to be visible, enabled and stable
        - element is not visible
      - retrying click action
        - waiting 500ms
 
-18:55:46 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
-18:55:46 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
-18:55:50 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
-18:55:51 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
-18:55:54 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากแนบสลิป] BUTTON ARE CLICKED
-18:55:54 | INFO     | URL AFTER DEPOSIT METHOD [ฝากแนบสลิป] BUTTON CLICK: [https://www.sing55th2.com/en-th/deposit]
-18:55:54 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากแนบสลิป]
-18:55:54 | INFO     | DEPOSIT CHANNEL [KBANK] 
-18:55:54 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [KBANK] BUTTON ARE CLICKED
-18:55:54 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
-฿ 50
- - 
-฿ 500,000]
-18:55:54 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [50]
-18:55:54 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [50] ARE KEYED IN
-18:55:55 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:56:05 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.sing55th2.com/en-th/deposit]
-18:56:05 | INFO     | MANUAL BANK TEXT:Bank Name:
-18:56:05 | INFO     | Trying to goto URL attempt 1/3: https://www.sing55th2.com/en-th/deposit
-18:56:08 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:56:09 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ฝากแนบสลิป] BUTTON ARE CLICKED
-18:56:09 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [KBANK] BUTTON ARE CLICKED
-18:56:09 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [50] ARE KEYED IN
-18:56:09 | INFO     | MANUAL BANK TEXT FOUND:Bank Name:
-18:56:09 | INFO     | DEPOSIT CHANNEL [KBANK] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
-18:56:09 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
-18:56:09 | INFO     | URL AFTER DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON CLICK: [https://www.sing55th2.com/en-th/deposit]
-18:56:09 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ธนาคารออนไลน์]
-18:56:09 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-18:56:09 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:56:09 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+12:06:53 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+12:06:53 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+12:06:55 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
+12:06:55 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+12:06:56 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ThaiQR] BUTTON ARE CLICKED
+12:06:56 | INFO     | URL AFTER DEPOSIT METHOD [ThaiQR] BUTTON CLICK: [https://www.sing55th2.com/en-th/deposit]
+12:06:56 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ThaiQR]
+12:06:56 | INFO     | DEPOSIT CHANNEL [CYPAY] 
+12:06:56 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [CYPAY] BUTTON ARE CLICKED
+12:06:56 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
 ฿ 100
  - 
-฿ 20,000]
-18:56:09 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:56:09 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:56:09 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:56:19 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.sing55th2.com/en-th/deposit]
-18:56:19 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:56:19 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
-18:56:19 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Error: strict mode violation: locator("div[id*='qr' i]") resolved to 3 elements:
-    1) <div id="qrcode-container">…</div> aka locator("#qrcode-container")
-    2) <div id="qrcode" title="00020101021229370016A000000677010111011300669301730195802TH53037645406100.00630490CC">…</div> aka get_by_title("00020101021229370016A000000677010111011300669301730195802TH53037645406100.")
-    3) <div id="qrcode-text">เติมเงินเล่นเว็ป</div> aka get_by_text("เติมเงินเล่นเว็ป")
+฿ 200,000]
+12:06:56 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+12:06:56 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+12:06:56 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:06 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.sing55th2.com/en-th/deposit]
+12:07:07 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:07:07 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
+12:07:07 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Error: strict mode violation: locator("div[id*='qr' i]") resolved to 2 elements:
+    1) <div id="dowloadQr" class="ewm copy">…</div> aka locator("#dowloadQr")
+    2) <div id="qrcode1"></div> aka locator("#qrcode1")
 
 Call log:
   - waiting for locator("iframe").first.content_frame.locator("div[id*='qr' i]")
 
-18:56:19 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.sing55th2.com/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:1
-18:56:19 | INFO     | QR DETECTED
-18:56:19 | INFO     | Trying to goto URL attempt 1/3: https://www.sing55th2.com/en-th/deposit
-18:56:22 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:56:22 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
-18:56:22 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:56:22 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-18:56:22 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
-18:56:22 | INFO     | URL AFTER DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON CLICK: [https://www.sing55th2.com/en-th/deposit]
-18:56:22 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท]
-18:56:22 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-18:56:22 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:56:22 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
-฿ 100
+12:07:17 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("iframe").first.content_frame.locator("div#qrcode-container")
+
+12:07:17 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.sing55th2.com/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#dowloadQr'> QR_CODE_COUNT:1
+12:07:17 | INFO     | QR DETECTED
+12:07:17 | INFO     | Trying to goto URL attempt 1/3: https://www.sing55th2.com/en-th/deposit
+12:07:19 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:07:19 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ThaiQR] BUTTON ARE CLICKED
+12:07:20 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [CYPAY] BUTTON ARE CLICKED
+12:07:20 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
+12:07:20 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากแนบสลิป] BUTTON ARE CLICKED
+12:07:20 | INFO     | URL AFTER DEPOSIT METHOD [ฝากแนบสลิป] BUTTON CLICK: [https://www.sing55th2.com/en-th/deposit]
+12:07:20 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากแนบสลิป]
+12:07:20 | INFO     | DEPOSIT CHANNEL [KBANK] 
+12:07:20 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [KBANK] BUTTON ARE CLICKED
+12:07:20 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+฿ 50
  - 
-฿ 20,000]
-18:56:22 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:56:22 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:56:22 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:56:32 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.sing55th2.com/en-th/deposit]
-18:56:32 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:56:32 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
-18:56:42 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
-Call log:
-  - waiting for locator("div[id*='qr' i]")
-
-18:56:52 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
-Call log:
-  - waiting for locator("div#qrcode-container")
-
-18:57:02 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
-Call log:
-  - waiting for locator("div#dowloadQr")
-
-18:57:02 | INFO     | NO QR DETECTED
-18:57:02 | INFO     | CHECK TOAST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
-18:57:03 | INFO     | CHECK TOAST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:57:03 | INFO     | CHECK TOAST - MIN AMOUNT [100] ARE KEYED IN
-18:57:03 | INFO     | CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:57:04 | INFO     | DEPOSIT METHOD:BAOYUANPAY, DEPOSIT CHANNEL:ทรูมันนี่ วอลเล็ท GOT PROBLEM. DETAILS:[Payment gateway is currently under maintenance now]
-18:57:04 | INFO     | TOAST DETECTED
-18:57:04 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
-18:57:04 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.sing55th2.com/en-th/deposit]
-18:57:04 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
-18:57:04 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
-18:57:04 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
-18:57:04 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+฿ 500,000]
+12:07:20 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [50]
+12:07:20 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [50] ARE KEYED IN
+12:07:20 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:30 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.sing55th2.com/en-th/deposit]
+12:07:30 | INFO     | MANUAL BANK TEXT:Bank Name:
+12:07:30 | INFO     | Trying to goto URL attempt 1/3: https://www.sing55th2.com/en-th/deposit
+12:07:32 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:07:33 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ฝากแนบสลิป] BUTTON ARE CLICKED
+12:07:33 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [KBANK] BUTTON ARE CLICKED
+12:07:33 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [50] ARE KEYED IN
+12:07:33 | INFO     | MANUAL BANK TEXT FOUND:Bank Name:
+12:07:33 | INFO     | DEPOSIT CHANNEL [KBANK] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
+12:07:33 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
+12:07:33 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.sing55th2.com/en-th/deposit]
+12:07:33 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
+12:07:33 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
+12:07:33 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
+12:07:33 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
 ฿ 200
  - 
 ฿ 150,000]
-18:57:04 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
-18:57:05 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [200] ARE KEYED IN
-18:57:05 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:57:12 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=75245845&t=75d61ef9826e031c9d361b88c0ebb957]
-18:57:44 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=75245845&t=75d61ef9826e031c9d361b88c0ebb957] LOADED SUCCESSFULLY
-18:57:44 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:57:44 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
-18:57:44 | INFO     | Trying to goto URL attempt 1/3: https://www.sing55th2.com/en-th/deposit
-18:57:47 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:57:47 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
-18:57:47 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
-18:57:47 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [200] ARE KEYED IN
-18:57:47 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:56:19'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:57:04'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:57:44']}]
-18:57:47 | INFO     | FAILED REASON: [{'BAOYUANPAY_ธนาคารออนไลน์': ['-'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['Payment gateway is currently under maintenance now'], 'FPAY-CRYPTO_คริปโต': ['-']}]
-18:57:48 | INFO     | METHOD: [ธนาคารออนไลน์], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:56:19]
-18:57:48 | INFO     | File [['SING55_ธนาคารออนไลน์_BAOYUANPAY_Payment_Page.png']]
-18:57:48 | INFO     | METHOD: [ทรูมันนี่ วอลเล็ท], CHANNEL: [BAOYUANPAY], STATUS: [deposit failed], TIMESTAMP: [2025-12-15 17:57:04]
-18:57:48 | INFO     | File [['SING55_ทรูมันนี่ วอลเล็ท_BAOYUANPAY_Payment_Page.png']]
-18:57:50 | INFO     | SCREENSHOT SUCCESSFULLY SENT
-18:57:50 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:57:44]
-18:57:50 | INFO     | File [['SING55_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
-18:57:50 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:56:19'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:57:04'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:57:44']}]
-18:57:51 | INFO     | TELEGRAM_MESSAGE:{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:56:19'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:57:04'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 17:57:44']}
-18:57:52 | INFO     | SUMMARY SENT
+12:07:33 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
+12:07:33 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [200] ARE KEYED IN
+12:07:33 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:42 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=75485237&t=465d249bf7b5d149fd679635e0b00528]
+12:07:52 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=75485237&t=465d249bf7b5d149fd679635e0b00528] LOADED SUCCESSFULLY
+12:07:52 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:07:52 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+12:07:52 | INFO     | Trying to goto URL attempt 1/3: https://www.sing55th2.com/en-th/deposit
+12:07:55 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:07:55 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
+12:07:55 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
+12:07:55 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [200] ARE KEYED IN
+12:07:55 | INFO     | TELEGRAM MESSAGE: [{'CYPAY_ThaiQR': ['deposit success_2025-12-17 11:07:17'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:07:52']}]
+12:07:55 | INFO     | FAILED REASON: [{'CYPAY_ThaiQR': ['-'], 'FPAY-CRYPTO_คริปโต': ['-']}]
+12:07:56 | INFO     | METHOD: [ThaiQR], CHANNEL: [CYPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:07:17]
+12:07:56 | INFO     | File [['SING55_ThaiQR_CYPAY_Payment_Page.png']]
+12:07:56 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:07:52]
+12:07:56 | INFO     | File [['SING55_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
+12:07:56 | INFO     | TELEGRAM MESSAGE: [{'CYPAY_ThaiQR': ['deposit success_2025-12-17 11:07:17'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:07:52']}]
+12:07:56 | INFO     | TELEGRAM_MESSAGE:{'CYPAY_ThaiQR': ['deposit success_2025-12-17 11:07:17'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:07:52']}
+12:07:57 | INFO     | SUMMARY SENT
+12:07:57 | INFO     | EXCEL DATA: {}
+12:07:57 | INFO     | All payment method are success this session: 'date_time'

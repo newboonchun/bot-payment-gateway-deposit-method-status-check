@@ -1,14 +1,14 @@
-18:54:28 | INFO     | ============================================================
-18:54:28 | INFO     | SIAM369 PAYMENT GATEWAY TEST STARTING...
-18:54:28 | INFO     | STARTING TIME: 15-12-2025 17:54:28 GMT+7
-18:54:28 | INFO     | ============================================================
-18:54:29 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam369th.com/en-th
-18:54:31 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
-18:54:31 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-18:55:01 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
+12:06:10 | INFO     | ============================================================
+12:06:10 | INFO     | SIAM369 PAYMENT GATEWAY TEST STARTING...
+12:06:10 | INFO     | STARTING TIME: 17-12-2025 11:06:10 GMT+7
+12:06:10 | INFO     | ============================================================
+12:06:11 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam369th.com/en-th
+12:06:13 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+12:06:15 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+12:06:45 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
 Call log:
   - waiting for locator("button.topbar_btn_1").nth(1)
-    - locator resolved to <button type="button" aria-label="Login" data-v-d6a437ad="" class="topbar_btn_1">Login</button>
+    - locator resolved to <button type="button" aria-label="Login" data-v-c21b1da4="" class="topbar_btn_1">Login</button>
   - attempting click action
     2 × waiting for element to be visible, enabled and stable
       - element is not visible
@@ -18,51 +18,35 @@ Call log:
       - element is not visible
     - retrying click action
       - waiting 100ms
-    54 × waiting for element to be visible, enabled and stable
+    50 × waiting for element to be visible, enabled and stable
        - element is not visible
      - retrying click action
        - waiting 500ms
 
-18:55:02 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
-18:55:02 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
-18:55:03 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
-18:55:04 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
-18:55:04 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
-18:55:04 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
-18:55:04 | INFO     | DEPOSIT CHANNEL [Aphidach Chaprasit] 
-18:55:04 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [Aphidach Chaprasit] BUTTON ARE CLICKED
-18:55:04 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
-฿ 50
- - 
-฿ 500,000]
-18:55:04 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [50]
-18:55:04 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [50] ARE KEYED IN
-18:55:04 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:55:14 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
-18:55:15 | INFO     | MANUAL BANK TEXT:Bank Name:
-18:55:15 | INFO     | Trying to goto URL attempt 1/3: https://www.siam369v1.com/en-th/deposit
-18:55:17 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:55:18 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
-18:55:18 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [Aphidach Chaprasit] BUTTON ARE CLICKED
-18:55:18 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [50] ARE KEYED IN
-18:55:18 | INFO     | MANUAL BANK TEXT FOUND:Bank Name:
-18:55:18 | INFO     | DEPOSIT CHANNEL [Aphidach Chaprasit] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
-18:55:18 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
-18:55:18 | INFO     | URL AFTER DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
-18:55:18 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ธนาคารออนไลน์]
-18:55:18 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-18:55:18 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:55:18 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+12:06:45 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+12:06:46 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+12:06:47 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+12:06:48 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ฝากเงินด่วน] BUTTON ARE CLICKED
+12:06:48 | INFO     | URL AFTER DEPOSIT METHOD [ฝากเงินด่วน] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
+12:06:48 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ฝากเงินด่วน]
+12:06:48 | INFO     | DEPOSIT CHANNEL [Government Savings Bank] 
+12:06:48 | INFO     | DEPOSIT CHANNEL [Government Savings Bank] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...
+12:06:48 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
+12:06:48 | INFO     | URL AFTER DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
+12:06:48 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ธนาคารออนไลน์]
+12:06:48 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
+12:06:48 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+12:06:48 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
 ฿ 100
  - 
 ฿ 20,000]
-18:55:18 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:55:19 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:55:19 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:55:29 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
-18:55:29 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:55:29 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
-18:55:29 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Error: strict mode violation: locator("div[id*='qr' i]") resolved to 3 elements:
+12:06:48 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+12:06:48 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+12:06:48 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:06:58 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
+12:06:58 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:06:58 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
+12:06:58 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Error: strict mode violation: locator("div[id*='qr' i]") resolved to 3 elements:
     1) <div id="qrcode-container">…</div> aka locator("#qrcode-container")
     2) <div id="qrcode" title="00020101021229370016A000000677010111011300669301747315802TH53037645406100.006304F041">…</div> aka get_by_title("00020101021229370016A000000677010111011300669301747315802TH53037645406100.")
     3) <div id="qrcode-text">เติมเงินเล่นเว็ป</div> aka get_by_text("เติมเงินเล่นเว็ป")
@@ -70,86 +54,89 @@ Call log:
 Call log:
   - waiting for locator("iframe").first.content_frame.locator("div[id*='qr' i]")
 
-18:55:29 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam369v1.com/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:1
-18:55:29 | INFO     | QR DETECTED
-18:55:29 | INFO     | Trying to goto URL attempt 1/3: https://www.siam369v1.com/en-th/deposit
-18:55:32 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:55:33 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
-18:55:33 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:55:34 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-18:55:35 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ชำระเงินทันที] BUTTON ARE CLICKED
-18:55:35 | INFO     | URL AFTER DEPOSIT METHOD [ชำระเงินทันที] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
-18:55:37 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ชำระเงินทันที]
-18:55:37 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-18:55:38 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:55:39 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+12:06:58 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam369v1.com/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:1
+12:06:58 | INFO     | QR DETECTED
+12:06:58 | INFO     | Trying to goto URL attempt 1/3: https://www.siam369v1.com/en-th/deposit
+12:07:01 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:07:01 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ธนาคารออนไลน์] BUTTON ARE CLICKED
+12:07:01 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+12:07:01 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
+12:07:01 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ชำระเงินทันที] BUTTON ARE CLICKED
+12:07:01 | INFO     | URL AFTER DEPOSIT METHOD [ชำระเงินทันที] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
+12:07:01 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ชำระเงินทันที]
+12:07:01 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
+12:07:01 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+12:07:01 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
 ฿ 100
  - 
 ฿ 20,000]
-18:55:39 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:55:39 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:55:41 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:55:50 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
-18:55:51 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:55:51 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
-18:55:52 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Error: strict mode violation: locator("div[id*='qr' i]") resolved to 3 elements:
+12:07:01 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+12:07:01 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+12:07:02 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:11 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
+12:07:12 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:07:12 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
+12:07:12 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Error: strict mode violation: locator("div[id*='qr' i]") resolved to 3 elements:
     1) <div id="qrcode-container">…</div> aka locator("#qrcode-container")
-    2) <div id="qrcode" title="00020101021229370016A000000677010111021301955680024435802TH53037645406100.006304BC37">…</div> aka get_by_title("00020101021229370016A000000677010111021301955680024435802TH53037645406100.")
+    2) <div id="qrcode" title="00020101021229370016A000000677010111021301955680024515802TH53037645406100.00630405F9">…</div> aka get_by_title("00020101021229370016A000000677010111021301955680024515802TH53037645406100.")
     3) <div id="qrcode-text">เติมเงินเล่นเว็ป</div> aka get_by_text("เติมเงินเล่นเว็ป")
 
 Call log:
   - waiting for locator("iframe").first.content_frame.locator("div[id*='qr' i]")
 
-18:55:52 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam369v1.com/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:1
-18:55:52 | INFO     | QR DETECTED
-18:55:52 | INFO     | Trying to goto URL attempt 1/3: https://www.siam369v1.com/en-th/deposit
-18:55:56 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:55:56 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ชำระเงินทันที] BUTTON ARE CLICKED
-18:55:56 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:55:56 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-18:55:56 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
-18:55:56 | INFO     | URL AFTER DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
-18:55:56 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท]
-18:55:56 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
-18:55:56 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:55:56 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+12:07:12 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam369v1.com/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#qrcode-container'> QR_CODE_COUNT:1
+12:07:12 | INFO     | QR DETECTED
+12:07:12 | INFO     | Trying to goto URL attempt 1/3: https://www.siam369v1.com/en-th/deposit
+12:07:14 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:07:14 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ชำระเงินทันที] BUTTON ARE CLICKED
+12:07:14 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+12:07:14 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
+12:07:14 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
+12:07:14 | INFO     | URL AFTER DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON CLICK: [https://www.siam369v1.com/en-th/deposit]
+12:07:14 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท]
+12:07:14 | INFO     | DEPOSIT CHANNEL [BAOYUANPAY] 
+12:07:14 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+12:07:14 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
 ฿ 100
  - 
 ฿ 20,000]
-18:55:56 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:55:56 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:55:56 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:56:06 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
-18:56:06 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:56:06 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
-18:56:16 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+12:07:14 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+12:07:14 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+12:07:14 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:24 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam369v1.com/en-th/deposit]
+12:07:25 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:07:25 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
+12:07:35 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
 Call log:
   - waiting for locator("div[id*='qr' i]")
 
-18:56:26 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+12:07:45 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
 Call log:
   - waiting for locator("div#qrcode-container")
 
-18:56:36 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+12:07:55 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
 Call log:
   - waiting for locator("div#dowloadQr")
 
-18:56:36 | INFO     | NO QR DETECTED
-18:56:37 | INFO     | CHECK TOAST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
-18:56:37 | INFO     | CHECK TOAST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
-18:56:37 | INFO     | CHECK TOAST - MIN AMOUNT [100] ARE KEYED IN
-18:56:37 | INFO     | CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:56:38 | INFO     | DEPOSIT METHOD:BAOYUANPAY, DEPOSIT CHANNEL:ทรูมันนี่ วอลเล็ท GOT PROBLEM. DETAILS:[Payment gateway is currently under maintenance now]
-18:56:38 | INFO     | TOAST DETECTED
-18:56:38 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:55:29'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-15 17:55:52'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:56:38']}]
-18:56:38 | INFO     | FAILED REASON: [{'BAOYUANPAY_ธนาคารออนไลน์': ['-'], 'BAOYUANPAY_ชำระเงินทันที': ['-'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['Payment gateway is currently under maintenance now']}]
-18:56:39 | INFO     | METHOD: [ธนาคารออนไลน์], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:55:29]
-18:56:39 | INFO     | File [['SIAM369_ธนาคารออนไลน์_BAOYUANPAY_Payment_Page.png']]
-18:56:39 | INFO     | METHOD: [ชำระเงินทันที], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:55:52]
-18:56:39 | INFO     | File [['SIAM369_ชำระเงินทันที_BAOYUANPAY_Payment_Page.png']]
-18:56:39 | INFO     | METHOD: [ทรูมันนี่ วอลเล็ท], CHANNEL: [BAOYUANPAY], STATUS: [deposit failed], TIMESTAMP: [2025-12-15 17:56:38]
-18:56:39 | INFO     | File [['SIAM369_ทรูมันนี่ วอลเล็ท_BAOYUANPAY_Payment_Page.png']]
-18:56:41 | INFO     | SCREENSHOT SUCCESSFULLY SENT
-18:56:41 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:55:29'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-15 17:55:52'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:56:38']}]
-18:56:42 | INFO     | TELEGRAM_MESSAGE:{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-15 17:55:29'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-15 17:55:52'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-15 17:56:38']}
-18:56:42 | INFO     | SUMMARY SENT
+12:07:55 | INFO     | NO QR DETECTED
+12:07:55 | INFO     | CHECK TOAST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
+12:07:55 | INFO     | CHECK TOAST - DEPOSIT CHANNEL [BAOYUANPAY] BUTTON ARE CLICKED
+12:07:55 | INFO     | CHECK TOAST - MIN AMOUNT [100] ARE KEYED IN
+12:07:55 | INFO     | CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:56 | INFO     | DEPOSIT METHOD:BAOYUANPAY, DEPOSIT CHANNEL:ทรูมันนี่ วอลเล็ท GOT PROBLEM. DETAILS:[Payment gateway is currently under maintenance now]
+12:07:56 | INFO     | TOAST DETECTED
+12:07:56 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-17 11:06:58'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-17 11:07:12'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-17 11:07:56']}]
+12:07:56 | INFO     | FAILED REASON: [{'BAOYUANPAY_ธนาคารออนไลน์': ['-'], 'BAOYUANPAY_ชำระเงินทันที': ['-'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['Payment gateway is currently under maintenance now']}]
+12:07:57 | INFO     | METHOD: [ธนาคารออนไลน์], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:06:58]
+12:07:57 | INFO     | File [['SIAM369_ธนาคารออนไลน์_BAOYUANPAY_Payment_Page.png']]
+12:07:57 | INFO     | METHOD: [ชำระเงินทันที], CHANNEL: [BAOYUANPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:07:12]
+12:07:57 | INFO     | File [['SIAM369_ชำระเงินทันที_BAOYUANPAY_Payment_Page.png']]
+12:07:57 | INFO     | METHOD: [ทรูมันนี่ วอลเล็ท], CHANNEL: [BAOYUANPAY], STATUS: [deposit failed], TIMESTAMP: [2025-12-17 11:07:56]
+12:07:57 | INFO     | File [['SIAM369_ทรูมันนี่ วอลเล็ท_BAOYUANPAY_Payment_Page.png']]
+12:07:58 | INFO     | SCREENSHOT SUCCESSFULLY SENT
+12:07:58 | INFO     | TELEGRAM MESSAGE: [{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-17 11:06:58'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-17 11:07:12'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-17 11:07:56']}]
+12:07:59 | INFO     | TELEGRAM_MESSAGE:{'BAOYUANPAY_ธนาคารออนไลน์': ['deposit success_2025-12-17 11:06:58'], 'BAOYUANPAY_ชำระเงินทันที': ['deposit success_2025-12-17 11:07:12'], 'BAOYUANPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-17 11:07:56']}
+12:08:00 | INFO     | SUMMARY SENT
+12:08:00 | INFO     | EXCEL DATA: {'date_time': '2025-12-17 11:08:00', 'ทรูมันนี่ วอลเล็ท_BAOYUANPAY': 1}
+12:08:00 | INFO     | Before Reconstruct Dict: {'date_time': ['2025-12-17 10:32:14', '2025-12-17 10:36:34', '2025-12-17 11:02:40'], 'ทรูมันนี่ วอลเล็ท_BAOYUANPAY': [1, 1, 1]}
+12:08:00 | INFO     | After Reconstruct Dict: {'date_time': ['2025-12-17 10:32:14', '2025-12-17 10:36:34', '2025-12-17 11:02:40', '2025-12-17 11:08:00'], 'ทรูมันนี่ วอลเล็ท_BAOYUANPAY': [1, 1, 1, 1]}

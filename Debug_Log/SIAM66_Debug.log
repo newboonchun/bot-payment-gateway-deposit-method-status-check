@@ -1,14 +1,14 @@
-18:58:33 | INFO     | ============================================================
-18:58:33 | INFO     | SIAM66 PAYMENT GATEWAY TEST STARTING...
-18:58:33 | INFO     | STARTING TIME: 15-12-2025 17:58:33 GMT+7
-18:58:33 | INFO     | ============================================================
-18:58:34 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
-18:58:36 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
-18:58:41 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-18:59:11 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
+12:06:10 | INFO     | ============================================================
+12:06:10 | INFO     | SIAM66 PAYMENT GATEWAY TEST STARTING...
+12:06:10 | INFO     | STARTING TIME: 17-12-2025 11:06:10 GMT+7
+12:06:10 | INFO     | ============================================================
+12:06:11 | INFO     | LOGIN PROCESS - OPENING WEBSITE: https://www.siam66.com/en-th
+12:06:14 | INFO     | LOGIN PROCESS - PAGE LOADED SUCCESSFULLY
+12:06:19 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+12:06:49 | INFO     | LOGIN PROCESS - LOGIN BUTTON ERROR:Locator.click: Timeout 30000ms exceeded.
 Call log:
   - waiting for locator("button.topbar_btn_1").nth(1)
-    - locator resolved to <button type="button" aria-label="Login" data-v-603dc185="" class="topbar_btn_1">Login</button>
+    - locator resolved to <button type="button" aria-label="Login" data-v-a48b465b="" class="topbar_btn_1">Login</button>
   - attempting click action
     2 × waiting for element to be visible, enabled and stable
       - element is not visible
@@ -18,65 +18,140 @@ Call log:
       - element is not visible
     - retrying click action
       - waiting 100ms
-    56 × waiting for element to be visible, enabled and stable
+    52 × waiting for element to be visible, enabled and stable
        - element is not visible
      - retrying click action
        - waiting 500ms
 
-18:59:11 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
-18:59:12 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
-18:59:12 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
-18:59:13 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
-18:59:14 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
-18:59:15 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
-18:59:15 | INFO     | URL AFTER DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON CLICK: [https://www.siam66th2.com/en-th/deposit]
-18:59:15 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [เติมเงินผ่าน QR]
-18:59:15 | INFO     | DEPOSIT CHANNEL [MSSTHAIPAY] 
-18:59:15 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [MSSTHAIPAY] BUTTON ARE CLICKED
-18:59:15 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+12:06:49 | INFO     | LOGIN PROCESS - USERNAME DONE KEYED
+12:06:49 | INFO     | LOGIN PROCESS - PASSWORD DONE KEYED
+12:06:50 | INFO     | LOGIN PROCESS - LOGIN BUTTON ARE CLICKED
+12:06:52 | INFO     | LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED
+12:06:52 | INFO     | LOGIN PROCESS - DEPOSIT BUTTON ARE CLICKED
+12:06:55 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
+12:06:55 | INFO     | URL AFTER DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON CLICK: [https://www.siam66th2.com/en-th/deposit]
+12:06:55 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [เติมเงินผ่าน QR]
+12:06:55 | INFO     | DEPOSIT CHANNEL [MSSTHAIPAY] 
+12:06:55 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [MSSTHAIPAY] BUTTON ARE CLICKED
+12:06:55 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
 ฿ 100
  - 
 ฿ 100,000]
-18:59:15 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
-18:59:15 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
-18:59:15 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:59:25 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam66th2.com/en-th/deposit]
-18:59:25 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-18:59:25 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
-18:59:25 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam66th2.com/en-th/deposit'> selector="div[id*='qr' i]"> QR_CODE_COUNT:1
-18:59:25 | INFO     | QR DETECTED
-18:59:25 | INFO     | Trying to goto URL attempt 1/3: https://www.siam66th2.com/en-th/deposit
-18:59:28 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-18:59:29 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
-18:59:29 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [MSSTHAIPAY] BUTTON ARE CLICKED
-18:59:29 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
-18:59:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
-18:59:29 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.siam66th2.com/en-th/deposit]
-18:59:29 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
-18:59:29 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
-18:59:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
-18:59:29 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+12:06:55 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+12:06:55 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+12:06:56 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:05 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam66th2.com/en-th/deposit]
+12:07:06 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:07:06 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
+12:07:06 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam66th2.com/en-th/deposit'> selector="div[id*='qr' i]"> QR_CODE_COUNT:1
+12:07:06 | INFO     | QR DETECTED
+12:07:06 | INFO     | Trying to goto URL attempt 1/3: https://www.siam66th2.com/en-th/deposit
+12:07:09 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:07:09 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [เติมเงินผ่าน QR] BUTTON ARE CLICKED
+12:07:09 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [MSSTHAIPAY] BUTTON ARE CLICKED
+12:07:09 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
+12:07:09 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
+12:07:09 | INFO     | URL AFTER DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON CLICK: [https://www.siam66th2.com/en-th/deposit]
+12:07:09 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท]
+12:07:09 | INFO     | DEPOSIT CHANNEL [CYPAY] 
+12:07:09 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [CYPAY] BUTTON ARE CLICKED
+12:07:09 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+฿ 500
+ - 
+฿ 100,000]
+12:07:09 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [500]
+12:07:09 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [500] ARE KEYED IN
+12:07:09 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:19 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam66th2.com/en-th/deposit]
+12:07:19 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:07:19 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:0
+12:07:29 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div[id*='qr' i]")
+
+12:07:39 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div#qrcode-container")
+
+12:07:49 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("div#dowloadQr")
+
+12:07:49 | INFO     | NO QR DETECTED
+12:07:49 | INFO     | CHECK TOAST - DEPOSIT METHOD [ทรูมันนี่ วอลเล็ท] BUTTON ARE CLICKED
+12:07:49 | INFO     | CHECK TOAST - DEPOSIT CHANNEL [CYPAY] BUTTON ARE CLICKED
+12:07:49 | INFO     | CHECK TOAST - MIN AMOUNT [500] ARE KEYED IN
+12:07:49 | INFO     | CHECK TOAST - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:51 | INFO     | DEPOSIT METHOD:CYPAY, DEPOSIT CHANNEL:ทรูมันนี่ วอลเล็ท GOT PROBLEM. DETAILS:["The channel is not configured, please contact customer service!"]
+12:07:51 | INFO     | TOAST DETECTED
+12:07:52 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
+12:07:52 | INFO     | URL AFTER DEPOSIT METHOD [คริปโต] BUTTON CLICK: [https://www.siam66th2.com/en-th/deposit]
+12:07:52 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [คริปโต]
+12:07:52 | INFO     | DEPOSIT CHANNEL [FPAY-CRYPTO] 
+12:07:52 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
+12:07:52 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
 ฿ 200
  - 
 ฿ 100,000]
-18:59:29 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
-18:59:29 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [200] ARE KEYED IN
-18:59:29 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
-18:59:36 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=75246121&t=7831492cf23bd5ac09f1a258aedee2ec]
-19:00:27 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=75246121&t=7831492cf23bd5ac09f1a258aedee2ec] LOADED SUCCESSFULLY
-19:00:27 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
-19:00:27 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
-19:00:27 | INFO     | Trying to goto URL attempt 1/3: https://www.siam66th2.com/en-th/deposit
-19:00:30 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
-19:00:30 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
-19:00:30 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
-19:00:30 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [200] ARE KEYED IN
-19:00:30 | INFO     | TELEGRAM MESSAGE: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:59:25'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 18:00:27']}]
-19:00:30 | INFO     | FAILED REASON: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['-'], 'FPAY-CRYPTO_คริปโต': ['-']}]
-19:00:30 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [MSSTHAIPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-15 17:59:25]
-19:00:30 | INFO     | File [['SIAM66_เติมเงินผ่าน QR_MSSTHAIPAY_Payment_Page.png']]
-19:00:30 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-12-15 18:00:27]
-19:00:30 | INFO     | File [['SIAM66_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
-19:00:30 | INFO     | TELEGRAM MESSAGE: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:59:25'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 18:00:27']}]
-19:00:31 | INFO     | TELEGRAM_MESSAGE:{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-15 17:59:25'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-15 18:00:27']}
-19:00:32 | INFO     | SUMMARY SENT
+12:07:52 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [200]
+12:07:52 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [200] ARE KEYED IN
+12:07:52 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:07:59 | INFO     | LOADING INTO NEW PAGE [https://portal.fpay.support/ext_info?i=75485264&t=ec1f2f6d6f2939b474e32787cf62b178]
+12:08:09 | INFO     | NEW PAGE [https://portal.fpay.support/ext_info?i=75485264&t=ec1f2f6d6f2939b474e32787cf62b178] LOADED SUCCESSFULLY
+12:08:09 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:08:09 | INFO     | SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD
+12:08:09 | INFO     | Trying to goto URL attempt 1/3: https://www.siam66th2.com/en-th/deposit
+12:08:12 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:08:12 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [คริปโต] BUTTON ARE CLICKED
+12:08:12 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [FPAY-CRYPTO] BUTTON ARE CLICKED
+12:08:12 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [200] ARE KEYED IN
+12:08:12 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [ThaiQR] BUTTON ARE CLICKED
+12:08:12 | INFO     | URL AFTER DEPOSIT METHOD [ThaiQR] BUTTON CLICK: [https://www.siam66th2.com/en-th/deposit]
+12:08:12 | INFO     | FOUND [1] DEPOSIT CHANNEL FOR DEPOSIT METHOD [ThaiQR]
+12:08:12 | INFO     | DEPOSIT CHANNEL [CYPAY] 
+12:08:12 | INFO     | PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [CYPAY] BUTTON ARE CLICKED
+12:08:12 | INFO     | MONEY INPUT RANGE AMOUNT: [Enter Deposit Amount
+฿ 100
+ - 
+฿ 100,000]
+12:08:12 | INFO     | MINIMUM INPUT AMOUNT TO TEST: [100]
+12:08:12 | INFO     | PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [100] ARE KEYED IN
+12:08:12 | INFO     | URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED
+12:08:22 | INFO     | NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [https://www.siam66th2.com/en-th/deposit]
+12:08:22 | INFO     | NO MANUAL BANK TEXT FOUND:cannot access local variable 'e' where it is not associated with a value
+12:08:22 | INFO     | IFRAME/POP UP APPEARED. IFRAME COUNT:1
+12:08:22 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Error: strict mode violation: locator("div[id*='qr' i]") resolved to 2 elements:
+    1) <div id="dowloadQr" class="ewm copy">…</div> aka locator("#dowloadQr")
+    2) <div id="qrcode1"></div> aka locator("#qrcode1")
+
+Call log:
+  - waiting for locator("iframe").first.content_frame.locator("div[id*='qr' i]")
+
+12:08:32 | INFO     | QR_CODE_CHECK ERROR:Locator.wait_for: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("iframe").first.content_frame.locator("div#qrcode-container")
+
+12:08:32 | INFO     | QR_CODE:<Locator frame=<Frame name= url='https://www.siam66th2.com/en-th/deposit'> selector='iframe >> nth=0 >> internal:control=enter-frame >> div#dowloadQr'> QR_CODE_COUNT:1
+12:08:32 | INFO     | QR DETECTED
+12:08:32 | INFO     | Trying to goto URL attempt 1/3: https://www.siam66th2.com/en-th/deposit
+12:08:35 | INFO     | REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY
+12:08:35 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT METHOD [ThaiQR] BUTTON ARE CLICKED
+12:08:35 | INFO     | REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [CYPAY] BUTTON ARE CLICKED
+12:08:35 | INFO     | REENTER DEPOSIT PAGE - MIN AMOUNT [100] ARE KEYED IN
+12:08:35 | INFO     | TELEGRAM MESSAGE: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-17 11:07:06'], 'CYPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-17 11:07:51'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:08:09'], 'CYPAY_ThaiQR': ['deposit success_2025-12-17 11:08:32']}]
+12:08:35 | INFO     | FAILED REASON: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['-'], 'CYPAY_ทรูมันนี่ วอลเล็ท': ['"The channel is not configured, please contact customer service!"'], 'FPAY-CRYPTO_คริปโต': ['-'], 'CYPAY_ThaiQR': ['-']}]
+12:08:36 | INFO     | METHOD: [เติมเงินผ่าน QR], CHANNEL: [MSSTHAIPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:07:06]
+12:08:36 | INFO     | File [['SIAM66_เติมเงินผ่าน QR_MSSTHAIPAY_Payment_Page.png']]
+12:08:36 | INFO     | METHOD: [ทรูมันนี่ วอลเล็ท], CHANNEL: [CYPAY], STATUS: [deposit failed], TIMESTAMP: [2025-12-17 11:07:51]
+12:08:36 | INFO     | File [['SIAM66_ทรูมันนี่ วอลเล็ท_CYPAY_Payment_Page.png']]
+12:08:38 | INFO     | SCREENSHOT SUCCESSFULLY SENT
+12:08:38 | INFO     | METHOD: [คริปโต], CHANNEL: [FPAY-CRYPTO], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:08:09]
+12:08:38 | INFO     | File [['SIAM66_คริปโต_FPAY-CRYPTO_Payment_Page.png']]
+12:08:38 | INFO     | METHOD: [ThaiQR], CHANNEL: [CYPAY], STATUS: [deposit success], TIMESTAMP: [2025-12-17 11:08:32]
+12:08:38 | INFO     | File [['SIAM66_ThaiQR_CYPAY_Payment_Page.png']]
+12:08:38 | INFO     | TELEGRAM MESSAGE: [{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-17 11:07:06'], 'CYPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-17 11:07:51'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:08:09'], 'CYPAY_ThaiQR': ['deposit success_2025-12-17 11:08:32']}]
+12:08:38 | INFO     | TELEGRAM_MESSAGE:{'MSSTHAIPAY_เติมเงินผ่าน QR': ['deposit success_2025-12-17 11:07:06'], 'CYPAY_ทรูมันนี่ วอลเล็ท': ['deposit failed_2025-12-17 11:07:51'], 'FPAY-CRYPTO_คริปโต': ['deposit success_2025-12-17 11:08:09'], 'CYPAY_ThaiQR': ['deposit success_2025-12-17 11:08:32']}
+12:08:39 | INFO     | SUMMARY SENT
+12:08:39 | INFO     | EXCEL DATA: {'date_time': '2025-12-17 11:08:39', 'ทรูมันนี่ วอลเล็ท_CYPAY': 1}
+12:08:39 | INFO     | Before Reconstruct Dict: {'date_time': ['2025-12-17 11:03:14'], 'ทรูมันนี่ วอลเล็ท_CYPAY': [1]}
+12:08:39 | INFO     | After Reconstruct Dict: {'date_time': ['2025-12-17 11:03:14', '2025-12-17 11:08:39'], 'ทรูมันนี่ วอลเล็ท_CYPAY': [1, 1]}
