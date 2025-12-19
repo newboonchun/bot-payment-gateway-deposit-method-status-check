@@ -418,8 +418,8 @@ async def perform_payment_gateway_test(page):
 
             deposit_method = await btn.locator('div.deposit_select_bank_list_name').inner_text()
             log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s]"%deposit_method)
-            if deposit_method != 'USDT-TRC20': #FOR DEBUG
-               continue
+            #if deposit_method != 'USDT-TRC20': #FOR DEBUG
+            #   continue
             # manual bank check
             log.info(f"MANUAL BANK IDENTIFIER FOR DEPOSIT METHOD [{deposit_method}] IS: [***{manual_bank_identifier}***]")
             if any(manual_bank in manual_bank_identifier for manual_bank in exclude_list):
