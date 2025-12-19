@@ -6,7 +6,7 @@ Loop for deposit method
        |                                                                                                                                                
        |--> test 1 : url jump check                                                                                                                     
             test 2 : qr code check                                                                                                                      
-                     - take note !!! only work for 1 iframe count or no iframe !!!                                                                                                                   
+                     - take note !!! if qr code inside an iframe (inner-iframe), it does not work !!!                                                                                                                   
             test 3 : toast check
 
 Type A site:
@@ -28,3 +28,15 @@ I828, MSTSLOT, SIAM191
 Type F site:
 B191
    
+Type C site test sequence:
+only url jump check
+
+Type C site:
+2FT, 2WT, SIAM855
+
+Type D site test sequence:
+test 1: toast check
+test 2: url jump check (new page)
+
+Type D site: A8T, 9T, UT
+2FT, 2WT, SIAM855
