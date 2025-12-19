@@ -207,69 +207,6 @@ async def perform_login(page):
     #await page.get_by_role("button", name="100").click()
     #await page.get_by_role("button", name="Deposit").nth(1).click()
 
-async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
-    try:
-        async with page.expect_navigation(wait_until="load", timeout=10000):
-            try:
-                #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
-                deposit_button = page.locator('.btn_deposits')
-                await deposit_button.wait_for(state="visible", timeout=10000)
-                await deposit_button.click()
-                log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
-            except:
-                raise Exception("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
-        
-        # Wait until the URL actually changes (final page)
-        await page.wait_for_function(
-            "url => window.location.href !== url",
-            arg=old_url,
-            timeout=60000
-        )
-        new_url = page.url
-        if new_url != old_url:
-            log.info("LOADING INTO NEW PAGE [%s]"%(new_url))
-            new_payment_page = True
-    except TimeoutError:
-        # If no navigation happened, page stays the same
-        new_payment_page = False
-        log.info("NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [%s]"%(page.url))
-    
-    if new_payment_page == True:
-        max_retries = 3
-        retry_count = 0
-        while retry_count < max_retries:
-            try:
-                await asyncio.sleep(10)
-                await page.wait_for_load_state("networkidle", timeout=60000) #added to ensure the payment page is loaded before screenshot is taken
-                log.info("NEW PAGE [%s] LOADED SUCCESSFULLY"%(new_url))
-                await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
-                break 
-            except TimeoutError:
-                log.info("TIMEOUT: PAGE DID NOT REACH NETWORKIDLE WITHIN 60s")
-                retry_count += 1
-                if retry_count == max_retries:
-                    log.info("❌ Failed: Page did not load after 3 retries.")
-                    await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
-                    url_jump = True
-                    payment_page_failed_load = True
-                else:
-                    log.info("RETRYING...: ATTEMPT [%s] of [%s]"%(retry_count,max_retries))
-                    try:
-                        await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,money_button_text,recheck=1)
-                    except:
-                        log.info("FAILED GO BACK TO OLD PAGE [%s] AND RETRY..."%(old_url))
-
-    if new_payment_page == False:   
-        await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
-        url_jump = False
-        payment_page_failed_load = False
-
-    if new_payment_page and retry_count<3:
-        url_jump = True
-        payment_page_failed_load = False
-    
-    return url_jump, payment_page_failed_load
-
 async def qr_code_check(page):
     ## DETECT QR CODE BASED ON HTML CONTENT !!! ##
     try:
@@ -336,6 +273,75 @@ async def qr_code_check(page):
         log.info("NO QR DETECTED")
     
     return qr_code_count
+
+async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
+    try:
+        async with page.expect_navigation(wait_until="load", timeout=15000):
+            try:
+                #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
+                deposit_button = page.locator('.btn_deposits')
+                await deposit_button.wait_for(state="visible", timeout=10000)
+                await deposit_button.click()
+                log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
+            except:
+                raise Exception("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE FAILED TO CLICK")
+        
+        # Wait until the URL actually changes (final page)
+        await page.wait_for_function(
+            "url => window.location.href !== url",
+            arg=old_url,
+            timeout=60000
+        )
+        new_url = page.url
+        if new_url != old_url:
+            log.info("LOADING INTO NEW PAGE [%s]"%(new_url))
+            new_payment_page = True
+    except TimeoutError:
+        # If no navigation happened, page stays the same
+        new_payment_page = False
+        log.info("NO NAVIGATION HAPPENED, STAYS ON SAME PAGE [%s]"%(page.url))
+    
+    if new_payment_page == True:
+        max_retries = 3
+        retry_count = 0
+        while retry_count < max_retries:
+            try:
+                await asyncio.sleep(10)
+                await page.wait_for_load_state("networkidle", timeout=70000) #added to ensure the payment page is loaded before screenshot is taken
+                log.info("NEW PAGE [%s] LOADED SUCCESSFULLY"%(new_url))
+                await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                break 
+            except TimeoutError:
+                log.info("TIMEOUT: PAGE DID NOT REACH NETWORKIDLE WITHIN 70s")
+                qr_code_count = await qr_code_check(page)
+                if qr_code_count != 0:
+                    log.info("NEW PAGE [%s] STILL LOADING, BUT PAY FRAME IS LOADED"%(new_url))
+                    await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                    break
+                else:
+                    retry_count += 1
+                    if retry_count == max_retries:
+                        log.info("❌ Failed: Page did not load after 3 retries.")
+                        await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                        url_jump = True
+                        payment_page_failed_load = True
+                    else:
+                        log.info("RETRYING...: ATTEMPT [%s] of [%s]"%(retry_count,max_retries))
+                        try:
+                            await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,money_button_text,recheck=1)
+                        except:
+                            log.info("FAILED GO BACK TO OLD PAGE [%s] AND RETRY..."%(old_url))
+
+    if new_payment_page == False:   
+        await page.screenshot(path="GCWIN99_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+        url_jump = False
+        payment_page_failed_load = False
+
+    if new_payment_page and retry_count<3:
+        url_jump = True
+        payment_page_failed_load = False
+    
+    return url_jump, payment_page_failed_load
 
 async def check_toast(page,deposit_method,deposit_channel):
     toast_exist = False

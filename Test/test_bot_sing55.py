@@ -202,9 +202,75 @@ async def perform_login(page):
     #await page.get_by_role("button", name="100").click()
     #await page.get_by_role("button", name="Deposit").nth(1).click()
 
+async def qr_code_check(page):
+    ## DETECT QR CODE BASED ON HTML CONTENT !!! ##
+    try:
+        #await page.wait_for_selector("iframe", timeout=3000)
+        iframe_count = await page.locator("iframe").count()
+        if iframe_count == 1:
+            await page.wait_for_selector("iframe", timeout=3000)
+        else:
+            pass
+        log.info("IFRAME/POP UP APPEARED. IFRAME COUNT:%s"%iframe_count)
+    except Exception as e:
+        iframe_count = 0
+        log.info("No IFRAME/POP UP APPEARED:%s"%e)
+
+    qr_selector = [
+        "div.qr-image",
+        "div.qr-image.position-relative",
+        "div.payFrame", #for fpay-crypto
+        "div[id*='qr' i]",
+        "div[class*='qrcode']",
+        "div#qrcode-container",
+        "div#dowloadQr"
+    ]
+
+    qr_code_count = 0
+
+    if iframe_count != 0:
+        for i in range(iframe_count):
+            if qr_code_count != 0:
+                break
+            try:
+                base = page.frame_locator("iframe").nth(i)
+                for selector in qr_selector:
+                    try:
+                        qr_code = base.locator(selector)
+                        qr_code_count = await qr_code.count()
+                        log.info("QR_CODE:%s QR_CODE_COUNT:%s"%(qr_code,qr_code_count))
+                        if qr_code_count != 0:
+                            break
+                    except Exception as e:
+                        qr_code_count = 0 
+                        log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
+            except Exception as e:
+                log.info("QR_CODE_CHECK ERROR:%s"%e)
+                pass
+
+    # second stage check
+    if qr_code_count == 0:
+        base = page
+        for selector in qr_selector:
+            try:
+                qr_code = base.locator(selector)
+                qr_code_count = await qr_code.count()
+                log.info("QR_CODE:%s , QR_CODE_COUNT:%s"%(qr_code,qr_code_count))
+                if qr_code_count != 0:
+                    break
+            except Exception as e:
+                qr_code_count = 0 
+                log.info("QR_CODE_CHECK LOOP SELECTOR:%s"%e)
+    
+    if qr_code_count != 0:
+        log.info("QR DETECTED")
+    else:
+        log.info("NO QR DETECTED")
+    return qr_code_count
+
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=10000):
+        async with page.expect_navigation(wait_until="load", timeout=15000):
             try:
                 #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
                 deposit_button = page.locator('.btn_deposits')
@@ -235,24 +301,30 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
         while retry_count < max_retries:
             try:
                 await asyncio.sleep(10)
-                await page.wait_for_load_state("networkidle", timeout=60000) #added to ensure the payment page is loaded before screenshot is taken
+                await page.wait_for_load_state("networkidle", timeout=70000) #added to ensure the payment page is loaded before screenshot is taken
                 log.info("NEW PAGE [%s] LOADED SUCCESSFULLY"%(new_url))
                 await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                 break 
             except TimeoutError:
-                log.info("TIMEOUT: PAGE DID NOT REACH NETWORKIDLE WITHIN 60s")
-                retry_count += 1
-                if retry_count == max_retries:
-                    log.info("❌ Failed: Page did not load after 3 retries.")
+                log.info("TIMEOUT: PAGE DID NOT REACH NETWORKIDLE WITHIN 70s")
+                qr_code_count = await qr_code_check(page)
+                if qr_code_count != 0:
+                    log.info("NEW PAGE [%s] STILL LOADING, BUT PAY FRAME IS LOADED"%(new_url))
                     await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
-                    url_jump = True
-                    payment_page_failed_load = True
+                    break
                 else:
-                    log.info("RETRYING...: ATTEMPT [%s] of [%s]"%(retry_count,max_retries))
-                    try:
-                        await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,money_button_text,recheck=1)
-                    except:
-                        log.info("FAILED GO BACK TO OLD PAGE [%s] AND RETRY..."%(old_url))
+                    retry_count += 1
+                    if retry_count == max_retries:
+                        log.info("❌ Failed: Page did not load after 3 retries.")
+                        await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                        url_jump = True
+                        payment_page_failed_load = True
+                    else:
+                        log.info("RETRYING...: ATTEMPT [%s] of [%s]"%(retry_count,max_retries))
+                        try:
+                            await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,money_button_text,recheck=1)
+                        except:
+                            log.info("FAILED GO BACK TO OLD PAGE [%s] AND RETRY..."%(old_url))
 
     if new_payment_page == False:   
         await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
@@ -264,60 +336,6 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
         payment_page_failed_load = False
     
     return url_jump, payment_page_failed_load
-
-async def qr_code_check(page):
-    ## DETECT QR CODE BASED ON HTML CONTENT !!! ##
-    try:
-        #await page.wait_for_selector("iframe", timeout=3000)
-        iframe_count = await page.locator("iframe").count()
-        if iframe_count == 1:
-            await page.wait_for_selector("iframe", timeout=3000)
-        else:
-            pass
-        log.info("IFRAME/POP UP APPEARED. IFRAME COUNT:%s"%iframe_count)
-    except Exception as e:
-        iframe_count = 0
-        log.info("No IFRAME/POP UP APPEARED:%s"%e)
-
-    qr_selector = [
-        "div.qr-image",
-        "div.qr-image.position-relative",
-        "div.payFrame", #for fpay-crypto
-        "div[id*='qr' i]",
-        "div[class*='qrcode']",
-        "div#qrcode-container",
-        "div#dowloadQr"
-    ]
-
-    qr_code_count = 0
-
-    if iframe_count != 0:
-        for i in range(iframe_count):
-            try:
-                base = page.frame_locator("iframe").nth(i)
-            except Exception as e:
-                log.info("QR_CODE_CHECK ERROR:%s"%e)
-                pass
-    else:
-        base = page
-    
-    for selector in qr_selector:
-        try:
-            qr_code = base.locator(selector)
-            await qr_code.wait_for(state="attached", timeout=10000)
-            qr_code_count = await qr_code.count()
-            log.info("QR_CODE:%s QR_CODE_COUNT:%s"%(qr_code,qr_code_count))
-            if qr_code_count != 0:
-                break
-        except Exception as e:
-            log.info("QR_CODE_CHECK ERROR:%s"%e)
-
-    if qr_code_count != 0:
-        log.info("QR DETECTED")
-    else:
-        log.info("NO QR DETECTED")
-    
-    return qr_code_count
 
 async def check_toast(page,deposit_method,deposit_channel):
     toast_exist = False
