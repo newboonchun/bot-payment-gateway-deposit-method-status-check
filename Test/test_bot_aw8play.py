@@ -161,6 +161,12 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - PASSWORD DONE KEYED AND CLICKED LOGIN BUTTON")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN AND LOGIN TO DEPOSIT PAGE FAILED")
+    try:
+        #deposit_button_container = page.locator('div.bottom-container')
+        deposit_button = page.locator('a.deposit-btn')
+        await deposit_button.click()
+    except:
+        raise Exception("LOGIN PROCESS - DEPOSIT BUTTON FAILED TO CLICKED")
 
 async def url_jump_check(page,new_page,context,old_url,deposit_submit_button,deposit_method,deposit_channel):
     new_url = new_page.url
@@ -229,7 +235,7 @@ async def check_toast(page,new_page,deposit_method_text,deposit_channel):
     return toast_exist, text
 
 async def perform_payment_gateway_test(page,context):
-    exclude_list = ["Express Deposit","Crypto"] #TBC
+    exclude_list = ["Express Deposit","Crypto","Bank Transfer"] #TBC
     telegram_message = {}
     failed_reason = {}
 

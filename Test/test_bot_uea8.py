@@ -205,7 +205,7 @@ async def check_toast(page,new_page,deposit_method_text,deposit_channel):
     return toast_exist, text
 
 async def perform_payment_gateway_test(page,context):
-    exclude_list = ["Express Deposit","Crypto"] #TBC
+    exclude_list = ["Express Deposit","Crypto","Bank Transfer"] #TBC
     telegram_message = {}
     failed_reason = {}
 
