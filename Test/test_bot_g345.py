@@ -234,6 +234,7 @@ async def qr_code_check(page):
         "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
         "div[class*='qrcode']",
+        "div[class*='qr']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
@@ -396,6 +397,7 @@ async def check_toast(page,deposit_method,deposit_channel):
                 break
             await asyncio.sleep(0.1)
     except:
+            text = None
             toast_exist = False
             log.info("No Toast message, no proceed to payment page, no qr code, please check what reason manually.")
     return toast_exist, text
@@ -697,6 +699,9 @@ async def data_process_excel(telegram_message):
         elif status == 'deposit success':
             excel_data['date_time'] = date_time("Asia/Bangkok")
             excel_data[f"{deposit_method}_{deposit_channel}"] = 0
+        elif status == 'no reason found, check manually':
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = 1
         else:
             excel_data['date_time'] = date_time("Asia/Bangkok")
             excel_data[f"{deposit_method}_{deposit_channel}"] = "-"

@@ -137,6 +137,12 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - LOGIN PROCESS SUCCESSFUL")
     except Exception as e:
         raise Exception("LOGIN PROCESS - LOGIN PROCESS FAILED:%s"%e)
+    try:
+        #deposit_button_container = page.locator('div.bottom-container')
+        deposit_button = page.locator('a.deposit-btn')
+        await deposit_button.click()
+    except:
+        raise Exception("LOGIN PROCESS - DEPOSIT BUTTON FAILED TO CLICKED")
 
 async def url_jump_check(page,new_page,context,old_url,deposit_submit_button,deposit_method,deposit_channel):
     new_url = new_page.url

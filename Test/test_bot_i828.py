@@ -179,6 +179,7 @@ async def qr_code_check(page):
         "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
         "div[class*='qrcode']",
+        "div[class*='qr']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
@@ -314,8 +315,8 @@ async def perform_payment_gateway_test(page):
             btn = deposit_method_button.nth(i)
             deposit_method = await btn.locator('span').inner_text()
             log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s]"%deposit_method)
-            #if deposit_method != 'USDT-TRC20': #FOR DEBUG
-            #   continue
+            if deposit_method != 'PromptPay': #FOR DEBUG
+               continue
             # manual bank check
             if any(manual_bank in deposit_method for manual_bank in exclude_list):
                 log.info(f"DEPOSIT METHOD [{deposit_method}] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...")
@@ -567,6 +568,9 @@ async def data_process_excel(telegram_message):
         elif status == 'deposit success':
             excel_data['date_time'] = date_time("Asia/Bangkok")
             excel_data[f"{deposit_method}_{deposit_channel}"] = 0
+        elif status == 'no reason found, check manually':
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = 1
         else:
             excel_data['date_time'] = date_time("Asia/Bangkok")
             excel_data[f"{deposit_method}_{deposit_channel}"] = "-"
