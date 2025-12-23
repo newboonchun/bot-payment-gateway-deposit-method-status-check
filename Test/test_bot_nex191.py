@@ -345,7 +345,7 @@ async def check_toast(page,deposit_method,deposit_channel):
         log.info("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
     except:
         raise Exception("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
-    money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
+    money_input_range = page.locator('div.deposit_channel_title_text.flex.justify-between')
     await money_input_range.wait_for(state="attached", timeout=3000)
     money_input_range_text = (await money_input_range.inner_text())
     matches = re.findall(r"฿\s*([\d,]+)", money_input_range_text)
@@ -430,7 +430,7 @@ async def perform_payment_gateway_test(page):
             except:
                 raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
             # input the minimum deposit amount
-            money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
+            money_input_range = page.locator('div.deposit_channel_title_text.flex.justify-between')
             await money_input_range.wait_for(state="attached", timeout=3000)
             money_input_range_text = (await money_input_range.inner_text())
             log.info("MONEY INPUT RANGE AMOUNT: [%s]"%money_input_range_text)
