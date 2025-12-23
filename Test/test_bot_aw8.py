@@ -420,7 +420,7 @@ async def perform_payment_gateway_test(page):
         old_url = page.url
         btn = deposit_method_button.nth(i)
         deposit_method = await btn.get_attribute("aria-label")
-        #if deposit_method != 'เติมเงินผ่าน QR': #FOR DEBUG
+        #if deposit_method != 'FPAY-CRYPTO': #FOR DEBUG
         #    continue
         # deposit method click
         try:
@@ -533,7 +533,7 @@ async def telegram_send_operation(telegram_message, failed_reason, program_compl
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
-    chat_id = os.getenv("CHAT_ID")
+    chat_id = os.getenv("LUCUSS_CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -565,6 +565,7 @@ async def telegram_send_operation(telegram_message, failed_reason, program_compl
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [aw8game\\.online](https://www\\.aw8game\\.online/en\\-th)
+            TAG: [W\\_MC](tg://user?id=7629175195)
             TEAM : A8T2
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
@@ -625,7 +626,7 @@ async def telegram_send_summary(telegram_message,date_time):
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
-    chat_id = os.getenv("CHAT_ID")
+    chat_id = os.getenv("LUCUSS_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []

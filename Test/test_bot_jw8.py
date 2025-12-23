@@ -552,7 +552,7 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
-    chat_id = os.getenv("CHAT_ID")
+    chat_id = os.getenv("LUCUSS_CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -584,6 +584,7 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
             caption = f"""*Subject: Bot Testing Deposit Gateway*  
             URL: [jw8thai8\\.com](https://www\\.jw8thai8\\.com/en\\-th)
+            TAG: [W\\_MC](tg://user?id=7629175195)
             TEAM : J8T
             ┌─ **Deposit Testing Result** ──────────┐
             │ {status_emoji} **{status}** 
@@ -644,7 +645,7 @@ async def telegram_send_summary(telegram_message,date_time):
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
-    chat_id = os.getenv("CHAT_ID")
+    chat_id = os.getenv("LUCUSS_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
