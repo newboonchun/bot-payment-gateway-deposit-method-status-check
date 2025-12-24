@@ -350,7 +350,7 @@ async def check_toast(page,deposit_method,deposit_channel):
         log.info("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
     except:
         raise Exception("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
-    money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
+    money_input_range = page.locator('div.deposit_channel_title_text.flex.justify-between')
     await money_input_range.wait_for(state="attached", timeout=3000)
     money_input_range_text = (await money_input_range.inner_text())
     matches = re.findall(r"฿\s*([\d,]+)", money_input_range_text)
@@ -435,7 +435,7 @@ async def perform_payment_gateway_test(page):
             except:
                 raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
             # input the minimum deposit amount
-            money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
+            money_input_range = page.locator('div.deposit_channel_title_text.flex.justify-between')
             await money_input_range.wait_for(state="attached", timeout=3000)
             money_input_range_text = (await money_input_range.inner_text())
             log.info("MONEY INPUT RANGE AMOUNT: [%s]"%money_input_range_text)
@@ -516,6 +516,7 @@ async def telegram_send_operation(telegram_message,failed_reason, program_comple
     log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
+    jr_bing_chat_id = os.getenv("JR_BING_CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -545,21 +546,39 @@ async def telegram_send_operation(telegram_message,failed_reason, program_comple
 
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
-            caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [sing55\\.com](https://www\\.sing55\\.com/en\\-th)
-            TEAM : S5T
-            ┌─ **Deposit Testing Result** ──────────┐
-            │ {status_emoji} **{status}** 
-            │  
-            │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
-            │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-            └───────────────────────────┘
+            caption = f"""[W\\_Hao](tg://user?id=8416452734), [W\\_MC](tg://user?id=7629175195)
+*Subject: Bot Testing Deposit Gateway*  
+URL: [sing55\\.com](https://www\\.sing55\\.com/en\\-th)
+TEAM : S5T
+┌─ **Deposit Testing Result** ──────────┐
+│ {status_emoji} **{status}** 
+│  
+│ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+│ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+└───────────────────────────┘
 
-            **Failed reason**  
-            {fail_line}
+**Failed reason**  
+{fail_line}
 
-            **Time Detail**  
-            ├─ **TimeOccurred:** `{timestamp}` """ 
+**Time Detail**  
+├─ **TimeOccurred:** `{timestamp}` """ 
+            
+            jr_bing_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+*Subject: Bot Testing Deposit Gateway*  
+URL: [sing55\\.com](https://www\\.sing55\\.com/en\\-th)
+TEAM : S5T
+┌─ **Deposit Testing Result** ──────────┐
+│ {status_emoji} **{status}** 
+│  
+│ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+│ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+└───────────────────────────┘
+
+**Failed reason**  
+{fail_line}
+
+**Time Detail**  
+├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*SING55_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
@@ -571,6 +590,27 @@ async def telegram_send_operation(telegram_message,failed_reason, program_comple
                                     chat_id=chat_id,
                                     photo=f,
                                     caption=caption,
+                                    parse_mode='MarkdownV2',
+                                    read_timeout=30,
+                                    write_timeout=30,
+                                    connect_timeout=30
+                                )
+                        log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                        break
+                    except TimedOut:
+                        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+                    except Exception as e:
+                        log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                        break
+
+                for attempt in range(3):
+                    try:
+                        with open(file_path, 'rb') as f:
+                              await bot.send_photo(
+                                    chat_id=jr_bing_chat_id,
+                                    photo=f,
+                                    caption=jr_bing_caption,
                                     parse_mode='MarkdownV2',
                                     read_timeout=30,
                                     write_timeout=30,
@@ -607,6 +647,7 @@ async def telegram_send_summary(telegram_message,date_time):
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
+    jr_bing_chat_id = os.getenv("JR_BING_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
@@ -654,6 +695,17 @@ TIME: {escape_md(date_time)}
     for attempt in range(3):
         try:
             await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            log.info("SUMMARY SENT")
+            break
+        except TimedOut:
+            log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+            await asyncio.sleep(3)
+        except Exception as e:
+            log.error(f"SUMMARY FAILED TO SENT: {e}")
+    
+    for attempt in range(3):
+        try:
+            await bot.send_message(chat_id=jr_bing_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
             log.info("SUMMARY SENT")
             break
         except TimedOut:

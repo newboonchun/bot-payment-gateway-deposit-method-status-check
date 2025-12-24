@@ -538,6 +538,7 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
     log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
+    joy_chat_id = os.getenv("JOY_CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -567,21 +568,39 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
 
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
-            caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [22funthb1\\.com](https://www\\.22funthb1\\.com/en\\-th)
-            TEAM : 2FT
-            ┌─ **Deposit Testing Result** ──────────┐
-            │ {status_emoji} **{status}** 
-            │  
-            │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
-            │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-            └───────────────────────────┘
+            caption = f"""[W\\_Hao](tg://user?id=8416452734), [W\\_MC](tg://user?id=7629175195)
+*Subject: Bot Testing Deposit Gateway*  
+URL: [22funthb1\\.com](https://www\\.22funthb1\\.com/en\\-th)
+TEAM : 2FT
+┌─ **Deposit Testing Result** ──────────┐
+│ {status_emoji} **{status}** 
+│  
+│ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+│ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+└───────────────────────────┘
             
-            **Failed reason**  
-            {fail_line}
+**Failed reason**  
+{fail_line}
 
-            **Time Detail**  
-            ├─ **TimeOccurred:** `{timestamp}` """ 
+**Time Detail**  
+├─ **TimeOccurred:** `{timestamp}` """ 
+            
+            joy_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+*Subject: Bot Testing Deposit Gateway*  
+URL: [22funthb1\\.com](https://www\\.22funthb1\\.com/en\\-th)
+TEAM : 2FT
+┌─ **Deposit Testing Result** ──────────┐
+│ {status_emoji} **{status}** 
+│  
+│ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+│ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+└───────────────────────────┘
+            
+**Failed reason**  
+{fail_line}
+
+**Time Detail**  
+├─ **TimeOccurred:** `{timestamp}` """
             files = glob.glob("*22FUN_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
@@ -594,6 +613,26 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
                                     chat_id=chat_id,
                                     photo=f,
                                     caption=caption,
+                                    parse_mode='MarkdownV2',
+                                    read_timeout=30,
+                                    write_timeout=30,
+                                    connect_timeout=30
+                                )
+                        log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                        break
+                    except TimedOut:
+                        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+                    except Exception as e:
+                        log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                        break
+                for attempt in range(3):
+                    try:
+                        with open(file_path, 'rb') as f:
+                              await bot.send_photo(
+                                    chat_id=joy_chat_id,
+                                    photo=f,
+                                    caption=joy_caption,
                                     parse_mode='MarkdownV2',
                                     read_timeout=30,
                                     write_timeout=30,
@@ -630,6 +669,7 @@ async def telegram_send_summary(telegram_message,date_time):
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
+    joy_chat_id = os.getenv("JOY_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
@@ -677,6 +717,16 @@ TIME: {escape_md(date_time)}
     for attempt in range(3):
         try:
             await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            log.info("SUMMARY SENT")
+            break
+        except TimedOut:
+            log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+            await asyncio.sleep(3)
+        except Exception as e:
+            log.error(f"SUMMARY FAILED TO SENT: {e}")
+    for attempt in range(3):
+        try:
+            await bot.send_message(chat_id=joy_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
             log.info("SUMMARY SENT")
             break
         except TimedOut:
