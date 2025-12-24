@@ -217,6 +217,7 @@ async def qr_code_check(page):
         "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
         "div[class*='qrcode']",
+        "div[class*='qr']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
@@ -344,7 +345,7 @@ async def check_toast(page,deposit_method,deposit_channel):
         log.info("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
     except:
         raise Exception("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
-    money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
+    money_input_range = page.locator('div.deposit_channel_title_text.flex.justify-between')
     await money_input_range.wait_for(state="attached", timeout=3000)
     money_input_range_text = (await money_input_range.inner_text())
     matches = re.findall(r"฿\s*([\d,]+)", money_input_range_text)
@@ -379,6 +380,7 @@ async def check_toast(page,deposit_method,deposit_channel):
                 break
             await asyncio.sleep(0.1)
     except:
+            text = None
             toast_exist = False
             log.info("No Toast message, no proceed to payment page, no qr code, please check what reason manually.")
     return toast_exist,text
@@ -428,7 +430,7 @@ async def perform_payment_gateway_test(page):
             except:
                 raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
             # input the minimum deposit amount
-            money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
+            money_input_range = page.locator('div.deposit_channel_title_text.flex.justify-between')
             await money_input_range.wait_for(state="attached", timeout=3000)
             money_input_range_text = (await money_input_range.inner_text())
             log.info("MONEY INPUT RANGE AMOUNT: [%s]"%money_input_range_text)
@@ -676,8 +678,15 @@ async def data_process_excel(telegram_message):
         if status == 'deposit failed':
             excel_data['date_time'] = date_time("Asia/Bangkok")
             excel_data[f"{deposit_method}_{deposit_channel}"] = 1
+        elif status == 'deposit success':
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = 0
+        elif status == 'no reason found, check manually':
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = 1
         else:
-            pass
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = "-"
     
     # Populate the failed payment gateway info for this session into excel_data
     log.info("EXCEL DATA: %s"%excel_data)
@@ -735,7 +744,7 @@ async def data_process_excel(telegram_message):
                             print("Error:%s"%e)
                             # If new deposit method
                             # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1], 'new_method': [0,1]}
-                            reconstruct_dict[info] = [0]*(target_len - 1) + [excel_data[info]]
+                            reconstruct_dict[info] = ["-"]*(target_len - 1) + [excel_data[info]]
 
                 # standardize the length 
                 # Pad shorter lists with zeros
@@ -743,7 +752,7 @@ async def data_process_excel(telegram_message):
                     if len(value) < target_len:
                         # Add zeros until length matches
                         # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1,0], 'PromptPay_QPAY': [1,0], 'new_method': [0,1]}
-                        reconstruct_dict[key] = value + [0]*(target_len - len(value))
+                        reconstruct_dict[key] = value + ["-"]*(target_len - len(value))
 
                 log.info("After Reconstruct Dict: %s"%reconstruct_dict)
                 df = pd.DataFrame(reconstruct_dict)

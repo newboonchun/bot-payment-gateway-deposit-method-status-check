@@ -192,6 +192,13 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - PASSWORD DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN")
+        # advertisement close
+    try:
+        advertisement_close_button = page.locator(".icon-close.text-lg")
+        await advertisement_close_button.click()
+        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED")
+    except:
+        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE NOT CLICKED")
     #<div data-v-d8844d51="" class="wallet-container-desktop">
     #     <div data-v-d8844d51="" class="wallet-icon-section">
     #          <button data-v-d8844d51="" type="button" class="topbar_btn_2 mx-2 md:mx-[10px] flex items-center justify-center deposit_display_big_2" aria-label="Deposit" id="deposit_btn_12">Deposit</button></div>
@@ -227,6 +234,7 @@ async def qr_code_check(page):
         "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
         "div[class*='qrcode']",
+        "div[class*='qr']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
@@ -389,6 +397,7 @@ async def check_toast(page,deposit_method,deposit_channel):
                 break
             await asyncio.sleep(0.1)
     except:
+            text = None
             toast_exist = False
             log.info("No Toast message, no proceed to payment page, no qr code, please check what reason manually.")
     return toast_exist, text
@@ -519,6 +528,7 @@ async def telegram_send_operation(telegram_message, failed_reason, program_compl
     log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
+    lucuss_chat_id = os.getenv("LUCUSS_CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -548,21 +558,39 @@ async def telegram_send_operation(telegram_message, failed_reason, program_compl
 
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
-            caption = f"""*Subject: Bot Testing Deposit Gateway*  
-            URL: [god345\\.co](https://www\\.god345\\.co/)
-            TEAM : G345T
-            ┌─ **Deposit Testing Result** ──────────┐
-            │ {status_emoji} **{status}** 
-            │  
-            │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
-            │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+            caption = f"""[W\\_Hao](tg://user?id=8416452734), [W\\_MC](tg://user?id=7629175195)
+*Subject: Bot Testing Deposit Gateway*  
+URL: [god345\\.co](https://www\\.god345\\.co/)
+TEAM : G345T
+┌─ **Deposit Testing Result** ──────────┐
+│ {status_emoji} **{status}** 
+│  
+│ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+│ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
             └───────────────────────────┘
 
-            **Failed reason**  
-            {fail_line}
+**Failed reason**  
+{fail_line}
 
-            **Time Detail**  
-            ├─ **TimeOccurred:** `{timestamp}` """ 
+**Time Detail**  
+├─ **TimeOccurred:** `{timestamp}` """ 
+
+            lucuss_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+*Subject: Bot Testing Deposit Gateway*  
+URL: [god345\\.co](https://www\\.god345\\.co/)
+TEAM : G345T
+┌─ **Deposit Testing Result** ──────────┐
+│ {status_emoji} **{status}** 
+│  
+│ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+│ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+└───────────────────────────┘
+
+**Failed reason**  
+{fail_line}
+
+**Time Detail**  
+├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*GOD345_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
@@ -574,6 +602,27 @@ async def telegram_send_operation(telegram_message, failed_reason, program_compl
                                     chat_id=chat_id,
                                     photo=f,
                                     caption=caption,
+                                    parse_mode='MarkdownV2',
+                                    read_timeout=30,
+                                    write_timeout=30,
+                                    connect_timeout=30
+                                )
+                        log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                        break
+                    except TimedOut:
+                        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+                    except Exception as e:
+                        log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                        break
+                
+                for attempt in range(3):
+                    try:
+                        with open(file_path, 'rb') as f:
+                              await bot.send_photo(
+                                    chat_id=lucuss_chat_id,
+                                    photo=f,
+                                    caption=lucuss_caption,
                                     parse_mode='MarkdownV2',
                                     read_timeout=30,
                                     write_timeout=30,
@@ -610,6 +659,7 @@ async def telegram_send_summary(telegram_message,date_time):
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
+    lucuss_chat_id = os.getenv("LUCUSS_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
@@ -664,8 +714,18 @@ TIME: {escape_md(date_time)}
             await asyncio.sleep(3)
         except Exception as e:
             log.error(f"SUMMARY FAILED TO SENT: {e}")
-
-
+    
+    for attempt in range(3):
+        try:
+            await bot.send_message(chat_id=lucuss_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            log.info("SUMMARY SENT")
+            break
+        except TimedOut:
+            log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+            await asyncio.sleep(3)
+        except Exception as e:
+            log.error(f"SUMMARY FAILED TO SENT: {e}")
+    
 async def clear_screenshot():
     picture_to_sent = glob.glob("*GOD345*.png")
     for f in picture_to_sent:
@@ -687,8 +747,15 @@ async def data_process_excel(telegram_message):
         if status == 'deposit failed':
             excel_data['date_time'] = date_time("Asia/Bangkok")
             excel_data[f"{deposit_method}_{deposit_channel}"] = 1
+        elif status == 'deposit success':
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = 0
+        elif status == 'no reason found, check manually':
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = 1
         else:
-            pass
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = "-"
     
     # Populate the failed payment gateway info for this session into excel_data
     log.info("EXCEL DATA: %s"%excel_data)
@@ -746,7 +813,7 @@ async def data_process_excel(telegram_message):
                             print("Error:%s"%e)
                             # If new deposit method
                             # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1], 'new_method': [0,1]}
-                            reconstruct_dict[info] = [0]*(target_len - 1) + [excel_data[info]]
+                            reconstruct_dict[info] = ["-"]*(target_len - 1) + [excel_data[info]]
 
                 # standardize the length 
                 # Pad shorter lists with zeros
@@ -754,7 +821,7 @@ async def data_process_excel(telegram_message):
                     if len(value) < target_len:
                         # Add zeros until length matches
                         # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1,0], 'PromptPay_QPAY': [1,0], 'new_method': [0,1]}
-                        reconstruct_dict[key] = value + [0]*(target_len - len(value))
+                        reconstruct_dict[key] = value + ["-"]*(target_len - len(value))
 
                 log.info("After Reconstruct Dict: %s"%reconstruct_dict)
                 df = pd.DataFrame(reconstruct_dict)

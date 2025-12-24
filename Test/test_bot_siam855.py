@@ -157,6 +157,13 @@ async def perform_login(page):
     except:
         log.info("LOGIN PROCESS - NO SLIDEDOWN")
     try:
+        first_advertisement_dont_show_checkbox = page.locator(".o-checkbox").first
+        await first_advertisement_dont_show_checkbox.wait_for(state="visible", timeout=10000)
+        await first_advertisement_dont_show_checkbox.click()
+        await page.get_by_role("button", name="Close").click()
+    except:
+        log.info("LOGIN PROCESS - FIRST ADVERTISEMENT DIDN'T APPEARED")
+    try:
         await page.get_by_role("button", name="Login").click()
         log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
     except:
@@ -683,8 +690,12 @@ async def data_process_excel(telegram_message):
         if status == 'deposit failed':
             excel_data['date_time'] = date_time("Asia/Bangkok")
             excel_data[f"{deposit_method}_{deposit_channel}"] = 1
+        elif status == 'deposit success':
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = 0
         else:
-            pass
+            excel_data['date_time'] = date_time("Asia/Bangkok")
+            excel_data[f"{deposit_method}_{deposit_channel}"] = "-"
     
     # Populate the failed payment gateway info for this session into excel_data
     log.info("EXCEL DATA: %s"%excel_data)
@@ -742,7 +753,7 @@ async def data_process_excel(telegram_message):
                             print("Error:%s"%e)
                             # If new deposit method
                             # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1], 'new_method': [0,1]}
-                            reconstruct_dict[info] = [0]*(target_len - 1) + [excel_data[info]]
+                            reconstruct_dict[info] = ["-"]*(target_len - 1) + [excel_data[info]]
 
                 # standardize the length 
                 # Pad shorter lists with zeros
@@ -750,7 +761,7 @@ async def data_process_excel(telegram_message):
                     if len(value) < target_len:
                         # Add zeros until length matches
                         # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1,0], 'PromptPay_QPAY': [1,0], 'new_method': [0,1]}
-                        reconstruct_dict[key] = value + [0]*(target_len - len(value))
+                        reconstruct_dict[key] = value + ["-"]*(target_len - len(value))
 
                 log.info("After Reconstruct Dict: %s"%reconstruct_dict)
                 df = pd.DataFrame(reconstruct_dict)
@@ -797,7 +808,7 @@ async def data_process_excel(telegram_message):
 
 @pytest.mark.asyncio
 async def test_main():
-    MAX_RETRY = 1
+    MAX_RETRY = 3
     global log
     th_tz = pytz.timezone('Asia/Bangkok')
     round_start = datetime.now(th_tz)
