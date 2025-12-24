@@ -157,6 +157,13 @@ async def perform_login(page):
     except:
         log.info("LOGIN PROCESS - NO SLIDEDOWN")
     try:
+        first_advertisement_dont_show_checkbox = page.locator(".o-checkbox").first
+        await first_advertisement_dont_show_checkbox.wait_for(state="visible", timeout=10000)
+        await first_advertisement_dont_show_checkbox.click()
+        await page.get_by_role("button", name="Close").click()
+    except:
+        log.info("LOGIN PROCESS - FIRST ADVERTISEMENT DIDN'T APPEARED")
+    try:
         await page.get_by_role("button", name="Login").click()
         log.info("LOGIN PROCESS - LOGIN BUTTON ARE CLICKED")
     except:

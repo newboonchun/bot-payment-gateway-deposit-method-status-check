@@ -583,39 +583,39 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
 
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
-            caption = f""" [W\\_Karman](tg://user?id=5615912046)
-            *Subject: Bot Testing Deposit Gateway*  
-            URL: [jw8thai8\\.com](https://www\\.jw8thai8\\.com/en\\-th)
-            TEAM : J8T
-            ┌─ **Deposit Testing Result** ──────────┐
-            │ {status_emoji} **{status}** 
-            │  
-            │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
-            │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-            └───────────────────────────┘
+            caption = f"""[W\\_Hao](tg://user?id=8416452734), [W\\_MC](tg://user?id=7629175195)
+*Subject: Bot Testing Deposit Gateway*  
+URL: [jw8thai8\\.com](https://www\\.jw8thai8\\.com/en\\-th)
+TEAM : J8T
+┌─ **Deposit Testing Result** ──────────┐
+│ {status_emoji} **{status}** 
+│  
+│ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+│ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+└───────────────────────────┘
 
-            **Failed reason**  
-            {fail_line}
+**Failed reason**  
+{fail_line}
 
-            **Time Detail**  
-            ├─ **TimeOccurred:** `{timestamp}` """ 
+**Time Detail**  
+├─ **TimeOccurred:** `{timestamp}` """ 
 
-            lucuss_caption = f""" [W\\_Hao](tg://user?id=8416452734), [W\\_MC](tg://user?id=7629175195)
-            *Subject: Bot Testing Deposit Gateway*  
-            URL: [jw8thai8\\.com](https://www\\.jw8thai8\\.com/en\\-th)
-            TEAM : J8T
-            ┌─ **Deposit Testing Result** ──────────┐
-            │ {status_emoji} **{status}** 
-            │  
-            │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
-            │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
-            └───────────────────────────┘
+            lucuss_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+*Subject: Bot Testing Deposit Gateway*  
+URL: [jw8thai8\\.com](https://www\\.jw8thai8\\.com/en\\-th)
+TEAM : J8T
+┌─ **Deposit Testing Result** ──────────┐
+│ {status_emoji} **{status}** 
+│  
+│ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
+│ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
+└───────────────────────────┘
 
-            **Failed reason**  
-            {fail_line}
+**Failed reason**  
+{fail_line}
 
-            **Time Detail**  
-            ├─ **TimeOccurred:** `{timestamp}` """ 
+**Time Detail**  
+├─ **TimeOccurred:** `{timestamp}` """ 
             files = glob.glob("*JW8_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
@@ -683,7 +683,8 @@ async def telegram_send_summary(telegram_message,date_time):
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
-    chat_id = os.getenv("LUCUSS_CHAT_ID")
+    chat_id = os.getenv("CHAT_ID")
+    lucuss_chat_id = os.getenv("LUCUSS_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
@@ -731,6 +732,17 @@ TIME: {escape_md(date_time)}
     for attempt in range(3):
         try:
             await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            log.info("SUMMARY SENT")
+            break
+        except TimedOut:
+            log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+            await asyncio.sleep(3)
+        except Exception as e:
+            log.error(f"SUMMARY FAILED TO SENT: {e}")
+    
+    for attempt in range(3):
+        try:
+            await bot.send_message(chat_id=lucuss_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
             log.info("SUMMARY SENT")
             break
         except TimedOut:
