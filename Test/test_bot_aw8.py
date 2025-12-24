@@ -420,8 +420,8 @@ async def perform_payment_gateway_test(page):
         old_url = page.url
         btn = deposit_method_button.nth(i)
         deposit_method = await btn.get_attribute("aria-label")
-        if deposit_method != 'เติมเงินผ่าน QR': #FOR DEBUG
-            continue
+        #if deposit_method != 'เติมเงินผ่าน QR': #FOR DEBUG
+        #    continue
         # deposit method click
         try:
             await page.get_by_role("button", name="%s"%deposit_method).click()
@@ -581,8 +581,7 @@ TEAM : A8T2
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
 
-            lucuss_caption = f"""
-[W\\_Karman](tg://user?id=5615912046)
+            lucuss_caption = f"""[W\\_Karman](tg://user?id=5615912046)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [aw8game\\.online](https://www\\.aw8game\\.online/en\\-th)
 TEAM : A8T2
@@ -602,7 +601,7 @@ TEAM : A8T2
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
-            if status == 'deposit success':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:
