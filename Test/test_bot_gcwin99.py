@@ -356,7 +356,7 @@ async def check_toast(page,deposit_method,deposit_channel):
         log.info("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
     except:
         raise Exception("CHECK TOAST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
-    money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
+    money_input_range = page.locator('div.deposit_channel_title_text.flex.justify-between')
     await money_input_range.wait_for(state="attached", timeout=3000)
     money_input_range_text = (await money_input_range.inner_text())
     matches = re.findall(r"฿\s*([\d,]+)", money_input_range_text)
@@ -441,7 +441,7 @@ async def perform_payment_gateway_test(page):
             except:
                 raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
             # input the minimum deposit amount
-            money_input_range = page.locator('div.deposit_channel_text.flex.justify-between')
+            money_input_range = page.locator('div.deposit_channel_title_text.flex.justify-between')
             await money_input_range.wait_for(state="attached", timeout=3000)
             money_input_range_text = (await money_input_range.inner_text())
             log.info("MONEY INPUT RANGE AMOUNT: [%s]"%money_input_range_text)
@@ -466,6 +466,11 @@ async def perform_payment_gateway_test(page):
                    manual_bank_text = await page.locator('div.deposit_information_content_labels').nth(count).inner_text(timeout=3000)
                    log.info("MANUAL BANK TEXT:%s"%manual_bank_text)
                    if "Bank Name" in manual_bank_text:
+                       await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
+                       log.info("MANUAL BANK TEXT FOUND:%s"%manual_bank_text)
+                       manual_bank = True
+                       break
+                   elif "ชื่อธนาคาร" in manual_bank_text:
                        await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
                        log.info("MANUAL BANK TEXT FOUND:%s"%manual_bank_text)
                        manual_bank = True
@@ -765,99 +770,107 @@ async def data_process_excel(telegram_message):
         date = dt.split(" ")[0]
 
         file = "data_bot_%s.xlsx"%date
-
-        if os.path.exists(file):
-            sheets = pd.ExcelFile(file).sheet_names
-            if "GT" in sheets:
-                for attempt in range(3):
-                    try:
-                        df = pd.read_excel(file,sheet_name="GT")
-                    except Exception as e:
-                        log.warning(f"DATA PROCESS EXCEL READING ERROR: {e}，RETRY {attempt + 1}/3...")
-                        await asyncio.sleep(5)
-
-                reconstruct_dict = {col: [] for col in df.columns}
-
-                # Populate lists column-wise
-                for _, row in df.iterrows():
-                    for col in df.columns:
-                        reconstruct_dict[col].append(row[col])
-
-                # Before : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1]}
-                log.info("Before Reconstruct Dict: %s"%reconstruct_dict)
-
-                try:
-                    reconstruct_dict['date_time'].append(excel_data['date_time'])
-                    target_len = len(reconstruct_dict['date_time'])
-                except Exception as e:
-                    print(e)
-                    reconstruct_dict['date_time']=[excel_data['date_time']]
-
-                target_len = len(reconstruct_dict['date_time'])
-                #print("target_len:%s"%target_len)
-
-                for info in excel_data:
-                    if info == 'date_time':
-                        continue
-                    else:
+        lock_file = file + ".lock"
+        while os.path.exists(lock_file): 
+            asyncio.sleep(1)
+            log.info("EXCEL DATA: LOCK FILE STILL EXIST, OTHER SITE WRITING...")
+        open(lock_file, "w").close()
+        try:
+            if os.path.exists(file):
+                sheets = pd.ExcelFile(file).sheet_names
+                if "GT" in sheets:
+                    for attempt in range(3):
                         try:
-                            # If got same deposit method
-                            # After : {'date_time': ['2025-12-17 19:52:23', '2025-12-17 20:52:23'], 'Promptpay 1_ONEPAY': [1, 1], 'PromptPay_QPAY': [1, 1]}
-                            reconstruct_dict[info].append(excel_data[info])
+                            df = pd.read_excel(file,sheet_name="GT")
                         except Exception as e:
-                            print("Error:%s"%e)
-                            # If new deposit method
-                            # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1], 'new_method': [0,1]}
-                            reconstruct_dict[info] = ["-"]*(target_len - 1) + [excel_data[info]]
+                            log.warning(f"DATA PROCESS EXCEL READING ERROR: {e}，RETRY {attempt + 1}/3...")
+                            await asyncio.sleep(5)
 
-                # standardize the length 
-                # Pad shorter lists with zeros
-                for key, value in reconstruct_dict.items():
-                    if len(value) < target_len:
-                        # Add zeros until length matches
-                        # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1,0], 'PromptPay_QPAY': [1,0], 'new_method': [0,1]}
-                        reconstruct_dict[key] = value + ["-"]*(target_len - len(value))
+                    reconstruct_dict = {col: [] for col in df.columns}
 
-                log.info("After Reconstruct Dict: %s"%reconstruct_dict)
-                df = pd.DataFrame(reconstruct_dict)
-                for attempt in range(3):
+                    # Populate lists column-wise
+                    for _, row in df.iterrows():
+                        for col in df.columns:
+                            reconstruct_dict[col].append(row[col])
+
+                    # Before : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1]}
+                    log.info("Before Reconstruct Dict: %s"%reconstruct_dict)
+
                     try:
-                        with pd.ExcelWriter(
-                            file,
-                            engine="openpyxl",
-                            mode="a",
-                            if_sheet_exists="replace"
-                        ) as writer:
-                            df.to_excel(writer, sheet_name='GT', index=False)
+                        reconstruct_dict['date_time'].append(excel_data['date_time'])
+                        target_len = len(reconstruct_dict['date_time'])
                     except Exception as e:
-                        log.warning(f"DATA PROCESS EXCEL ERROR: {e}，RETRY {attempt + 1}/3...")
-                        await asyncio.sleep(5)
+                        print(e)
+                        reconstruct_dict['date_time']=[excel_data['date_time']]
+
+                    target_len = len(reconstruct_dict['date_time'])
+                    #print("target_len:%s"%target_len)
+
+                    for info in excel_data:
+                        if info == 'date_time':
+                            continue
+                        else:
+                            try:
+                                # If got same deposit method
+                                # After : {'date_time': ['2025-12-17 19:52:23', '2025-12-17 20:52:23'], 'Promptpay 1_ONEPAY': [1, 1], 'PromptPay_QPAY': [1, 1]}
+                                reconstruct_dict[info].append(excel_data[info])
+                            except Exception as e:
+                                print("Error:%s"%e)
+                                # If new deposit method
+                                # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1], 'PromptPay_QPAY': [1], 'new_method': [0,1]}
+                                reconstruct_dict[info] = ["-"]*(target_len - 1) + [excel_data[info]]
+
+                    # standardize the length 
+                    # Pad shorter lists with zeros
+                    for key, value in reconstruct_dict.items():
+                        if len(value) < target_len:
+                            # Add zeros until length matches
+                            # After : {'date_time': ['2025-12-17 19:52:23'], 'Promptpay 1_ONEPAY': [1,0], 'PromptPay_QPAY': [1,0], 'new_method': [0,1]}
+                            reconstruct_dict[key] = value + ["-"]*(target_len - len(value))
+
+                    log.info("After Reconstruct Dict: %s"%reconstruct_dict)
+                    df = pd.DataFrame(reconstruct_dict)
+                    for attempt in range(3):
+                        try:
+                            with pd.ExcelWriter(
+                                file,
+                                engine="openpyxl",
+                                mode="a",
+                                if_sheet_exists="replace"
+                            ) as writer:
+                                df.to_excel(writer, sheet_name='GT', index=False)
+                        except Exception as e:
+                            log.warning(f"DATA PROCESS EXCEL ERROR: {e}，RETRY {attempt + 1}/3...")
+                            await asyncio.sleep(5)
+                else:
+                    log.info("Sheets GT not found in file :%s"%file)
+                    df = pd.DataFrame([excel_data])
+                    for attempt in range(3):
+                        try:
+                            with pd.ExcelWriter(
+                                file,
+                                engine="openpyxl",
+                                mode="a",
+                                if_sheet_exists="replace"
+                            ) as writer:
+                                df.to_excel(writer, sheet_name='GT', index=False)
+                        except Exception as e:
+                            log.warning(f"DATA PROCESS EXCEL ERROR: {e}，RETRY {attempt + 1}/3...")
+                            await asyncio.sleep(5)
             else:
-                log.info("Sheets GT not found in file :%s"%file)
+                log.info("File %s not found"%file)
+                # Every start of each day - first set of data
                 df = pd.DataFrame([excel_data])
                 for attempt in range(3):
                     try:
-                        with pd.ExcelWriter(
-                            file,
-                            engine="openpyxl",
-                            mode="a",
-                            if_sheet_exists="replace"
-                        ) as writer:
+                        with pd.ExcelWriter(file, engine="openpyxl") as writer:
                             df.to_excel(writer, sheet_name='GT', index=False)
                     except Exception as e:
                         log.warning(f"DATA PROCESS EXCEL ERROR: {e}，RETRY {attempt + 1}/3...")
                         await asyncio.sleep(5)
-        else:
-            log.info("File %s not found"%file)
-            # Every start of each day - first set of data
-            df = pd.DataFrame([excel_data])
-            for attempt in range(3):
-                try:
-                    with pd.ExcelWriter(file, engine="openpyxl") as writer:
-                        df.to_excel(writer, sheet_name='GT', index=False)
-                except Exception as e:
-                    log.warning(f"DATA PROCESS EXCEL ERROR: {e}，RETRY {attempt + 1}/3...")
-                    await asyncio.sleep(5)
+        finally:
+            os.remove(lock_file)
+            log.info("Lock file is removed :%s"%lock_file)
     else:
         pass
 
