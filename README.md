@@ -39,4 +39,4 @@ test 1: toast check
 test 2: url jump check (new page)
 
 Type D site: A8T, 9T, UT
-2FT, 2WT, SIAM855
+
