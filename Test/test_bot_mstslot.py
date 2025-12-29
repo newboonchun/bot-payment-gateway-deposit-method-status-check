@@ -451,7 +451,7 @@ TEAM : MST
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
 
-            lucuss_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            lucuss_caption = f"""[LT PHONG](tg://user?id=5332128158), [LT JACK](tg://user?id=6136123283), [Mike](tg://user?id=6120358390), [Oack](tg://user?id=6556699698), [FreddyLii](tg://user?id=7985860301)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [mstslot\\.com](https://www\\.mstslot\\.com/th\\-th)
 TEAM : MST

@@ -148,7 +148,13 @@ async def perform_login(page):
         raise Exception("LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED")
         
     # Login flow jw8
-    await asyncio.sleep(5)
+    await asyncio.sleep(15)
+    try:
+        slidedown = page.locator("div.slidedown-footer")
+        await slidedown.locator('button.align-right.primary.slidedown-button').click()
+        log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED")
+    except Exception as e:
+        log.info("LOGIN PROCESS - NO SLIDEDOWN:%s"%e)
     try:
         first_advertisement_dont_show_checkbox = page.locator(".o-checkbox").first
         await first_advertisement_dont_show_checkbox.wait_for(state="visible", timeout=10000)
@@ -605,7 +611,7 @@ TEAM : J8T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
 
-            lucuss_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            lucuss_caption = f"""[LT PHONG](tg://user?id=5332128158), [LT JACK](tg://user?id=6136123283), [Mike](tg://user?id=6120358390), [Oack](tg://user?id=6556699698), [FreddyLii](tg://user?id=7985860301)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [jw8thai8\\.com](https://www\\.jw8thai8\\.com/en\\-th)
 TEAM : J8T

@@ -567,7 +567,7 @@ TEAM : S5T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            jr_bing_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            jr_bing_caption = f"""[Peemai](tg://user?id=5690463304), [NUDEE](tg://user?id=5443501630), [Namwan](tg://user?id=7020014599), [Yati](tg://user?id=6474451548)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [sing55\\.com](https://www\\.sing55\\.com/en\\-th)
 TEAM : S5T

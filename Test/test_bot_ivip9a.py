@@ -435,7 +435,7 @@ TEAM : 9T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            law_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            law_caption = f"""[Dew](tg://user?id=5040636833), [Michael](tg://user?id=1255354306), [WDBSP1](tg://user?id=1868242237), [WDBSP4](tg://user?id=1841779896)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [ivip9a\\.com](https://www\\.ivip9a\\.com/en\\-th/home)
 TEAM : 9T

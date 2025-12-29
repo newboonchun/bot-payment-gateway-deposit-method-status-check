@@ -559,7 +559,7 @@ TEAM : S6T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            fanny_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            fanny_caption = f"""[Pimmy](tg://user?id=5046413427)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [siam66\\.com](https://www\\.siam66\\.com/en\\-th)
 TEAM : S6T

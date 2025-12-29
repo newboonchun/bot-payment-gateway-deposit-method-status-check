@@ -149,6 +149,13 @@ async def perform_login(page):
         
     # Login flow SIAM369
     # Login button failed to locate if use get by role
+    await asyncio.sleep(15)
+    try:
+        slidedown = page.locator("div.slidedown-footer")
+        await slidedown.locator('button.align-right.primary.slidedown-button').click()
+        log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED")
+    except Exception as e:
+        log.info("LOGIN PROCESS - NO SLIDEDOWN:%s"%e)
     try:
         first_advertisement_dont_show_checkbox = page.locator(".o-checkbox").first
         await first_advertisement_dont_show_checkbox.wait_for(state="visible", timeout=10000)
@@ -508,7 +515,7 @@ async def telegram_send_operation(telegram_message,failed_reason, program_comple
     log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
-    aunko_chat_id = os.getenv("AUNKO_CHAT_ID")
+    joy_chat_id = os.getenv("JOY_CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -555,7 +562,7 @@ TEAM : S369T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            aunko_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            joy_caption = f"""[Janeny](tg://user?id=7354557269), [Augus](tg://user?id=6886607680)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [siam369th\\.com](https://www\\.siam369th\\.com/en\\-th)
 TEAM : S369T
@@ -599,9 +606,9 @@ TEAM : S369T
                     try:
                         with open(file_path, 'rb') as f:
                               await bot.send_photo(
-                                    chat_id=aunko_chat_id,
+                                    chat_id=joy_chat_id,
                                     photo=f,
-                                    caption=aunko_caption,
+                                    caption=joy_caption,
                                     parse_mode='MarkdownV2',
                                     read_timeout=30,
                                     write_timeout=30,
@@ -638,7 +645,7 @@ async def telegram_send_summary(telegram_message,date_time):
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
-    aunko_chat_id = os.getenv("AUNKO_CHAT_ID")
+    joy_chat_id = os.getenv("JOY_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
@@ -696,7 +703,7 @@ TIME: {escape_md(date_time)}
     
     for attempt in range(3):
         try:
-            await bot.send_message(chat_id=aunko_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            await bot.send_message(chat_id=joy_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
             log.info("SUMMARY SENT")
             break
         except TimedOut:
