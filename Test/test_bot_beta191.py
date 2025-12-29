@@ -173,7 +173,6 @@ async def qr_code_check(page):
         "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
         "div[class*='qrcode']",
-        "div[class*='qr']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
