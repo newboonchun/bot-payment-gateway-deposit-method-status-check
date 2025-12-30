@@ -589,7 +589,7 @@ TEAM : S8T
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
-            if status == 'deposit success':
+            if status != 'deposit success':
                 for attempt in range(3):
                     try:
                         with open(file_path, 'rb') as f:
