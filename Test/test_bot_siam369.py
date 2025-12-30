@@ -265,7 +265,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
                 deposit_button = page.locator('.btn_deposits')
@@ -562,7 +562,8 @@ TEAM : S369T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            joy_caption = f"""[Janeny](tg://user?id=7354557269), [Augus](tg://user?id=6886607680)
+            joy_caption = f"""[WPPPD01](tg://user?id=8481857250), [WPPPD03](tg://user?id=7555942106), [WPPPD04](tg://user?id=8444340823), [WPPPD05](tg://user?id=8371010614), [WPPPD06](tg://user?id=7868897034),
+[WPPPD07](tg://user?id=8394636302), [W\\_Jack](tg://user?id=8120164891), [qPor1995](tg://user?id=6507986349), [Siam369th](tg://user?id=7670674353)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [siam369th\\.com](https://www\\.siam369th\\.com/en\\-th)
 TEAM : S369T

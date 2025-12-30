@@ -262,7 +262,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
                 deposit_button = page.locator('.btn_deposits')

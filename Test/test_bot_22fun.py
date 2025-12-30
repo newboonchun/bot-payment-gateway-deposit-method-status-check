@@ -267,7 +267,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,deposit_channel,min_amount,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 await submit_button.click()
                 log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
@@ -590,7 +590,7 @@ TEAM : 2FT
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            joy_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            joy_caption = f"""[Janeny](tg://user?id=7354557269), [Augus](tg://user?id=6886607680), [Amin22FT](tg://user?id=7071925759), [Cs22fun](tg://user?id=6886607680), [wadee](tg://user?id=7071925759)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [22funthb1\\.com](https://www\\.22funthb1\\.com/en\\-th)
 TEAM : 2FT

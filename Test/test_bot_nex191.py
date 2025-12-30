@@ -265,7 +265,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=60000):
             try:
                 #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
                 deposit_button = page.locator('.btn_deposits')
@@ -562,7 +562,7 @@ TEAM : N1T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            law_caption = f"""[Dew](tg://user?id=5040636833), [Michael](tg://user?id=1255354306), [WDBSP1](tg://user?id=1868242237), [WDBSP4](tg://user?id=1841779896)
+            law_caption = f"""[Dew](tg://user?id=5040636833), [Michael](tg://user?id=1255354306), [WDBSP1](tg://user?id=1868242237), [WDBSP4](tg://user?id=1841779896), [WDBSP23](tg://user?id=7039249890), [WDBSP10](tg://user?id=8057031670)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [nex191\\.co](https://www\\.nex191\\.co/th\\-th)
 TEAM : N1T
