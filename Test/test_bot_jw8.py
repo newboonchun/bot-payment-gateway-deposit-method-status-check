@@ -264,7 +264,6 @@ async def qr_code_check(page):
         "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
         "div[class*='qrcode']",
-        "div[class*='qr']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
@@ -612,7 +611,7 @@ TEAM : J8T
 ├─ **TimeOccurred:** `{timestamp}` """ 
 
             lucuss_caption = f"""[LT PHONG](tg://user?id=5332128158), [LT JACK](tg://user?id=6136123283), [Mike](tg://user?id=6120358390), [Oack](tg://user?id=6556699698), [FreddyLii](tg://user?id=7985860301),
-[ccbb_23](tg://user?id=5687983283), [LTB2](tg://user?id=5245100299), [LTB3](tg://user?id=7493381560), [LTB7](tg://user?id=8133278339)
+[ccbb\\_23](tg://user?id=5687983283), [LTB2](tg://user?id=5245100299), [LTB3](tg://user?id=7493381560), [LTB7](tg://user?id=8133278339)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [jw8thai8\\.com](https://www\\.jw8thai8\\.com/en\\-th)
 TEAM : J8T

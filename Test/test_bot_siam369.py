@@ -188,6 +188,12 @@ async def perform_login(page):
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN")
     try:
+        advertisement_close_button = page.locator(".icon-close.text-lg")
+        await advertisement_close_button.click()
+        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED")
+    except:
+        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE NOT CLICKED")
+    try:
         deposit_topbar_container = page.locator('div.deposit_topbar')
         deposit_topbar_button = deposit_topbar_container.locator('button.topbar_btn_2:has-text("Deposit")')
         await deposit_topbar_button.click()
