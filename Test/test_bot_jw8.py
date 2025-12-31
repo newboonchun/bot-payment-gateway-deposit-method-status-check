@@ -148,7 +148,13 @@ async def perform_login(page):
         raise Exception("LOGIN PROCESS - RETRY 3 TIMES....PAGE LOADED FAILED")
         
     # Login flow jw8
-    await asyncio.sleep(5)
+    await asyncio.sleep(15)
+    try:
+        slidedown = page.locator("div.slidedown-footer")
+        await slidedown.locator('button.align-right.primary.slidedown-button').click()
+        log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED")
+    except Exception as e:
+        log.info("LOGIN PROCESS - NO SLIDEDOWN:%s"%e)
     try:
         first_advertisement_dont_show_checkbox = page.locator(".o-checkbox").first
         await first_advertisement_dont_show_checkbox.wait_for(state="visible", timeout=10000)
@@ -258,7 +264,6 @@ async def qr_code_check(page):
         "div.payFrame", #for fpay-crypto
         "div[id*='qr' i]",
         "div[class*='qrcode']",
-        "div[class*='qr']",
         "div#qrcode-container",
         "div#dowloadQr"
     ]
@@ -307,7 +312,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
                 deposit_button = page.locator('.btn_deposits')
@@ -605,7 +610,8 @@ TEAM : J8T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
 
-            lucuss_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            lucuss_caption = f"""[LT PHONG](tg://user?id=5332128158), [LT JACK](tg://user?id=6136123283), [Mike](tg://user?id=6120358390), [Oack](tg://user?id=6556699698), [FreddyLii](tg://user?id=7985860301),
+[ccbb\\_23](tg://user?id=5687983283), [LTB2](tg://user?id=5245100299), [LTB3](tg://user?id=7493381560), [LTB7](tg://user?id=8133278339)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [jw8thai8\\.com](https://www\\.jw8thai8\\.com/en\\-th)
 TEAM : J8T

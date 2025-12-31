@@ -272,7 +272,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,deposit_channel,min_amount,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 await submit_button.click()
                 log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
@@ -573,7 +573,7 @@ TEAM : 2WT
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            aunko_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            aunko_caption = f"""[TMAunko2WT](tg://user?id=2140597640), [Win22winTHB](tg://user?id=1816461975), [dew2wt](tg://user?id=7218844492), [Aomdew22win](tg://user?id=5034827835)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [22winth9\\.com](https://www\\.22winth9\\.com/en\\-th)
 TEAM : 2WT

@@ -149,6 +149,13 @@ async def perform_login(page):
         
     # Login flow SIAM369
     # Login button failed to locate if use get by role
+    await asyncio.sleep(15)
+    try:
+        slidedown = page.locator("div.slidedown-footer")
+        await slidedown.locator('button.align-right.primary.slidedown-button').click()
+        log.info("LOGIN PROCESS - CLOSE SLIDEDOWN BUTTON ARE CLICKED")
+    except Exception as e:
+        log.info("LOGIN PROCESS - NO SLIDEDOWN:%s"%e)
     try:
         first_advertisement_dont_show_checkbox = page.locator(".o-checkbox").first
         await first_advertisement_dont_show_checkbox.wait_for(state="visible", timeout=10000)
@@ -180,6 +187,12 @@ async def perform_login(page):
         log.info("LOGIN PROCESS - PASSWORD DONE KEYED")
     except:
         raise Exception("LOGIN PROCESS - PASSWORD FAILED TO FILL IN")
+    try:
+        advertisement_close_button = page.locator(".icon-close.text-lg")
+        await advertisement_close_button.click()
+        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED")
+    except:
+        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE NOT CLICKED")
     try:
         deposit_topbar_container = page.locator('div.deposit_topbar')
         deposit_topbar_button = deposit_topbar_container.locator('button.topbar_btn_2:has-text("Deposit")')
@@ -258,7 +271,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
                 deposit_button = page.locator('.btn_deposits')
@@ -508,7 +521,7 @@ async def telegram_send_operation(telegram_message,failed_reason, program_comple
     log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
-    aunko_chat_id = os.getenv("AUNKO_CHAT_ID")
+    joy_chat_id = os.getenv("JOY_CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -555,7 +568,8 @@ TEAM : S369T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            aunko_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            joy_caption = f"""[WPPPD01](tg://user?id=8481857250), [WPPPD03](tg://user?id=7555942106), [WPPPD04](tg://user?id=8444340823), [WPPPD05](tg://user?id=8371010614), [WPPPD06](tg://user?id=7868897034),
+[WPPPD07](tg://user?id=8394636302), [W\\_Jack](tg://user?id=8120164891), [qPor1995](tg://user?id=6507986349), [Siam369th](tg://user?id=7670674353)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [siam369th\\.com](https://www\\.siam369th\\.com/en\\-th)
 TEAM : S369T
@@ -599,9 +613,9 @@ TEAM : S369T
                     try:
                         with open(file_path, 'rb') as f:
                               await bot.send_photo(
-                                    chat_id=aunko_chat_id,
+                                    chat_id=joy_chat_id,
                                     photo=f,
-                                    caption=aunko_caption,
+                                    caption=joy_caption,
                                     parse_mode='MarkdownV2',
                                     read_timeout=30,
                                     write_timeout=30,
@@ -638,7 +652,7 @@ async def telegram_send_summary(telegram_message,date_time):
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
     chat_id = os.getenv("CHAT_ID")
-    aunko_chat_id = os.getenv("AUNKO_CHAT_ID")
+    joy_chat_id = os.getenv("JOY_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
@@ -696,7 +710,7 @@ TIME: {escape_md(date_time)}
     
     for attempt in range(3):
         try:
-            await bot.send_message(chat_id=aunko_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            await bot.send_message(chat_id=joy_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
             log.info("SUMMARY SENT")
             break
         except TimedOut:

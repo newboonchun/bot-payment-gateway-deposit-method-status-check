@@ -272,7 +272,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 deposit_button = page.locator('.btn_deposits')
                 await deposit_button.wait_for(state="visible", timeout=10000)
@@ -572,7 +572,8 @@ TEAM : S2T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            aunko_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            aunko_caption = f"""[WPPPD01](tg://user?id=8481857250), [WPPPD03](tg://user?id=7555942106), [WPPPD04](tg://user?id=8444340823), [WPPPD05](tg://user?id=8371010614), [WPPPD06](tg://user?id=7868897034),
+[WPPPD07](tg://user?id=8394636302), [W\\_Jack](tg://user?id=8120164891)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [siam212\\.com](https://www\\.siam212th11\\.com/en\\-th)
 TEAM : S2T

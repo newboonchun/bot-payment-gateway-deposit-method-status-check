@@ -267,7 +267,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,deposit_channel,min_amount,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=30000):
             try:
                 await submit_button.click()
                 log.info("URL JUMP CHECK - เติมเงิน/DEPOSIT TOP UP BUTTON ARE CLICKED")
@@ -416,118 +416,123 @@ async def perform_payment_gateway_test(page):
             btn = deposit_method_button.nth(i)
             manual_bank_identifier = await btn.locator('span.deposit_payment_method').inner_text()
 
-            deposit_method = await btn.locator('div.deposit_select_bank_list_name').inner_text()
-            log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s]"%deposit_method)
-            #if deposit_method != 'USDT-TRC20': #FOR DEBUG
-            #   continue
-            # manual bank check
-            log.info(f"MANUAL BANK IDENTIFIER FOR DEPOSIT METHOD [{deposit_method}] IS: [***{manual_bank_identifier}***]")
-            if any(manual_bank in manual_bank_identifier for manual_bank in exclude_list):
-                log.info(f"DEPOSIT METHOD [{deposit_method}] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...")
-                continue
-            else:
-                pass
-            # deposit method click
-            try:
-                await btn.click()
-                log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
-                # deposit channel info
-                # input minimum deposit amount
-
-                # class DOM for deposit channel text
-                #<button class="w-full flex items-center justify-between bank_title_bg px-4 py-3 transition-all duration-300">
-                #     <div class="flex items-center gap-3">
-                #         <img src="https://d2a18plfx719u2.cloudfront.net/frontend/bank_image/mssthaipay.png?v=1764310732564" class="h-5 max-h-8 max-w-full md:h-9" alt="MSSTHAIPAY">
-                #              <div class="text-xs md:text-sm">MSSTHAIPAY</div>
-
-                # DOM for input range for deposit amount
-                #<div class="deposit-provider-entry px-4 py-6 rounded-b-xl">
-                #    <div class="relative">
-                #        <input type="number" step="any" inputmode="numeric" class="o-input !py-3 !text-xs md:!text-base o-number !bg-black" placeholder="THB 200.00 - THB 1,000,000.00">
+            inner_deposit_method = btn.locator('div.deposit_select_bank_list')
+            inner_deposit_method_count = await inner_deposit_method.count()
+            log.info("FOUND [%s] INNER DEPOSIT METHOD COUNT FOR DEPOSIT METHOD [%s]"%(inner_deposit_method_count,manual_bank_identifier))
+            for j in range(inner_deposit_method_count):
+                btn = inner_deposit_method.locator('div.deposit_select_bank_list_name').nth(j)
+                deposit_method = await btn.inner_text()
+                log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s]"%deposit_method)
+                #if deposit_method != 'USDT-TRC20': #FOR DEBUG
+                #   continue
+                # manual bank check
+                log.info(f"MANUAL BANK IDENTIFIER FOR DEPOSIT METHOD [{deposit_method}] IS: [***{manual_bank_identifier}***]")
+                if any(manual_bank in manual_bank_identifier for manual_bank in exclude_list):
+                    log.info(f"DEPOSIT METHOD [{deposit_method}] IS NOT PAYMENT GATEWAY, SKIPPING CHECK...")
+                    continue
+                else:
+                    pass
+                # deposit method click
                 try:
+                    await btn.click()
+                    log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
+                    # deposit channel info
+                    # input minimum deposit amount
+
                     # class DOM for deposit channel text
                     #<button class="w-full flex items-center justify-between bank_title_bg px-4 py-3 transition-all duration-300">
                     #     <div class="flex items-center gap-3">
                     #         <img src="https://d2a18plfx719u2.cloudfront.net/frontend/bank_image/mssthaipay.png?v=1764310732564" class="h-5 max-h-8 max-w-full md:h-9" alt="MSSTHAIPAY">
                     #              <div class="text-xs md:text-sm">MSSTHAIPAY</div>
-                    deposit_channel = await deposit_method_container.locator('button.w-full.flex.items-center.justify-between.bank_title_bg').inner_text()
-                    #if deposit_channel != 'QPAY': #FOR DEBUG
-                    #    continue
-                    log.info("FOUND [%s] DEPOSIT CHANNEL FOR DEPOSIT METHOD [%s]"%(deposit_channel,deposit_method))
-                    input_deposit_amount_box_container = page.locator('div.deposit-provider-entry')
-                    input_deposit_amount_box = input_deposit_amount_box_container.locator('input[type="number"]')
-                    placeholder = await input_deposit_amount_box.get_attribute("placeholder")
-                    match = re.search(r'THB\s+(\d+)', placeholder)
-                    min_amount = match.group(1) if match else None
-                    log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
-                    await input_deposit_amount_box.click()
-                    await input_deposit_amount_box.fill("%s"%min_amount)
-                    # submit button
-                    # class DOM: 
+
+                    # DOM for input range for deposit amount
                     #<div class="deposit-provider-entry px-4 py-6 rounded-b-xl">
                     #    <div class="relative">
-                    #          <input type="number" step="any" inputmode="numeric" class="o-input !py-3 !text-xs md:!text-base o-number !bg-black" placeholder="THB 200.00 - THB 1,000,000.00">
-                    #    <div class="mt-5 md:mt-8">
-                    #          <button class="mx-auto !block btn btn-primary shining shrink-0 h-full uppercase" style="min-width: 280px;">Deposit</button></div>
+                    #        <input type="number" step="any" inputmode="numeric" class="o-input !py-3 !text-xs md:!text-base o-number !bg-black" placeholder="THB 200.00 - THB 1,000,000.00">
                     try:
-                        submit_button = input_deposit_amount_box_container.locator('button.mx-auto')
-                        #await submit_button.click()
-                        #await asyncio.sleep(30)
-                        # Jump URL check
-                        # btn = deposit method button
-                        url_jump, payment_page_failed_load= await url_jump_check(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,deposit_channel,min_amount,telegram_message)
-                        if url_jump and payment_page_failed_load == False:
-                            telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
-                            failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
-                            log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD")
-                            await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
-                            continue
-                        elif url_jump and payment_page_failed_load == True:
-                            telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                            failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"payment page failed load"]
-                            log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE FAILED LOAD")
-                            await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
-                            continue
-                        else:
-                            telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                            failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"payment page failed load"]
-                            log.warning("SCRIPT STATUS: URL JUMP FAILED, PAYMENT PAGE FAILED LOAD")
-                            await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0) 
-                        # QR code check
-                        #try:
-                        #    qr_code_count = await qr_code_check(page)
-                        #except Exception as e:
-                        #    log.info("QR CODE CHECK ERROR: [%s]"%e)
-                        #if qr_code_count != 0:
-                        #    await page.screenshot(path="22FUN_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
-                        #    telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
-                        #    await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
+                        # class DOM for deposit channel text
+                        #<button class="w-full flex items-center justify-between bank_title_bg px-4 py-3 transition-all duration-300">
+                        #     <div class="flex items-center gap-3">
+                        #         <img src="https://d2a18plfx719u2.cloudfront.net/frontend/bank_image/mssthaipay.png?v=1764310732564" class="h-5 max-h-8 max-w-full md:h-9" alt="MSSTHAIPAY">
+                        #              <div class="text-xs md:text-sm">MSSTHAIPAY</div>
+                        deposit_channel = await deposit_method_container.locator('button.w-full.flex.items-center.justify-between.bank_title_bg').inner_text()
+                        #if deposit_channel != 'QPAY': #FOR DEBUG
                         #    continue
-                        #else:
-                        #    # toast check (no real case yet, need to verify)
-                        #    # screenshot first in case there are no toast (unidentified reason)
-                        #    await page.screenshot(path="22FUN_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
-                        #    await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
-                        #    try:
-                        #        toast_exist = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
-                        #    except Exception as e:
-                        #        log.info("TOAST CHECK ERROR: [%s]"%e)
-                        #    if toast_exist:
-                        #        telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                        #        log.info("TOAST DETECTED")
-                        #        await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
-                        #        continue
-                        #    else:
-                        #        telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"no reason found, check manually_{date_time("Asia/Bangkok")}"]
-                        #        log.warning("UNIDENTIFIED REASON")
-                        #        await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)   
-                    except:
-                        raise Exception ("SUBMIT BUTTON FAILED TO CLICK")  
+                        log.info("FOUND [%s] DEPOSIT CHANNEL FOR DEPOSIT METHOD [%s]"%(deposit_channel,deposit_method))
+                        input_deposit_amount_box_container = page.locator('div.deposit-provider-entry')
+                        input_deposit_amount_box = input_deposit_amount_box_container.locator('input[type="number"]')
+                        placeholder = await input_deposit_amount_box.get_attribute("placeholder")
+                        match = re.search(r'THB\s+(\d+)', placeholder)
+                        min_amount = match.group(1) if match else None
+                        log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
+                        await input_deposit_amount_box.click()
+                        await input_deposit_amount_box.fill("%s"%min_amount)
+                        # submit button
+                        # class DOM: 
+                        #<div class="deposit-provider-entry px-4 py-6 rounded-b-xl">
+                        #    <div class="relative">
+                        #          <input type="number" step="any" inputmode="numeric" class="o-input !py-3 !text-xs md:!text-base o-number !bg-black" placeholder="THB 200.00 - THB 1,000,000.00">
+                        #    <div class="mt-5 md:mt-8">
+                        #          <button class="mx-auto !block btn btn-primary shining shrink-0 h-full uppercase" style="min-width: 280px;">Deposit</button></div>
+                        try:
+                            submit_button = input_deposit_amount_box_container.locator('button.mx-auto')
+                            #await submit_button.click()
+                            #await asyncio.sleep(30)
+                            # Jump URL check
+                            # btn = deposit method button
+                            url_jump, payment_page_failed_load= await url_jump_check(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,deposit_channel,min_amount,telegram_message)
+                            if url_jump and payment_page_failed_load == False:
+                                telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                                failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
+                                log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD")
+                                await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
+                                continue
+                            elif url_jump and payment_page_failed_load == True:
+                                telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"payment page failed load"]
+                                log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE FAILED LOAD")
+                                await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
+                                continue
+                            else:
+                                telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"payment page failed load"]
+                                log.warning("SCRIPT STATUS: URL JUMP FAILED, PAYMENT PAGE FAILED LOAD")
+                                await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0) 
+                            # QR code check
+                            #try:
+                            #    qr_code_count = await qr_code_check(page)
+                            #except Exception as e:
+                            #    log.info("QR CODE CHECK ERROR: [%s]"%e)
+                            #if qr_code_count != 0:
+                            #    await page.screenshot(path="22FUN_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                            #    telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                            #    await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
+                            #    continue
+                            #else:
+                            #    # toast check (no real case yet, need to verify)
+                            #    # screenshot first in case there are no toast (unidentified reason)
+                            #    await page.screenshot(path="22FUN_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                            #    await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
+                            #    try:
+                            #        toast_exist = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
+                            #    except Exception as e:
+                            #        log.info("TOAST CHECK ERROR: [%s]"%e)
+                            #    if toast_exist:
+                            #        telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                            #        log.info("TOAST DETECTED")
+                            #        await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)
+                            #        continue
+                            #    else:
+                            #        telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"no reason found, check manually_{date_time("Asia/Bangkok")}"]
+                            #        log.warning("UNIDENTIFIED REASON")
+                            #        await reenter_deposit_page(page,old_url,btn,input_deposit_amount_box,submit_button,deposit_method,min_amount,recheck=0)   
+                        except:
+                            raise Exception ("SUBMIT BUTTON FAILED TO CLICK")  
+                    except Exception as e:
+                        log.info("DEPOSIT CHANNEL/MINIMUM INPUT AMPONT NOT FOUND:%s"%(e))
                 except Exception as e:
-                    log.info("DEPOSIT CHANNEL/MINIMUM INPUT AMPONT NOT FOUND:%s"%(e))
-            except Exception as e:
-                raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE FAILED CLICKED:%s"%(deposit_method,e))
-            await asyncio.sleep(5)
+                    raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE FAILED CLICKED:%s"%(deposit_method,e))
+                await asyncio.sleep(5)
     except Exception as e:
         log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD SCROLLER/CONATINER CANNOT LOCATE:%s"%e)
     return telegram_message,failed_reason
@@ -585,7 +590,7 @@ TEAM : 2FT
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            joy_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            joy_caption = f"""[Janeny](tg://user?id=7354557269), [Augus](tg://user?id=6886607680), [Amin22FT](tg://user?id=7071925759), [Cs22fun](tg://user?id=6886607680), [wadee](tg://user?id=7071925759)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [22funthb1\\.com](https://www\\.22funthb1\\.com/en\\-th)
 TEAM : 2FT

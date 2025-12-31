@@ -270,7 +270,7 @@ async def qr_code_check(page):
 
 async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
     try:
-        async with page.expect_navigation(wait_until="load", timeout=15000):
+        async with page.expect_navigation(wait_until="load", timeout=45000):
             try:
                 #await page.get_by_role("button", name="เติมเงิน").nth(1).click()
                 deposit_button = page.locator('.btn_deposits')
@@ -567,7 +567,7 @@ TEAM : S5T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            jr_bing_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            jr_bing_caption = f"""[Peemai](tg://user?id=5690463304), [NUDEE](tg://user?id=5443501630), [Namwan](tg://user?id=7020014599), [Yati](tg://user?id=6474451548)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [sing55\\.com](https://www\\.sing55\\.com/en\\-th)
 TEAM : S5T

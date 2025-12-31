@@ -443,7 +443,8 @@ TEAM : I8T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
 
-            lucuss_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            lucuss_caption = f"""[LT PHONG](tg://user?id=5332128158), [LT JACK](tg://user?id=6136123283), [Mike](tg://user?id=6120358390), [Oack](tg://user?id=6556699698), [FreddyLii](tg://user?id=7985860301),
+[ccbb\\_23](tg://user?id=5687983283), [LTB2](tg://user?id=5245100299), [LTB3](tg://user?id=7493381560), [LTB7](tg://user?id=8133278339)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [i828th2\\.com](https://www\\.i828th2\\.com/en\\-th)
 TEAM : I8T

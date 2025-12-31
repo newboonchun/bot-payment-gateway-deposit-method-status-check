@@ -171,7 +171,7 @@ async def qr_code_check(page):
         "div.qr-image",
         "div.qr-image.position-relative",
         "div.payFrame", #for fpay-crypto
-        "div[id*='qr' i]",
+        "div[id*='qrcode' i]",
         "div[class*='qrcode']",
         "div#qrcode-container",
         "div#dowloadQr"
@@ -461,7 +461,7 @@ TEAM : B1T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            law_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            law_caption = f"""[Dew](tg://user?id=5040636833), [Michael](tg://user?id=1255354306), [WDBSP1](tg://user?id=1868242237), [WDBSP4](tg://user?id=1841779896), [WDBSP11](tg://user?id=6732793592)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [beta191\\.co](https://www\\.beta191\\.co/en\\-th)
 TEAM : B1T

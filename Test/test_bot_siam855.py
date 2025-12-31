@@ -569,7 +569,7 @@ TEAM : S8T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            fanny_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            fanny_caption = f"""[MIGUEL\\_S8T](tg://user?id=5070460846)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [siam855thb5\\.com](https://www\\.siam855thb5\\.com/en\\-th)
 TEAM : S8T
@@ -585,7 +585,7 @@ TEAM : S8T
 
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*SIAM855*.png")
+            files = glob.glob("*SIAM855_%s_%s*.png"%(deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
