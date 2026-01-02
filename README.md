@@ -40,3 +40,9 @@ test 2: url jump check (new page)
 
 Type D site: A8T, 9T, UT
 
+A8V type D test sequence:
+
+Once deposit button is clicked, create a asyncio task to expect either pop up, navigation happened, see who happened first.
+If pop up -> check for toast -> if no toast -> check for header title system error -> if both no -> success.
+If navigation happened -> check for toast -> if no toast -> success
+if both pop up and navigation no happen -> failed.
