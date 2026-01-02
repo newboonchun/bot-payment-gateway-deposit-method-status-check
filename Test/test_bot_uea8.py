@@ -430,7 +430,7 @@ TEAM : UT
             if 10 <= current_hour < 22:
                jr_bing_tag = "[Peemai](tg://user?id=5690463304), [NUDEE](tg://user?id=5443501630), [Namwan](tg://user?id=7020014599), [Yati](tg://user?id=6474451548), [Jmoys0606](tg://user?id=6163105212) "
             else:
-                jr_bing_tag = "[Firstsee786](tg://user?id=6612621888), [jelly_haha](tg://user?id=5590096249), [Bombam90](tg://user?id=6837937009), [aree899](tg://user?id=5542026734)"
+                jr_bing_tag = "[Firstsee786](tg://user?id=6612621888), [jelly\\_haha](tg://user?id=5590096249), [Bombam90](tg://user?id=6837937009), [aree899](tg://user?id=5542026734)"
             jr_bing_caption = f"""{jr_bing_tag}
 *Subject: Bot Testing Deposit Gateway*  
 URL: [uea8th7\\.com](https://www\\.uea8th7\\.com/en\\-th)
