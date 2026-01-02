@@ -348,12 +348,19 @@ async def check_toast(page,deposit_method,deposit_channel):
     await money_input_range.wait_for(state="attached", timeout=3000)
     money_input_range_text = (await money_input_range.inner_text())
     matches = re.findall(r"฿\s*([\d,]+)", money_input_range_text)
-    if matches:
-        min_amount = matches[0]            
-        min_amount = min_amount.replace(",", "")  # remove comma if any
-        print(min_amount)
+    if deposit_channel == 'MSSTHAIPAY':
+        if matches:
+            min_amount = "678"
+            log.info("CHECK TOAST - MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
+        else:
+            log.warning("CHECK TOAST - NO MINIMUM DEPOSIT AMOUNT INPUT")
     else:
-        log.warning("NO MINIMUM DEPOSIT AMOUNT INPUT")
+        if matches:
+            min_amount = matches[0]            
+            min_amount = min_amount.replace(",", "")  # remove comma if any
+            log.info("CHECK TOAST - MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
+        else:
+            log.warning("CHECK TOAST - NO MINIMUM DEPOSIT AMOUNT INPUT")
     try:
         await page.get_by_placeholder("0").click()
         await page.get_by_placeholder("0").fill("%s"%min_amount)
@@ -434,12 +441,19 @@ async def perform_payment_gateway_test(page):
             money_input_range_text = (await money_input_range.inner_text())
             log.info("MONEY INPUT RANGE AMOUNT: [%s]"%money_input_range_text)
             matches = re.findall(r"฿\s*([\d,]+)", money_input_range_text)
-            if matches:
-                min_amount = matches[0]            
-                min_amount = min_amount.replace(",", "")  # remove comma if any
-                log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
+            if deposit_channel == 'MSSTHAIPAY':
+                if matches:
+                    min_amount = "678"
+                    log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
+                else:
+                    log.warning("NO MINIMUM DEPOSIT AMOUNT INPUT")
             else:
-                log.warning("NO MINIMUM DEPOSIT AMOUNT INPUT")
+                if matches:
+                    min_amount = matches[0]            
+                    min_amount = min_amount.replace(",", "")  # remove comma if any
+                    log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
+                else:
+                    log.warning("NO MINIMUM DEPOSIT AMOUNT INPUT")
             try:
                 await page.get_by_placeholder("0").click()
                 await page.get_by_placeholder("0").fill("%s"%min_amount)

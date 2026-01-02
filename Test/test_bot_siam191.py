@@ -274,7 +274,10 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
         input_deposit_amount_box = page.locator('input.deposit-amount-input')
         placeholder = await input_deposit_amount_box.get_attribute("placeholder")
         match = re.search(r'THB\s+(\d+)', placeholder)
-        min_amount = match.group(1) if match else None
+        if deposit_channel == 'MSSTHAIPAY':
+            min_amount = "678" if match else None
+        else:
+            min_amount = match.group(1) if match else None
         log.info("CHECK TOAST: MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
         await input_deposit_amount_box.click()
         await input_deposit_amount_box.fill("%s"%min_amount)
@@ -348,7 +351,10 @@ async def perform_payment_gateway_test(page):
                     input_deposit_amount_box = page.locator('input.deposit-amount-input')
                     placeholder = await input_deposit_amount_box.get_attribute("placeholder")
                     match = re.search(r'THB\s+(\d+)', placeholder)
-                    min_amount = match.group(1) if match else None
+                    if deposit_channel == 'MSSTHAIPAY':
+                        min_amount = "678" if match else None
+                    else:
+                        min_amount = match.group(1) if match else None
                     log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
                     await input_deposit_amount_box.click()
                     await input_deposit_amount_box.fill("%s"%min_amount)
