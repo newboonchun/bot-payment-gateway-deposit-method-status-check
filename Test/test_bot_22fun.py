@@ -593,7 +593,7 @@ TEAM : 2FT
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            joy_caption = f"""[Janeny](tg://user?id=7354557269), [Augus](tg://user?id=6886607680), [Amin22FT](tg://user?id=7071925759), [Cs22fun](tg://user?id=6886607680), [wadee](tg://user?id=7071925759)
+            joy_caption = f"""[Janeny](tg://user?id=7354557269), [Augus](tg://user?id=6886607680), [Amin22FT](tg://user?id=7071925759), [Cs22fun](tg://user?id=6886607680), [wadee](tg://user?id=7071925759), [joyjug](tg://user?id=1883477695)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [22funthb1\\.com](https://www\\.22funthb1\\.com/en\\-th)
 TEAM : 2FT
