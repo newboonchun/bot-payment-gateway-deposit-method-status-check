@@ -87,7 +87,7 @@ async def wait_for_network_stable(page: Page, min_stable_ms: int = 1500, timeout
         page.remove_listener("requestfinished", on_request)
         page.remove_listener("requestfailed", on_request)
 
-async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck):
+async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,method_btn,channel_btn,min_amount,recheck):
     for attempt in range(1, 3):
         try:
             log.info(f"Trying to goto URL attempt {attempt}/{3}: {old_url}")
@@ -105,12 +105,12 @@ async def reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_a
         except:
             log.info("REENTER DEPOSIT PAGE - NETWORK NOT STABLE YET, CURRENT PAGE URL:%s"%page.url)
     try:
-        await page.get_by_role("button", name="%s"%deposit_method,exact=True ).click()
+        await method_btn.click()
         log.info("REENTER DEPOSIT PAGE - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
     except:
         raise Exception("REENTER DEPOSIT PAGE - DEPOSIT METHOD [%s] BUTTON ARE FAILED CLICKED"%deposit_method)
     try:
-        await page.get_by_role("button", name="%s"%deposit_channel,exact=True).click()
+        await channel_btn.click()
         log.info("REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
     except:
         raise Exception("REENTER DEPOSIT PAGE - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED"%deposit_channel)
@@ -301,7 +301,7 @@ async def qr_code_check(page):
         log.info("NO QR DETECTED")
     return qr_code_count
 
-async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,telegram_message):
+async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_button_text,method_btn,channel_btn,telegram_message):
     try:
         async with page.expect_navigation(wait_until="load", timeout=15000):
             #class DOM: <button data-v-7a9f759f="" type="button" aria-label="Deposit" class="btn_deposits uppercase font-semibold rounded-md">Deposit</button>
@@ -356,7 +356,7 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
                     else:
                         log.info("RETRYING...: ATTEMPT [%s] of [%s]"%(retry_count,max_retries))
                         try:
-                            await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,money_button_text,recheck=1)
+                            await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,method_btn,channel_btn,money_button_text,recheck=1)
                         except:
                             log.info("FAILED GO BACK TO OLD PAGE [%s] AND RETRY..."%(old_url))
 
@@ -434,8 +434,8 @@ async def perform_payment_gateway_test(page):
     deposit_method_total_count = await deposit_method_button.count()
     for i in range(deposit_method_total_count):
         old_url = page.url
-        btn = deposit_method_button.nth(i)
-        deposit_method = await btn.get_attribute("aria-label")
+        method_btn = deposit_method_button.nth(i)
+        deposit_method = await method_btn.get_attribute("aria-label")
         #if deposit_method != 'LinkAja': #FOR DEBUG
         #    continue
         # deposit method click
@@ -445,7 +445,7 @@ async def perform_payment_gateway_test(page):
         else:
             pass
         try:
-            await page.get_by_role("button", name="%s"%deposit_method, exact=True).click()
+            await method_btn.click()
             log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE CLICKED"%deposit_method)
         except:
             raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s] BUTTON ARE FAILED CLICKED"%deposit_method)
@@ -457,14 +457,14 @@ async def perform_payment_gateway_test(page):
         log.info("FOUND [%s] DEPOSIT CHANNEL FOR DEPOSIT METHOD [%s]"%(deposit_channel_count,deposit_method))
         for j in range(deposit_channel_count):
             manual_bank = False
-            btn = deposit_channel_button.nth(j)
-            deposit_channel = await btn.get_attribute("aria-label")
+            channel_btn = deposit_channel_button.nth(j)
+            deposit_channel = await channel_btn.get_attribute("aria-label")
             #if deposit_channel != 'TOPPAY QRIS': #FOR DEBUG
             #    continue
             log.info("DEPOSIT CHANNEL [%s] "%(deposit_channel))
             # click deposit button...start load to payment page
             try:
-                await page.get_by_role("button", name="%s"%deposit_channel, exact=True).click()
+                await channel_btn.click()
                 log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [%s] BUTTON ARE CLICKED"%deposit_channel)
             except Exception as e:
                 raise Exception("PERFORM PAYMENT GATEWAY TEST - DEPOSIT CHANNEL [%s] BUTTON ARE FAILED CLICKED [%s]"%(deposit_channel,e))
@@ -486,7 +486,7 @@ async def perform_payment_gateway_test(page):
                 log.info("PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [%s] ARE KEYED IN"%min_amount)
             except:
                 raise Exception("PERFORM PAYMENT GATEWAY TEST - MIN AMOUNT [%s] ARE NOT KEYED IN"%min_amount)
-            url_jump, payment_page_failed_load = await url_jump_check(page,old_url,deposit_method,deposit_channel,min_amount,telegram_message)
+            url_jump, payment_page_failed_load = await url_jump_check(page,old_url,deposit_method,deposit_channel,min_amount,method_btn,channel_btn,telegram_message)
             # EXTRA MANUAL BANK CHECK ##
             try:
                manual_bank_text_count = await page.locator('div.deposit_information_content_labels').count()
@@ -495,12 +495,12 @@ async def perform_payment_gateway_test(page):
                    manual_bank_text = await page.locator('div.deposit_information_content_labels').nth(count).inner_text(timeout=3000)
                    log.info("MANUAL BANK TEXT:%s"%manual_bank_text)
                    if "Bank Name" in manual_bank_text:
-                       await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
+                       await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,method_btn,channel_btn,min_amount,recheck=0)
                        log.info("MANUAL BANK TEXT FOUND:%s"%manual_bank_text)
                        manual_bank = True
                        break
                    elif "ชื่อธนาคาร" in manual_bank_text:
-                       await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
+                       await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,method_btn,channel_btn,min_amount,recheck=0)
                        log.info("MANUAL BANK TEXT FOUND:%s"%manual_bank_text)
                        manual_bank = True
                        break
@@ -518,13 +518,13 @@ async def perform_payment_gateway_test(page):
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
                 failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
                 log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE SUCCESS LOAD")
-                await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
+                await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,method_btn,channel_btn,min_amount,recheck=0)
                 continue
             elif url_jump and payment_page_failed_load == True:
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
                 failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"payment page failed load"]
                 log.info("SCRIPT STATUS: URL JUMP SUCCESS, PAYMENT PAGE FAILED LOAD")
-                await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
+                await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,method_btn,channel_btn,min_amount,recheck=0)
                 continue
             else:
                 pass
