@@ -174,6 +174,7 @@ async def qr_code_check(page):
         "div[id*='qrcode' i]",
         "div[class*='qrcode']",
         "div#qrcode-container",
+        "div[id='androidQR']",
         "div#dowloadQr"
     ]
 
@@ -330,7 +331,7 @@ async def perform_payment_gateway_test(page):
             deposit_channel = await btn.locator('span.text-sm.capitalize.font-medium.deposit-text-title').inner_text()
     
             log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s]"%deposit_method)
-            #if deposit_method != 'USDT-TRC20': #FOR DEBUG
+            #if deposit_method != 'promptpay': #FOR DEBUG
             #   continue
             # manual bank check
 
@@ -353,7 +354,8 @@ async def perform_payment_gateway_test(page):
                 # <div class="flex justify-end mt-2 font-light text-[8px] text-[#888693]">100.00 - 200,000.00 THB</div>
                 
                 try:
-                    #if deposit_channel != 'QPAY': #FOR DEBUG
+                    #if deposit_channel != 'Goodpay': #FOR DEBUG
+                    #    await reenter_deposit_page(page)
                     #    continue
                     log.info("FOUND [%s] DEPOSIT CHANNEL FOR DEPOSIT METHOD [%s]"%(deposit_channel,deposit_method))
                     input_deposit_amount_box = page.locator('input.o-input.deposit-amount-input-staging')
