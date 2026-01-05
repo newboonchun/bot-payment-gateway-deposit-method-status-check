@@ -459,7 +459,7 @@ TEAM : S1T
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
-            joy_caption = f"""[qPor1995](tg://user?id=6507986349), [Siam191thai](tg://user?id=6571975293)
+            joy_caption = f"""[qPor1995](tg://user?id=6507986349), [Siam191thai](tg://user?id=6571975293), [joyjug](tg://user?id=1883477695)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [siam191\\.net](https://www\\.siam191\\.net/en\\-th)
 TEAM : S1T

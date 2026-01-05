@@ -584,7 +584,7 @@ TEAM : S369T
 ├─ **TimeOccurred:** `{timestamp}` """ 
             
             joy_caption = f"""[WPPPD01](tg://user?id=8481857250), [WPPPD03](tg://user?id=7555942106), [WPPPD04](tg://user?id=8444340823), [WPPPD05](tg://user?id=8371010614), [WPPPD06](tg://user?id=7868897034),
-[WPPPD07](tg://user?id=8394636302), [W\\_Jack](tg://user?id=8120164891), [qPor1995](tg://user?id=6507986349), [Siam369th](tg://user?id=7670674353)
+[WPPPD07](tg://user?id=8394636302), [W\\_Jack](tg://user?id=8120164891), [qPor1995](tg://user?id=6507986349), [Siam369th](tg://user?id=7670674353), [joyjug](tg://user?id=1883477695)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [siam369th\\.com](https://www\\.siam369th\\.com/en\\-th)
 TEAM : S369T
