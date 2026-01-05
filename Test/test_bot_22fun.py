@@ -463,7 +463,10 @@ async def perform_payment_gateway_test(page):
                         input_deposit_amount_box = input_deposit_amount_box_container.locator('input[type="number"]')
                         placeholder = await input_deposit_amount_box.get_attribute("placeholder")
                         match = re.search(r'THB\s+(\d+)', placeholder)
-                        min_amount = match.group(1) if match else None
+                        if deposit_channel == 'MSSTHAIPAY':
+                            min_amount = "678" if match else None
+                        else:
+                            min_amount = match.group(1) if match else None
                         log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
                         await input_deposit_amount_box.click()
                         await input_deposit_amount_box.fill("%s"%min_amount)
