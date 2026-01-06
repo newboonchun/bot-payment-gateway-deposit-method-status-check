@@ -353,57 +353,81 @@ async def perform_payment_gateway_test(page,context):
                                         log.info("DEPOSIT AMOUNT INPUT ERROR:%s"%(e))
                                     
                    #################### to decide either there is pop up page, or stays at same page ####################
-                                    pop_up_page = 0
-                                    same_page_jump_url = 0
-                                    current_old_url = page.url
-                                    popup_future = asyncio.create_task(page.context.wait_for_event("page"))     
-                                    navigation_future = asyncio.create_task(
-                                                                            page.wait_for_url(lambda url: url != current_old_url)
-                                                                        )
+                                    deposit_submit_button_no_action = 0
+                                    max_retries = 2
+                                    retry_count = 0
+                                    while retry_count < max_retries:
+                                        pop_up_page = 0
+                                        same_page_jump_url = 0
+                                        current_old_url = page.url
+                                        popup_future = asyncio.create_task(page.context.wait_for_event("page"))     
+                                        navigation_future = asyncio.create_task(
+                                                                                page.wait_for_url(lambda url: url != current_old_url)
+                                                                            )
 
-                                    ## DOM for deposit submit button
-                                        # <div class="standard-form-field transactionButton component-8   ">
-                                        #   <button id="" class="standard-submit-form-button " data-button-category="submit" type="submit">
-                                    try:
-                                        deposit_submit_container = page.locator('div.standard-form-field.transactionButton')
-                                        deposit_submit_button = deposit_submit_container.locator('button[data-button-category="submit"]')
-                                        await deposit_submit_button.wait_for(state="visible", timeout=30000)
-                                        await deposit_submit_button.click()
-                                        log.info("DEPOSIT BUTTON CLICKED")
-                                    except Exception as e:
-                                        raise Exception("URL_JUMP_CHECK: DEPOSIT BUTTON FAILED TO CLICKED:%s"%e)
+                                        ## DOM for deposit submit button
+                                            # <div class="standard-form-field transactionButton component-8   ">
+                                            #   <button id="" class="standard-submit-form-button " data-button-category="submit" type="submit">
+                                        try:
+                                            deposit_submit_container = page.locator('div.standard-form-field.transactionButton')
+                                            deposit_submit_button = deposit_submit_container.locator('button[data-button-category="submit"]')
+                                            await deposit_submit_button.wait_for(state="visible", timeout=30000)
+                                            await deposit_submit_button.click()
+                                            log.info("DEPOSIT BUTTON CLICKED")
+                                        except Exception as e:
+                                            raise Exception("URL_JUMP_CHECK: DEPOSIT BUTTON FAILED TO CLICKED:%s"%e)
 
-                                    try:
-                                        done, pending = await asyncio.wait(
-                                                                [popup_future, navigation_future],
-                                                                return_when=asyncio.FIRST_COMPLETED,
-                                                            )
-                                        for task in pending:
-                                            task.cancel()
+                                        try:
+                                            done, pending = await asyncio.wait(
+                                                                    [popup_future, navigation_future],
+                                                                    return_when=asyncio.FIRST_COMPLETED,
+                                                                )
+                                            for task in pending:
+                                                task.cancel()
 
-                                        if popup_future in done:
-                                            pop_up_page = 1
-                                            new_page = popup_future.result()
-                                            #new_page = await popup_info.value
-                                            new_url = new_page.url
-                                            log.info("POPUP PAGE OPENED: %s", new_page.url)
+                                            if popup_future in done:
+                                                pop_up_page = 1
+                                                new_page = popup_future.result()
+                                                #new_page = await popup_info.value
+                                                new_url = new_page.url
+                                                log.info("POPUP PAGE OPENED: %s", new_page.url)
+                                                break
+                                            elif navigation_future in done:
+                                                same_page_jump_url = 1
+                                                new_url = page.url
+                                                new_page = page
+                                                log.info("SAME PAGE NAVIGATION DETECTED: %s", page.url)
+                                                break
+                                            else:
+                                                log.info("DEPOSIT CLICK DID NOT TRIGGER ANY ACTION")
+                                                retry_count += 1
+                                                if retry_count == max_retries:
+                                                    log.info("❌ Failed: DEPOSIT CLICK DID NOT TRIGGER ANY ACTION AFTER 1 RETRY.")
+                                                    await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
+                                                    telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                                    failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"payment page failed load"]
+                                                    deposit_submit_button_no_action = 1
+                                                    break
+                                                else:
+                                                    log.info("RETRYING...: ATTEMPT [%s] of [%s]"%(retry_count,max_retries))
+                                                    await asyncio.sleep(5)
 
-                                        elif navigation_future in done:
-                                            same_page_jump_url = 1
-                                            new_url = page.url
-                                            new_page = page
-                                            log.info("SAME PAGE NAVIGATION DETECTED: %s", page.url)
-
-                                        else:
+                                        except Exception as e:
+                                            log.info("ERROR:%s"%e)
                                             log.info("DEPOSIT CLICK DID NOT TRIGGER ANY ACTION")
-                                            telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                            failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"payment page failed load"]
-                                            continue
-                                    except Exception as e:
-                                        log.info("ERROR:%s"%e)
-                                        log.info("DEPOSIT CLICK DID NOT TRIGGER ANY ACTION")
-                                        telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                        failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"payment page failed load"]
+                                            retry_count += 1
+                                            if retry_count == max_retries:
+                                                log.info("❌ Failed: DEPOSIT CLICK DID NOT TRIGGER ANY ACTION AFTER 1 RETRY.")
+                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
+                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"payment page failed load"]
+                                                deposit_submit_button_no_action = 1
+                                                break
+                                            else:
+                                                log.info("RETRYING...: ATTEMPT [%s] of [%s]"%(retry_count,max_retries))
+                                                await asyncio.sleep(5)
+                                    
+                                    if deposit_submit_button_no_action == 1:
                                         continue
 
                                     log.info("POP UP PAGE - [%s], SAME_PAGE_URL_JUMP - [%s]"%(pop_up_page, same_page_jump_url))
