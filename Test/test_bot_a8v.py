@@ -193,7 +193,7 @@ async def perform_login(page):
     except:
         raise Exception("LOGIN PROCESS - DEPOSIT BUTTON FAILED TO CLICKED")
 
-async def check_toast(page,new_page,deposit_method_text,deposit_channel,bank_name):
+async def check_toast(page,new_page,deposit_option,deposit_method_text,deposit_channel,bank_name):
     toast_exist = False
     try:
         for _ in range(20):
@@ -204,11 +204,11 @@ async def check_toast(page,new_page,deposit_method_text,deposit_channel,bank_nam
             if await toast.count() > 0:
                 toast_exist = True
                 try:
-                    await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method_text,deposit_channel,bank_name),timeout=30000)
+                    await new_page.screenshot(path="A8VTHEBEST_%s_%s_%s-%s_Payment_Page.png"%(deposit_option,deposit_method_text,deposit_channel,bank_name),timeout=30000)
                     log.info("CHECK TOAST DETECTED: SCREENSHOT SUCCESS")
                 except Exception as e:
                     log.info("CHECK TOAST DETECTED: SCREENSHOT FAILED:%s"%e)
-                log.info("DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_method_text,deposit_channel,text))
+                log.info("DEPOSIT OPTION:%s, DEPOSIT METHOD:%s, DEPOSIT CHANNEL:%s GOT PROBLEM. DETAILS:[%s]"%(deposit_option,deposit_method_text,deposit_channel,text))
                 break
             await asyncio.sleep(0.1)
     except Exception as e:
@@ -403,9 +403,9 @@ async def perform_payment_gateway_test(page,context):
                                                 retry_count += 1
                                                 if retry_count == max_retries:
                                                     log.info("❌ Failed: DEPOSIT CLICK DID NOT TRIGGER ANY ACTION AFTER 1 RETRY.")
-                                                    await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
-                                                    telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                                    failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"payment page failed load"]
+                                                    await new_page.screenshot(path="A8VTHEBEST_%s_%s_%s-%s_Payment_Page.png"%(deposit_option,deposit_method,deposit_channel,bank_name),timeout=30000)
+                                                    telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                                    failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"payment page failed load"]
                                                     deposit_submit_button_no_action = 1
                                                     break
                                                 else:
@@ -418,9 +418,9 @@ async def perform_payment_gateway_test(page,context):
                                             retry_count += 1
                                             if retry_count == max_retries:
                                                 log.info("❌ Failed: DEPOSIT CLICK DID NOT TRIGGER ANY ACTION AFTER 1 RETRY.")
-                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
-                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"payment page failed load"]
+                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s_%s-%s_Payment_Page.png"%(deposit_option,deposit_method,deposit_channel,bank_name),timeout=30000)
+                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"payment page failed load"]
                                                 deposit_submit_button_no_action = 1
                                                 break
                                             else:
@@ -435,12 +435,12 @@ async def perform_payment_gateway_test(page,context):
                                     log.info("PAYMENT PAGE - [%s]"%(new_url))
                     #################### to decide either there is pop up page, or stays at same page ####################
                                     try:
-                                        toast_exist, toast_failed_text = await check_toast(page,new_page,deposit_method,deposit_channel,bank_name)
+                                        toast_exist, toast_failed_text = await check_toast(page,new_page,deposit_option,deposit_method,deposit_channel,bank_name)
                                     except Exception as e:
                                         log.info("TOAST CHECK ERROR: [%s]"%e)
                                     if toast_exist:
-                                        telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                        failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [toast_failed_text]
+                                        telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                        failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [toast_failed_text]
                                         log.info("TOAST DETECTED")
                                         if pop_up_page:
                                             await new_page.close()
@@ -459,10 +459,10 @@ async def perform_payment_gateway_test(page,context):
                                             header_page_title = await header.inner_text()
                                             log.info("HEADER PAGE TITLE: [%s]"%header_page_title)
                                             if "lỗi hệ thống" in header_page_title:
-                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
+                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s_%s-%s_Payment_Page.png"%(deposit_option,deposit_method,deposit_channel,bank_name),timeout=30000)
                                                 log.info("DEPOSIT METHOD: [%s], DEPOSIT CHANNEL: [%s], BANK_NAME:[%s] SYSTEM ERROR!!"%(deposit_method,deposit_channel,bank_name))
-                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [header_page_title]
+                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [header_page_title]
                                                 if pop_up_page:
                                                     await new_page.close()
                                                 elif same_page_jump_url:
@@ -471,9 +471,9 @@ async def perform_payment_gateway_test(page,context):
                                                 continue
                                             else:
                                                 log.info("HEADER PAGE TITLE NO ISSUE")
-                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
-                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
-                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"-"]
+                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s_%s-%s_Payment_Page.png"%(deposit_option,deposit_method,deposit_channel,bank_name),timeout=30000)
+                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"-"]
                                                 if pop_up_page:
                                                     await new_page.close()
                                                 elif same_page_jump_url:
@@ -481,9 +481,9 @@ async def perform_payment_gateway_test(page,context):
                                                 await asyncio.sleep(30)
                                         except Exception as e:
                                             log.info("HEADER PAGE TITLE CAN'T LOCATE:%s"%(e))
-                                            await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
-                                            telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
-                                            failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"-"]
+                                            await new_page.screenshot(path="A8VTHEBEST_%s_%s_%s-%s_Payment_Page.png"%(deposit_option,deposit_method,deposit_channel,bank_name),timeout=30000)
+                                            telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                                            failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"-"]
                                             if pop_up_page:
                                                 await new_page.close()
                                             elif same_page_jump_url:
@@ -516,6 +516,7 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
             deposit_channel_method = key.split("_")
             deposit_channel = deposit_channel_method[0]
             deposit_method  = deposit_channel_method[1]
+            deposit_option  = deposit_channel_method[2]
             # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
             value = value_list[0]
             status, timestamp = value.split("_")
@@ -531,12 +532,13 @@ async def telegram_send_operation(telegram_message,failed_reason,program_complet
                 failed_deposit_channel_method = key.split("_")
                 failed_deposit_channel = failed_deposit_channel_method[0]
                 failed_deposit_method  = failed_deposit_channel_method[1]
+                failed_deposit_option  = failed_deposit_channel_method[2]
 
-                if failed_deposit_channel == deposit_channel and failed_deposit_method == deposit_method:
+                if failed_deposit_channel == deposit_channel and failed_deposit_method == deposit_method and failed_deposit_option == deposit_option:
                     failed_reason_text = value[0]
                     break
 
-            log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
+            log.info("OPTION: [%s], METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%((deposit_option,deposit_method,deposit_channel,status,timestamp)))
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
             caption = f"""[W\\_Hao](tg://user?id=8416452734), [W\\_MC](tg://user?id=7629175195)
 *Subject: Bot Testing Deposit Gateway*  
@@ -545,6 +547,7 @@ TEAM : A8V
 ┌─ **Deposit Testing Result** ──────────┐
 │ {status_emoji} **{status}** 
 │  
+│ **Option:** `{escape_md(deposit_option) if deposit_option else "None"}`
 │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
 │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
 └───────────────────────────┘
@@ -562,6 +565,7 @@ TEAM : A8V
 ┌─ **Deposit Testing Result** ──────────┐
 │ {status_emoji} **{status}** 
 │  
+│ **Option:** `{escape_md(deposit_option) if deposit_option else "None"}`
 │ **PaymentGateway:** `{escape_md(deposit_method) if deposit_method else "None"}`  
 │ **Channel:** `{escape_md(deposit_channel) if deposit_channel else "None"}`  
 └───────────────────────────┘
@@ -571,7 +575,7 @@ TEAM : A8V
 
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
-            files = glob.glob("*A8VTHEBEST_%s_%s*.png"%(deposit_method,deposit_channel))
+            files = glob.glob("*A8VTHEBEST_%s_%s_%s*.png"%(deposit_option,deposit_method,deposit_channel))
             log.info("File [%s]"%(files))
             file_path = files[0]
             # Only send screenshot which status is failed
@@ -650,30 +654,32 @@ async def telegram_send_summary(telegram_message,date_time):
             deposit_channel_method = key.split("_")
             deposit_channel = deposit_channel_method[0]
             deposit_method  = deposit_channel_method[1]
+            deposit_option  = deposit_channel_method[2]
+            option = escape_md(deposit_option)
             method = escape_md(deposit_method)
             channel = escape_md(deposit_channel)
             # The value list contains one string like: "deposit success - 2025-11-26 14:45:24"
             value = value_list[0]
             status, timestamp = value.split("_")
             if status == 'deposit success':
-                succeed_records.append((method, channel))           
+                succeed_records.append((option, method, channel))           
             elif status == 'deposit failed':
-                failed_records.append((method, channel))
+                failed_records.append((option, method, channel))
             else:
-                unknown_records.append((method, channel))
+                unknown_records.append((option, method, channel))
             succeed_block = ""
             if succeed_records:
-                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in succeed_records]
+                items = [f"│ **• Options:{o} , Method:{m}**  \n│   ├─ Channel:{c}  \n│" for o, m, c in succeed_records]
                 succeed_block = f"┌─ ✅ Success **Result** ────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
         
             failed_block = ""
             if failed_records:
-                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in failed_records]
+                items = [f"│ **• Options:{o} , Method:{m}**  \n│   ├─ Channel:{c}  \n│" for o, m, c in failed_records]
                 failed_block = f"\n┌─ ❌ Failed **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
             
             unknown_block = ""
             if unknown_records:
-                items = [f"│ **• Method:{m}**  \n│   ├─ Channel:{c}  \n│" for m, c in unknown_records]
+                items = [f"│ **• Options:{o} , Method:{m}**  \n│   ├─ Channel:{c}  \n│" for o, m, c in unknown_records]
                 unknown_block = f"\n┌─ ❌ Unknown **Result** ─────────────┐\n" + "\n".join(items) + "\n└───────────────────────────┘"
             
             summary_body = succeed_block + (failed_block if failed_block else "") + (unknown_block if unknown_block else "")
