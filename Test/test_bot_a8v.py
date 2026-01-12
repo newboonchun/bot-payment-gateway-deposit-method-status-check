@@ -403,9 +403,9 @@ async def perform_payment_gateway_test(page,context):
                                                 retry_count += 1
                                                 if retry_count == max_retries:
                                                     log.info("❌ Failed: DEPOSIT CLICK DID NOT TRIGGER ANY ACTION AFTER 1 RETRY.")
-                                                    await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
-                                                    telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                                    failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"payment page failed load"]
+                                                    await new_page.screenshot(path="A8VTHEBEST_%s_%s_%s-%s_Payment_Page.png"%(deposit_option,deposit_method,deposit_channel,bank_name),timeout=30000)
+                                                    telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                                    failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"payment page failed load"]
                                                     deposit_submit_button_no_action = 1
                                                     break
                                                 else:
@@ -415,13 +415,12 @@ async def perform_payment_gateway_test(page,context):
                                         except Exception as e:
                                             log.info("ERROR:%s"%e)
                                             log.info("DEPOSIT CLICK DID NOT TRIGGER ANY ACTION")
-<<<<<<< HEAD
                                             retry_count += 1
                                             if retry_count == max_retries:
                                                 log.info("❌ Failed: DEPOSIT CLICK DID NOT TRIGGER ANY ACTION AFTER 1 RETRY.")
-                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s-%s_Payment_Page.png"%(deposit_method,deposit_channel,bank_name),timeout=30000)
-                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}"] = [f"payment page failed load"]
+                                                await new_page.screenshot(path="A8VTHEBEST_%s_%s_%s-%s_Payment_Page.png"%(deposit_option,deposit_method,deposit_channel,bank_name),timeout=30000)
+                                                telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+                                                failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"payment page failed load"]
                                                 deposit_submit_button_no_action = 1
                                                 break
                                             else:
@@ -429,16 +428,6 @@ async def perform_payment_gateway_test(page,context):
                                                 await asyncio.sleep(5)
                                     
                                     if deposit_submit_button_no_action == 1:
-=======
-                                            telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                            failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"payment page failed load"]
-                                            continue
-                                    except Exception as e:
-                                        log.info("ERROR:%s"%e)
-                                        log.info("DEPOSIT CLICK DID NOT TRIGGER ANY ACTION")
-                                        telegram_message[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                                        failed_reason[f"{deposit_channel}-{bank_name}_{deposit_method}_{deposit_option}"] = [f"payment page failed load"]
->>>>>>> 0884f49 (a8v deposit options add in telegram message)
                                         continue
 
                                     log.info("POP UP PAGE - [%s], SAME_PAGE_URL_JUMP - [%s]"%(pop_up_page, same_page_jump_url))
