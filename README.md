@@ -49,4 +49,6 @@ If pop up -> check for toast -> if no toast -> check for header title system err
 If navigation happened -> check for toast -> if no toast -> success
 if both pop up and navigation no happen -> failed.
 
+update on 1/14/2025
 
+- for all site A, there is no url jump now after template GUI changed. Instead, there's a deposit confirmation window pop out. So we test this.
