@@ -16,12 +16,11 @@ Among these "A" sites, GCWIN99, SIAM345 & SIAM212 having different QR code metho
 
 Type B & F site test sequence: 
 
-** no url jump, everything happened in iframe **
--------------------------------------------------
 Deposit Method - Deposit Channel
     |
-    |---> test 1: qr code check
-          test 2: toast check
+    |---> test 1: url jump (added on 1/14/2026)
+          test 2: qr code check
+          test 3: toast check
 Type B site:
 I828, MSTSLOT, SIAM191
 
