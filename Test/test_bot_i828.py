@@ -85,21 +85,39 @@ async def wait_for_network_stable(page: Page, min_stable_ms: int = 1500, timeout
         page.remove_listener("requestfinished", on_request)
         page.remove_listener("requestfailed", on_request)
 
-async def reenter_deposit_page(page):
-    # close scrolldown menu
-    # class DOM: <div class="deposit-modal p-5 fmodal-content bg-modal relative p-4 sm:p-5 rounded-[5px] w-full shadow-lg" style="max-width:450px;" data-v-97a2cc87="">
-    #            <!--[--><div class="pt-[20px] relative">
-    #                       <button type="button" class="modal_close_btn" aria-label="Close">
-    close_button_container = page.locator("div.deposit-modal.fmodal-content.bg-modal.relative")
-    close_button = close_button_container.locator("button.modal_close_btn")
-    close_button_count = await close_button.count()
-    log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON COUNT:%s"%close_button_count)
-    for i in range(close_button_count):
-        try:
-            await close_button.nth(i).click(timeout=5000)
-            log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON:%s CLOSE BUTTON COUNT:%s"%(close_button,close_button_count))
-        except Exception as e:
-            log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON:%s ERROR:%s"%(close_button,e))
+async def reenter_deposit_page(page,url_jump):
+    if url_jump == True:
+        for attempt in range(1, 3):
+            try:
+                log.info(f"Trying to goto URL attempt {attempt}/{3}: https://www.i828th2.com/en-th")
+
+                response = await page.goto("https://www.i828th2.com/en-th", timeout=30000, wait_until="domcontentloaded")
+                await asyncio.sleep(2)
+                await wait_for_network_stable(page, timeout=30000)
+
+                if response and response.ok:
+                    log.info("REENTER DEPOSIT PAGE - PAGE LOADED SUCCESSFULLY")
+                    break
+                else:
+                    # if response is None or not ok
+                    log.warning("Navigation response not OK")
+            except:
+                log.info("REENTER DEPOSIT PAGE - NETWORK NOT STABLE YET, CURRENT PAGE URL:%s"%page.url)
+    else:
+        # close scrolldown menu
+        # class DOM: <div class="deposit-modal p-5 fmodal-content bg-modal relative p-4 sm:p-5 rounded-[5px] w-full shadow-lg" style="max-width:450px;" data-v-97a2cc87="">
+        #            <!--[--><div class="pt-[20px] relative">
+        #                       <button type="button" class="modal_close_btn" aria-label="Close">
+        close_button_container = page.locator("div.deposit-modal.fmodal-content.bg-modal.relative")
+        close_button = close_button_container.locator("button.modal_close_btn")
+        close_button_count = await close_button.count()
+        log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON COUNT:%s"%close_button_count)
+        for i in range(close_button_count):
+            try:
+                await close_button.nth(i).click(timeout=5000)
+                log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON:%s CLOSE BUTTON COUNT:%s"%(close_button,close_button_count))
+            except Exception as e:
+                log.info("REENTER DEPOSIT PAGE: CLOSE BUTTON:%s ERROR:%s"%(close_button,e))
     # reclick the deposit button to show scolldown menu
     try:
         await page.locator("#deposit_btn_12").click()
@@ -158,6 +176,32 @@ async def perform_login(page):
     except:
         raise Exception("LOGIN PROCESS - DEPOSIT BUTTON ARE FAILED TO CLICK")
 
+async def payment_iframe_check(page):
+    ## DETECT PAYMENT IFRAME BASED ON HTML CONTENT !!! ##
+    payment_iframe_count = 0
+    try:
+        #await page.wait_for_selector("iframe", timeout=3000)
+        iframe_count = await page.locator("iframe").count()
+        log.info("IFRAME/POP UP APPEARED. IFRAME COUNT:%s"%iframe_count)
+        for i in range(iframe_count):
+            try:
+                base = page.locator("iframe").nth(i)
+                sandbox_attribute = await base.get_attribute('sandbox')
+                log.info(f"Sandbox attribute for iframe {i}: {sandbox_attribute}")
+                if sandbox_attribute == None:
+                    pass
+                elif 'allow-forms allow-scripts' in sandbox_attribute:
+                    payment_iframe_count = 1
+                    break
+                #log.info("IFRAME PAYMENT APPEARED. IFRAME PAYMENT COUNT:%s"%payment_iframe_count)
+            except Exception as e:
+                log.info(f"Sandbox attribute for iframe {i} ERROR!!: {e}")
+                #log.info("IFRAME PAYMENT CANNOT LOCATE FOR %s IFRAME : [%s]"%(i,e))
+    except Exception as e:
+        log.info("No IFRAME/POP UP APPEARED:%s"%e)
+    
+    log.info(f"PAYMENT IFRAME COUNT : {payment_iframe_count}")
+    return payment_iframe_count
 
 async def qr_code_check(page):
     ## DETECT QR CODE BASED ON HTML CONTENT !!! ##
@@ -301,6 +345,7 @@ async def perform_payment_gateway_test(page):
     exclude_list = ["Bank", "Government Savings Bank", "Government Saving Bank", "ธ.", "ธนาคารออมสิน", "ธนาคารกสิกรไทย", "ธนาคารไทยพาณิชย์","ธนาคาร","กสิกรไทย"]
     telegram_message = {}
     failed_reason = {}
+    old_url = page.url
     # locate scrollbar
     # class DOM: flex-grow grid grid-cols-1 gap-4 md:gap-4 overflow-y-auto light-scrollbar px-8 pb-[10px]
     try:
@@ -315,6 +360,7 @@ async def perform_payment_gateway_test(page):
         if deposit_method_total_count == 0:
             raise Exception ("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD COUNT = 0, SCROLLBAR DIDN'T LOCATE PROBABLY")
         for i in range(deposit_method_total_count):
+            url_jump = False
             btn = deposit_method_button.nth(i)
             deposit_method = await btn.locator('span').inner_text()
             log.info("PERFORM PAYMENT GATEWAY TEST - DEPOSIT METHOD [%s]"%deposit_method)
@@ -355,22 +401,39 @@ async def perform_payment_gateway_test(page):
                         submit_button = page.locator("button.deposit_ok_btn")
                         await submit_button.click()
                         await asyncio.sleep(30)
-                        # QR code check
-                        try:
-                            qr_code_count = await qr_code_check(page)
-                        except Exception as e:
-                            log.info("QR CODE CHECK ERROR: [%s]"%e)
-                        if qr_code_count != 0:
+                        # URL jump check
+                        new_url = page.url
+                        if new_url != old_url:
+                            url_jump = True
+                            log.info("URL JUMP !!! SUCCESS !!!: NEW URL: [%s] OLD URL: [%s]"%(new_url,old_url))
                             await page.screenshot(path="I828_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                             telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
                             failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
-                            await reenter_deposit_page(page)
+                            await reenter_deposit_page(page,url_jump)
+                            continue
+                        # QR code check
+                        #try:
+                        #    qr_code_count = await qr_code_check(page)
+                        #except Exception as e:
+                        #    log.info("QR CODE CHECK ERROR: [%s]"%e)
+                        #if qr_code_count != 0:
+                        #    await page.screenshot(path="I828_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                        #    telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                        #    failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
+                        #    await reenter_deposit_page(page)
+                        #    continue
+                        payment_iframe_count = await payment_iframe_check(page)
+                        if payment_iframe_count != 0:
+                            await page.screenshot(path="I828_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
+                            telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit success_{date_time("Asia/Bangkok")}"]
+                            failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"-"]
+                            await reenter_deposit_page(page,url_jump)
                             continue
                         else:
                             # toast check (no real case yet, need to verify)
                             # screenshot first in case there are no toast (unidentified reason)
                             await page.screenshot(path="I828_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
-                            await reenter_deposit_page(page)
+                            await reenter_deposit_page(page,url_jump)
                             try:
                                 toast_exist,toast_failed_text = await check_toast(page,deposit_method_button.nth(i),deposit_method,deposit_channel)
                             except Exception as e:
@@ -379,13 +442,13 @@ async def perform_payment_gateway_test(page):
                                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
                                 failed_reason[f"{deposit_channel}_{deposit_method}"] = [toast_failed_text]
                                 log.info("TOAST DETECTED")
-                                await reenter_deposit_page(page)
+                                await reenter_deposit_page(page,url_jump)
                                 continue
                             else:
                                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"no reason found, check manually_{date_time("Asia/Bangkok")}"]
                                 failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"unknown reason"]
                                 log.warning("UNIDENTIFIED REASON")
-                                await reenter_deposit_page(page)   
+                                await reenter_deposit_page(page,url_jump)   
                     except Exception as e:
                         raise Exception ("SUBMIT BUTTON FAILED TO CLICK:%s"%e) from e
                 except Exception as e:
