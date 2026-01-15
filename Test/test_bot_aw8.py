@@ -210,6 +210,12 @@ async def perform_login(page):
     except:
         raise Exception("LOGIN PROCESS - LOGIN BUTTON ARE FAILED TO CLICKED")
     await asyncio.sleep(1)
+    try:
+        advertisement_close_button = page.locator(".icon-close.text-lg")
+        await advertisement_close_button.click()
+        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE CLICKED")
+    except:
+        log.info("LOGIN PROCESS - ADVERTISEMENT CLOSE BUTTON ARE NOT CLICKED")
     #class DOM: <div data-v-4fff4a3f="" class="deposit_topbar">
     #                <button data-v-4fff4a3f="" type="button" class="topbar_btn_2 mx-2 md:mx-[10px] flex items-center justify-center deposit_display_big" aria-label="Deposit" id="deposit_btn_12">Deposit</button> -->this is
     #                <button data-v-4fff4a3f="" type="button" class="mr-3 deposit_display_small rounded-md topbar_deposit_icon_btn" aria-label="Deposit" id="deposit_btn_13"> --> this is not
