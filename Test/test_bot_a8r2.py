@@ -596,8 +596,8 @@ async def telegram_send_operation(telegram_message, failed_reason, program_compl
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     log.info("FAILED REASON: [%s]"%(failed_reason))
     TOKEN = os.getenv("TOKEN")
-    chat_id = os.getenv("CHAT_ID")
-    lucuss_chat_id = os.getenv("LUCUSS_CHAT_ID")
+    oc_chat_id = os.getenv("OC_CHAT_ID")
+    wanlong_chat_id = os.getenv("WANLONG_CHAT_ID")
     bot = Bot(token=TOKEN)
     if program_complete == True:
         for key, value_list in telegram_message.items():
@@ -627,7 +627,7 @@ async def telegram_send_operation(telegram_message, failed_reason, program_compl
             
             log.info("METHOD: [%s], CHANNEL: [%s], STATUS: [%s], TIMESTAMP: [%s]"%(deposit_method,deposit_channel,status,timestamp))
             fail_line = f"│ **Failed Reason:** `{escape_md(failed_reason_text)}`\n" if failed_reason_text else ""
-            caption = f"""[W\\_Hao](tg://user?id=8416452734), [W\\_MC](tg://user?id=7629175195)
+            caption = f"""[W\\_JY](tg://user?id=7431317636)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [aw8me\\.com](https://www\\.aw8me\\.com/en\\-id)
 TEAM : A8R2
@@ -644,7 +644,7 @@ TEAM : A8R2
 **Time Detail**  
 ├─ **TimeOccurred:** `{timestamp}` """ 
 
-            lucuss_caption = f"""[W\\_Karman](tg://user?id=5615912046)
+            wanlong_caption = f"""[WL357](tg://user?id=6829708001), [danu1137](tg://user?id=7196796896), [AW8INDO](tg://user?id=1239299594), [CSAW8INDO](tg://user?id=6239954603)
 *Subject: Bot Testing Deposit Gateway*  
 URL: [aw8me\\.com](https://www\\.aw8me\\.com/en\\-id)
 TEAM : A8R2
@@ -669,7 +669,7 @@ TEAM : A8R2
                     try:
                         with open(file_path, 'rb') as f:
                               await bot.send_photo(
-                                    chat_id=chat_id,
+                                    chat_id=oc_chat_id,
                                     photo=f,
                                     caption=caption,
                                     parse_mode='MarkdownV2',
@@ -686,26 +686,26 @@ TEAM : A8R2
                         log.info("ERROR TELEGRAM BOT [%s]"%(e))
                         break
 
-                #for attempt in range(3):
-                #    try:
-                #        with open(file_path, 'rb') as f:
-                #              await bot.send_photo(
-                #                    chat_id=lucuss_chat_id,
-                #                    photo=f,
-                #                    caption=lucuss_caption,
-                #                    parse_mode='MarkdownV2',
-                #                    read_timeout=30,
-                #                    write_timeout=30,
-                #                    connect_timeout=30
-                #                )
-                #        log.info(f"SCREENSHOT SUCCESSFULLY SENT")
-                #        break
-                #    except TimedOut:
-                #        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
-                #        await asyncio.sleep(5)
-                #    except Exception as e:
-                #        log.info("ERROR TELEGRAM BOT [%s]"%(e))
-                #        break
+                for attempt in range(3):
+                    try:
+                        with open(file_path, 'rb') as f:
+                              await bot.send_photo(
+                                    chat_id=wanlong_chat_id,
+                                    photo=f,
+                                    caption=wanlong_caption,
+                                    parse_mode='MarkdownV2',
+                                    read_timeout=30,
+                                    write_timeout=30,
+                                    connect_timeout=30
+                                )
+                        log.info(f"SCREENSHOT SUCCESSFULLY SENT")
+                        break
+                    except TimedOut:
+                        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+                        await asyncio.sleep(5)
+                    except Exception as e:
+                        log.info("ERROR TELEGRAM BOT [%s]"%(e))
+                        break
             else:
                 pass
     else:   
@@ -716,7 +716,7 @@ TEAM : A8R2
             )
         try:
                 await bot.send_message(
-                    chat_id=chat_id,
+                    chat_id=oc_chat_id,
                     text=fail_msg,
                     parse_mode="Markdown"
                 )
@@ -728,8 +728,8 @@ async def telegram_send_summary(telegram_message,date_time):
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
     log.info("TELEGRAM MESSAGE: [%s]"%(telegram_message))
     TOKEN = os.getenv("TOKEN")
-    chat_id = os.getenv("CHAT_ID")
-    lucuss_chat_id = os.getenv("LUCUSS_CHAT_ID")
+    oc_chat_id = os.getenv("CHAT_ID")
+    wanlong_chat_id = os.getenv("WANLONG_CHAT_ID")
     bot = Bot(token=TOKEN)
     log.info("TELEGRAM_MESSAGE:%s"%telegram_message)
     succeed_records = []
@@ -776,7 +776,7 @@ TIME: {escape_md(date_time)}
 
     for attempt in range(3):
         try:
-            await bot.send_message(chat_id=chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            await bot.send_message(chat_id=oc_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
             log.info("SUMMARY SENT")
             break
         except TimedOut:
@@ -785,16 +785,16 @@ TIME: {escape_md(date_time)}
         except Exception as e:
             log.error(f"SUMMARY FAILED TO SENT: {e}")
     
-    #for attempt in range(3):
-    #    try:
-    #        await bot.send_message(chat_id=lucuss_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
-    #        log.info("SUMMARY SENT")
-    #        break
-    #    except TimedOut:
-    #        log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
-    #        await asyncio.sleep(3)
-    #    except Exception as e:
-    #        log.error(f"SUMMARY FAILED TO SENT: {e}")
+    for attempt in range(3):
+        try:
+            await bot.send_message(chat_id=wanlong_chat_id, text=caption, parse_mode='MarkdownV2', disable_web_page_preview=True)
+            log.info("SUMMARY SENT")
+            break
+        except TimedOut:
+            log.warning(f"TELEGRAM TIMEOUT，RETRY {attempt + 1}/3...")
+            await asyncio.sleep(3)
+        except Exception as e:
+            log.error(f"SUMMARY FAILED TO SENT: {e}")
 
 async def clear_screenshot():
     picture_to_sent = glob.glob("*A8R2*.png")
