@@ -386,6 +386,20 @@ async def url_jump_check(page,old_url,deposit_method,deposit_channel,money_butto
     
     return url_jump, payment_page_failed_load
 
+async def check_error_message(page):
+    try:
+        error_message_container= page.locator('div.modal-message')
+        await error_message_container.wait_for(state='visible', timeout=30000)
+        error_message = await error_message_container.inner_text()
+        error_message_exist = True
+        log.info("ERROR MESSAGE EXIST : [%s]"%error_message)
+    except Exception as e:
+        error_message = '-'
+        error_message_exist = False
+        log.info("CHECK ERROR MESSAGE ERROR : %s"%e)
+    
+    return error_message_exist, error_message
+
 async def check_toast(page,deposit_method,deposit_channel):
     toast_exist = False
     try:
@@ -593,16 +607,29 @@ async def perform_payment_gateway_test(page):
                 continue
             else:
                 pass
-            toast_exist, toast_failed_text = await check_toast(page,deposit_method,deposit_channel)
-            if toast_exist:
+            error_message_exist, error_message = await check_error_message(page)
+            if error_message_exist == True:
+                await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
-                failed_reason[f"{deposit_channel}_{deposit_method}"] = [toast_failed_text]
-                log.info("TOAST DETECTED")
+                failed_reason[f"{deposit_channel}_{deposit_method}"] = [error_message]
+                log.info("ERROR MESSAGE DETECTED")
+                await reenter_deposit_page(page,old_url,deposit_method,deposit_channel,min_amount,recheck=0)
                 continue
             else:
+                await page.screenshot(path="SING55_%s_%s_Payment_Page.png"%(deposit_method,deposit_channel),timeout=30000)
                 telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"no reason found, check manually_{date_time("Asia/Bangkok")}"]
                 failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"unknown reason"]
                 log.warning("UNIDENTIFIED REASON")
+            #toast_exist, toast_failed_text = await check_toast(page,deposit_method,deposit_channel)
+            #if toast_exist:
+            #    telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"deposit failed_{date_time("Asia/Bangkok")}"]
+            #    failed_reason[f"{deposit_channel}_{deposit_method}"] = [toast_failed_text]
+            #    log.info("TOAST DETECTED")
+            #    continue
+            #else:
+            #    telegram_message[f"{deposit_channel}_{deposit_method}"] = [f"no reason found, check manually_{date_time("Asia/Bangkok")}"]
+            #    failed_reason[f"{deposit_channel}_{deposit_method}"] = [f"unknown reason"]
+            #    log.warning("UNIDENTIFIED REASON")
 
     return telegram_message,failed_reason
 
@@ -661,7 +688,7 @@ TEAM : S5T
 ├─ **TimeOccurred:** `{timestamp}` """
             current_hour = datetime.now().hour
             if 10 <= current_hour < 22:
-               jr_bing_tag = "[Peemai](tg://user?id=5690463304), [NUDEE](tg://user?id=5443501630), [Namwan](tg://user?id=7020014599), [Yati](tg://user?id=6474451548), [Jmoys0606](tg://user?id=6163105212) "
+               jr_bing_tag = "[Peemai](tg://user?id=5690463304), [Namwan](tg://user?id=7020014599), [Yati](tg://user?id=6474451548), [Jmoys0606](tg://user?id=6163105212) "
             else:
                 jr_bing_tag = "[Firstsee786](tg://user?id=6612621888), [jelly\\_haha](tg://user?id=5590096249), [Bombam90](tg://user?id=6837937009), [aree899](tg://user?id=5542026734)" 
             
