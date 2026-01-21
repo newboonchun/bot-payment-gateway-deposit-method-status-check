@@ -13,6 +13,7 @@ import re
 from telegram.error import TimedOut
 from dotenv import load_dotenv
 import pandas as pd
+import time
 
 def escape_md(text):
     if text is None: return ""
@@ -907,10 +908,22 @@ async def data_process_excel(telegram_message):
         dt = date_time("Asia/Bangkok")
         date = dt.split(" ")[0]
 
+        timeout = 30  # Timeout after 30 seconds
+        start_time = time.time()  # Start time
+
         file = "data_bot_%s.xlsx"%date
         lock_file = file + ".lock"
         while os.path.exists(lock_file): 
-            asyncio.sleep(1) 
+            elapsed_time = time.time() - start_time  # Time elapsed since waiting started
+            if elapsed_time >= timeout:
+                # If timeout reached, try removing the lock file
+                try:
+                    os.remove(lock_file)
+                    log.info(f"Lock file {lock_file} removed after waiting {timeout} seconds.")
+                except Exception as e:
+                    log.error(f"Failed to remove lock file {lock_file} after {timeout} seconds. Error: {e}")
+                break  # Exit the loop after attempting to remove the file
+            await asyncio.sleep(1) 
             log.info("EXCEL DATA: LOCK FILE STILL EXIST, OTHER SITE WRITING...")
         open(lock_file, "w").close()
         try:
