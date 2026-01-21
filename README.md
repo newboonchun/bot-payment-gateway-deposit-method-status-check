@@ -49,5 +49,7 @@ If navigation happened -> check for toast -> if no toast -> success
 if both pop up and navigation no happen -> failed.
 
 update on 1/14/2025
-
 - for all site A, there is no url jump now after template GUI changed. Instead, there's a deposit confirmation window pop out. So we test this.
+
+update on 1/21/2025
+- for all site A (ibs), the error message format are change, no longer in toast format, now it is pop up window, we locate this using selector in playwright.
