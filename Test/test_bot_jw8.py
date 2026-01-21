@@ -412,6 +412,7 @@ async def check_error_message(page):
         error_message_exist = True
         log.info("ERROR MESSAGE EXIST : [%s]"%error_message)
     except Exception as e:
+        error_message = '-'
         error_message_exist = False
         log.info("CHECK ERROR MESSAGE ERROR : %s"%e)
     
