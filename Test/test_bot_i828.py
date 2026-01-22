@@ -712,7 +712,7 @@ async def data_process_excel(telegram_message):
         timeout = 30  # Timeout after 30 seconds
         start_time = time.time()  # Start time
 
-        file = "data_bot_%s.xlsx"%date
+        file = "data_bot_thb_%s.xlsx"%date
         lock_file = file + ".lock"
         while os.path.exists(lock_file): 
             elapsed_time = time.time() - start_time  # Time elapsed since waiting started
