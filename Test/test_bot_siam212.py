@@ -14,6 +14,7 @@ from telegram.error import TimedOut
 from dotenv import load_dotenv
 import pandas as pd
 import time
+import random
 
 def escape_md(text):
     if text is None: return ""
@@ -516,9 +517,11 @@ async def perform_payment_gateway_test(page):
             money_input_range_text = (await money_input_range.inner_text())
             log.info("MONEY INPUT RANGE AMOUNT: [%s]"%money_input_range_text)
             matches = re.findall(r"฿\s*([\d,]+)", money_input_range_text)
+            random_add = random.randint(0, 100)
             if deposit_channel == 'MSSTHAIPAY':
                 if matches:
                     min_amount = "678"
+                    min_amount = str(int("678") + random_add)
                     log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
                 else:
                     log.warning("NO MINIMUM DEPOSIT AMOUNT INPUT")
@@ -526,6 +529,7 @@ async def perform_payment_gateway_test(page):
                 if matches:
                     min_amount = matches[0]            
                     min_amount = min_amount.replace(",", "")  # remove comma if any
+                    min_amount = str(int(min_amount) + random_add)
                     log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
                 else:
                     log.warning("NO MINIMUM DEPOSIT AMOUNT INPUT")
