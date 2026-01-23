@@ -12,6 +12,7 @@ from telegram.error import TimedOut
 from dotenv import load_dotenv
 import pandas as pd
 import time
+import random
 
 def escape_md(text):
     if text is None: return ""
@@ -309,10 +310,13 @@ async def check_toast(page,deposit_method_button,deposit_method_text,deposit_cha
         input_deposit_amount_box = page.locator('input.o-input.deposit-amount-input-staging')
         input_deposit_amount_range = await page.locator('div.flex.justify-end.font-light').inner_text()
         match = re.search(r"[\d,.]+", input_deposit_amount_range)
+        random_add = random.randint(0, 100)
         if deposit_channel == 'MSSTHAIPAY':
             min_amount = "678" if match else None
+            min_amount = str(int("678") + random_add) if match else None
         else:
             min_amount = match.group() if match else None
+            min_amount = str(int(min_amount) + random_add) if match else None
         log.info("CHECK TOAST: MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
         await input_deposit_amount_box.click()
         await input_deposit_amount_box.fill("%s"%min_amount)
@@ -416,10 +420,13 @@ async def perform_payment_gateway_test(page):
                     input_deposit_amount_range = await page.locator('div.flex.justify-end.font-light').inner_text()
                     log.info("MONEY INPUT RANGE AMOUNT: [%s]"%input_deposit_amount_range)
                     match = re.search(r"[\d,.]+", input_deposit_amount_range)
+                    random_add = random.randint(0, 100)
                     if deposit_channel == 'MSSTHAIPAY':
                         min_amount = "678" if match else None
+                        min_amount = str(int("678") + random_add) if match else None
                     else:
                         min_amount = match.group() if match else None
+                        min_amount = str(int(min_amount) + random_add) if match else None
                     log.info("MINIMUM INPUT AMOUNT TO TEST: [%s]"%min_amount)
                     await input_deposit_amount_box.click()
                     await input_deposit_amount_box.fill("%s"%min_amount)
